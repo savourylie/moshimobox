@@ -1,0 +1,40 @@
+.shell {
+  min-height: 100vh;
+  padding: var(--sp-10) var(--sp-6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.frame {
+  width: 100%;
+  max-width: 480px;
+  text-align: left;
+}
+
+.wordmark {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-32);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.018em;
+  color: var(--ink-900);
+}
+
+.subtitle {
+  margin: var(--sp-2) 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-600);
+}
+
+.empty {
+  margin: var(--sp-10) 0 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-15);
+  color: var(--ink-500);
+}

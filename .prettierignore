@@ -1,0 +1,11 @@
+.next/
+node_modules/
+coverage/
+pnpm-lock.yaml
+docs/
+src/styles/tokens.css
+public/
+*.svg
+next-env.d.ts
+AGENTS.md
+CLAUDE.md

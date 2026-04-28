@@ -1,0 +1,348 @@
+/* Mirror of docs/design/design-system/colors_and_type.css.
+   Run `pnpm sync:tokens` to refresh. Do not hand-edit. */
+
+/* =========================================================
+   Moshimo Box Design System — Tokens
+   Warm analytical minimalism. Paper-and-ink editorial palette.
+   ========================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,500;8..60,600;8..60,700&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+:root {
+  /* -----------------------------------------------------------
+     COLOR — Surfaces (warm paper)
+     ----------------------------------------------------------- */
+  --paper-50:  #FBF8F3;   /* lightest — card surfaces on top of page */
+  --paper-100: #F5F1E9;   /* page background */
+  --paper-150: #EDE7DC;   /* sunken / disabled fill */
+  --paper-200: #E3DCCD;   /* strong sunken — pre-borders */
+
+  /* -----------------------------------------------------------
+     COLOR — Ink (warm near-blacks → soft grays)
+     ----------------------------------------------------------- */
+  --ink-900: #1F1B16;     /* primary text */
+  --ink-800: #2E2820;     /* high-emphasis */
+  --ink-700: #4A4339;     /* body */
+  --ink-600: #6B6357;     /* secondary text */
+  --ink-500: #8B8377;     /* tertiary, captions, axis labels */
+  --ink-400: #A8A092;     /* placeholder, disabled text */
+  --ink-300: #C4BCAE;     /* strong divider */
+  --ink-200: #D8D1C3;     /* hover border */
+  --ink-150: #E2DBCD;     /* default border */
+  --ink-100: #ECE6D9;     /* subtle divider */
+
+  /* -----------------------------------------------------------
+     COLOR — Accent (the one ink-blue) + supporting
+     ----------------------------------------------------------- */
+  --accent-ink-50:  #EEF1F6;
+  --accent-ink-100: #DCE2EC;
+  --accent-ink-500: #4A5E82;
+  --accent-ink-600: #3B4E6F;
+  --accent-ink-700: #2C3E64;   /* primary brand */
+  --accent-ink-800: #1F2D4B;
+  --accent-ink-900: #141E33;
+
+  /* -----------------------------------------------------------
+     COLOR — Macro quadrant tints (muted, label-grade)
+     Each: 50 surface, 100 hover, 600 mid, 800 strong
+     ----------------------------------------------------------- */
+  --growth-50:  #E5EFEA;
+  --growth-100: #C7DDD0;
+  --growth-600: #2F8267;
+  --growth-800: #1B5341;
+
+  --inflation-50:  #F4E2E2;
+  --inflation-100: #E1C2C2;
+  --inflation-600: #B25A5A;
+  --inflation-800: #74332F;
+
+  --policy-50:  #E8ECEF;
+  --policy-100: #CFD7DE;
+  --policy-600: #5D6E7E;
+  --policy-800: #364350;
+
+  --market-50:  #F7E9CD;
+  --market-100: #E5D2A8;
+  --market-600: #B5832A;
+  --market-800: #7A5618;
+
+  /* -----------------------------------------------------------
+     COLOR — Status (muted, never alarming)
+     positive: muted emerald/teal · negative: soft rose
+     warning: amber · neutral: blue-gray
+     ----------------------------------------------------------- */
+  --positive-50:  #E5EFEA;
+  --positive-600: #2F8267;
+  --positive-800: #1B5341;
+
+  --negative-50:  #F4E2E2;
+  --negative-600: #B25A5A;
+  --negative-800: #74332F;
+
+  --warning-50:  #F7E9CD;
+  --warning-600: #B5832A;
+  --warning-800: #7A5618;
+
+  --neutral-50:  #E8ECEF;
+  --neutral-600: #5D6E7E;
+  --neutral-800: #364350;
+
+  /* -----------------------------------------------------------
+     COLOR — Semantic aliases
+     ----------------------------------------------------------- */
+  --bg-page:      var(--paper-100);
+  --bg-surface:   var(--paper-50);
+  --bg-sunken:    var(--paper-150);
+  --bg-overlay:   rgba(40, 30, 20, 0.32);
+
+  --fg-primary:   var(--ink-900);
+  --fg-secondary: var(--ink-700);
+  --fg-tertiary:  var(--ink-500);
+  --fg-disabled:  var(--ink-400);
+  --fg-on-accent: #FBF8F3;
+
+  --border-subtle: var(--ink-100);
+  --border-default: var(--ink-150);
+  --border-strong: var(--ink-300);
+
+  --action-primary:        var(--accent-ink-700);
+  --action-primary-hover:  var(--accent-ink-800);
+  --action-primary-active: var(--accent-ink-900);
+
+  /* -----------------------------------------------------------
+     TYPOGRAPHY — Families
+     ----------------------------------------------------------- */
+  --font-serif: "Source Serif 4", "Songti TC", "Noto Serif TC", Georgia, serif;
+  --font-sans:  "Inter Tight", -apple-system, "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+  --font-mono:  "JetBrains Mono", "SF Mono", Menlo, monospace;
+
+  /* -----------------------------------------------------------
+     TYPOGRAPHY — Scale (modular ~1.2)
+     ----------------------------------------------------------- */
+  --fs-12: 0.75rem;
+  --fs-13: 0.8125rem;
+  --fs-14: 0.875rem;
+  --fs-15: 0.9375rem;
+  --fs-16: 1rem;
+  --fs-18: 1.125rem;
+  --fs-20: 1.25rem;
+  --fs-24: 1.5rem;
+  --fs-28: 1.75rem;
+  --fs-32: 2rem;
+  --fs-40: 2.5rem;
+  --fs-56: 3.5rem;
+  --fs-72: 4.5rem;
+
+  --lh-tight:   1.15;
+  --lh-snug:    1.3;
+  --lh-normal:  1.5;
+  --lh-loose:   1.65;
+
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* tabular numerals on/off */
+  --ff-tnum: "tnum" 1, "lnum" 1;
+
+  /* -----------------------------------------------------------
+     SPACING — 4px base
+     ----------------------------------------------------------- */
+  --sp-0:   0;
+  --sp-1:   4px;
+  --sp-2:   8px;
+  --sp-3:   12px;
+  --sp-4:   16px;
+  --sp-5:   20px;
+  --sp-6:   24px;
+  --sp-8:   32px;
+  --sp-10:  40px;
+  --sp-14:  56px;
+  --sp-18:  72px;
+  --sp-24:  96px;
+
+  /* -----------------------------------------------------------
+     RADII
+     ----------------------------------------------------------- */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   20px;
+  --radius-full: 999px;
+
+  /* -----------------------------------------------------------
+     SHADOWS — warm-tinted, never pure black
+     ----------------------------------------------------------- */
+  --shadow-1: 0 1px 2px rgba(40, 30, 20, 0.04), 0 1px 1px rgba(40, 30, 20, 0.03);
+  --shadow-2: 0 4px 12px rgba(40, 30, 20, 0.06), 0 2px 4px rgba(40, 30, 20, 0.04);
+  --shadow-3: 0 12px 32px rgba(40, 30, 20, 0.10), 0 4px 8px rgba(40, 30, 20, 0.05);
+
+  /* -----------------------------------------------------------
+     MOTION
+     ----------------------------------------------------------- */
+  --ease-paper: cubic-bezier(0.2, 0, 0, 1);
+  --dur-fast:    160ms;
+  --dur-base:    240ms;
+  --dur-slow:    360ms;
+
+  /* -----------------------------------------------------------
+     LAYOUT
+     ----------------------------------------------------------- */
+  --topbar-h:        56px;
+  --sidebar-w:       240px;
+  --sidebar-w-mini:  64px;
+  --chat-w:          420px;
+  --content-max:     1440px;
+  --grid-gutter:     24px;
+}
+
+/* ============================================================
+   SEMANTIC TYPE ROLES
+   Apply directly: <h1 class="display-1">, <p class="body">, etc.
+   ============================================================ */
+
+.display-1 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-72);
+  line-height: var(--lh-tight);
+  font-weight: var(--fw-regular);
+  letter-spacing: -0.02em;
+  color: var(--fg-primary);
+}
+
+.display-2 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-56);
+  line-height: var(--lh-tight);
+  font-weight: var(--fw-regular);
+  letter-spacing: -0.018em;
+  color: var(--fg-primary);
+}
+
+.h1 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-40);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.015em;
+  color: var(--fg-primary);
+}
+
+.h2 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-28);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.01em;
+  color: var(--fg-primary);
+}
+
+.h3 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-20);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.005em;
+  color: var(--fg-primary);
+}
+
+.h4-ui {
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-tertiary);
+}
+
+.body {
+  font-family: var(--font-serif);
+  font-size: var(--fs-16);
+  line-height: var(--lh-loose);
+  font-weight: var(--fw-regular);
+  color: var(--fg-secondary);
+}
+
+.body-sm {
+  font-family: var(--font-serif);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  color: var(--fg-secondary);
+}
+
+.ui {
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  color: var(--fg-primary);
+}
+
+.ui-sm {
+  font-family: var(--font-sans);
+  font-size: var(--fs-13);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  color: var(--fg-secondary);
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-tertiary);
+}
+
+.caption {
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  color: var(--fg-tertiary);
+}
+
+.metric {
+  font-family: var(--font-serif);
+  font-size: var(--fs-40);
+  line-height: 1;
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.02em;
+  font-feature-settings: var(--ff-tnum);
+  color: var(--fg-primary);
+}
+
+.metric-sm {
+  font-family: var(--font-serif);
+  font-size: var(--fs-24);
+  line-height: 1;
+  font-weight: var(--fw-medium);
+  font-feature-settings: var(--ff-tnum);
+  color: var(--fg-primary);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-13);
+  font-feature-settings: var(--ff-tnum);
+  color: var(--fg-secondary);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+html, body {
+  background: var(--bg-page);
+  color: var(--fg-primary);
+  font-family: var(--font-serif);
+  font-size: var(--fs-16);
+  line-height: var(--lh-loose);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
