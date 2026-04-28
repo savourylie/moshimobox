@@ -1,7 +1,7 @@
 # [TICKET-003] Define core domain schemas
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #001 ✅
@@ -10,10 +10,10 @@
 Define the shared data contracts that the dashboard, APIs, and agent tools will use. The PRD requires every visible widget to map to a backend API and every UI mutation to pass through controlled validation, so schemas need to exist before implementation fans out.
 
 ## Acceptance Criteria
-- [ ] Shared schemas or types exist for indicator metadata, time-series points, widget data responses, widget configuration, layout schema, UI action proposals, and action logs.
-- [ ] Widget data response validation requires unit, current value, previous value, change, observation date, release date, source, and trend/status metadata.
-- [ ] Layout validation supports one dashboard with Growth, Inflation, Policy / Liquidity, and Market quadrants and only the MVP widget types: metric card, line chart, and comparison chart.
-- [ ] Schema tests reject missing units, missing observation dates, unknown widget types, and unsafe action payloads.
+- [x] Shared schemas or types exist for indicator metadata, time-series points, widget data responses, widget configuration, layout schema, UI action proposals, and action logs.
+- [x] Widget data response validation requires unit, current value, previous value, change, observation date, release date, source, and trend/status metadata.
+- [x] Layout validation supports one dashboard with Growth, Inflation, Policy / Liquidity, and Market quadrants and only the MVP widget types: metric card, line chart, and comparison chart.
+- [x] Schema tests reject missing units, missing observation dates, unknown widget types, and unsafe action payloads.
 
 ## Implementation Notes
 - Suggested files: shared schema module, domain type exports, schema tests.

@@ -1,10 +1,10 @@
 # [TICKET-004] Seed MVP indicator catalog and default layout
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #003
+- Requires: #003 ✅
 
 ## Description
 Create the first provisional indicator catalog and default layout schema. The PRD leaves the final MVP indicator list open, so this ticket seeds a small, reviewable set that covers the four macro quadrants without over-expanding data-source scope.

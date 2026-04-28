@@ -7,10 +7,10 @@
 
 | Status        | Count |
 | ------------- | ----- |
-| ✅ Done        | 2     |
+| ✅ Done        | 3     |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 23    |
+| 🚫 Blocked     | 22    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -23,8 +23,8 @@
 | --- | ------ | ------ | ---------- | ----- |
 | 001 | [Scaffold the production app](./001-scaffold-production-app.md) | `done` | — | Next.js 15 App Router + TS + pnpm; tokens mirrored to `src/styles/tokens.css` |
 | 002 | [Build app chrome and navigation shell](./002-build-app-chrome-and-navigation-shell.md) | `done` | #001 ✅ | Persistent dashboard chrome (top bar, sidebar, reserved chat slot) on lucide-react |
-| 003 | [Define core domain schemas](./003-define-core-domain-schemas.md) | `pending` | #001 ✅ | Unblocked — contracts for data, layout, and actions |
-| 004 | [Seed MVP indicator catalog and default layout](./004-seed-mvp-indicator-catalog-and-default-layout.md) | `blocked` | #003 | Provisional indicator list from PRD assumptions |
+| 003 | [Define core domain schemas](./003-define-core-domain-schemas.md) | `done` | #001 ✅ | Implemented and verified — contracts for data, layout, and actions |
+| 004 | [Seed MVP indicator catalog and default layout](./004-seed-mvp-indicator-catalog-and-default-layout.md) | `pending` | #003 ✅ | Unblocked — #003 now done |
 | 005 | [Implement fixture-backed data APIs](./005-implement-fixture-backed-data-apis.md) | `blocked` | #004 | Contract-first API surface |
 | 006 | [**TEST: Checkpoint 0 — Foundation scaffold**](./006-test-checkpoint-0-foundation-scaffold.md) | `blocked` | #002 ✅, #005 | Gate: Phase 1 |
 
