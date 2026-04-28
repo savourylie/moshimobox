@@ -1,7 +1,7 @@
 # [TICKET-002] Build app chrome and navigation shell
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #001 ✅
@@ -10,10 +10,10 @@
 Create the persistent dashboard frame: top bar, left navigation, content area, and reserved chat panel region. This unlocks later dashboard and chat work while keeping the visual language aligned with the canonical design system.
 
 ## Acceptance Criteria
-- [ ] The app frame includes a 56px top bar, left sidebar with Growth, Inflation, Policy / Liquidity, and Market entries, and a content region sized for a future 420px chat panel.
-- [ ] The top bar includes the logo or mark asset, global search affordance, settings affordance, and copilot toggle.
-- [ ] Sidebar links scroll or route to quadrant anchors without reloading the page.
-- [ ] All colors, spacing, typography, radii, shadows, and motion values come from the design tokens.
+- [x] The app frame includes a 56px top bar, left sidebar with Growth, Inflation, Policy / Liquidity, and Market entries, and a content region sized for a future 420px chat panel.
+- [x] The top bar includes the logo or mark asset, global search affordance, settings affordance, and copilot toggle.
+- [x] Sidebar links scroll or route to quadrant anchors without reloading the page.
+- [x] All colors, spacing, typography, radii, shadows, and motion values come from the design tokens.
 
 ## Design Reference
 - **Layout**: `docs/design/design-system/README.md` section "Layout rules"

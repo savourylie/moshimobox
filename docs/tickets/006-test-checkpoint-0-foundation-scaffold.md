@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #002, #005
+- Requires: #002 ✅, #005
 
 ## Description
 This checkpoint verifies that the production scaffold, app chrome, shared contracts, seed catalog, default layout, and fixture-backed APIs are ready for feature work. It is a gate: no data-provider or dashboard feature tickets should start until this passes.
