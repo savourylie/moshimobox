@@ -1,0 +1,26 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--ink-700);
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-paper),
+    color var(--dur-fast) var(--ease-paper),
+    border-color var(--dur-fast) var(--ease-paper);
+}
+
+.btn:hover {
+  background: var(--paper-100);
+  color: var(--ink-900);
+}
+
+.btn:focus-visible {
+  outline: none;
+  border-color: var(--accent-ink-700);
+}

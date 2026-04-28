@@ -1,0 +1,37 @@
+.shell {
+  min-height: 100vh;
+  background: var(--bg-page);
+  display: grid;
+  grid-template-rows: var(--topbar-h) 1fr;
+  grid-template-columns: var(--sidebar-w) 1fr auto;
+  grid-template-areas:
+    "topbar topbar topbar"
+    "sidebar main chat";
+}
+
+.topbarSlot {
+  grid-area: topbar;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.sidebarSlot {
+  grid-area: sidebar;
+}
+
+.mainSlot {
+  grid-area: main;
+  min-width: 0;
+  padding: var(--sp-8) var(--sp-6) var(--sp-18);
+}
+
+.mainInner {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  width: 100%;
+}
+
+.chatSlot {
+  grid-area: chat;
+}

@@ -1,0 +1,113 @@
+.bar {
+  height: var(--topbar-h);
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  padding-inline: var(--sp-6);
+  gap: var(--sp-6);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity var(--dur-fast) var(--ease-paper);
+}
+
+.logo:hover {
+  opacity: 0.85;
+}
+
+.logoImg {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
+.search {
+  flex: 1;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  background: var(--paper-100);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 7px var(--sp-3);
+  font-family: var(--font-sans);
+  font-size: var(--fs-13);
+  color: var(--ink-500);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background var(--dur-fast) var(--ease-paper),
+    border-color var(--dur-fast) var(--ease-paper);
+}
+
+.search:hover {
+  background: var(--paper-50);
+  border-color: var(--border-strong);
+}
+
+.search:focus-visible {
+  outline: none;
+  border-color: var(--accent-ink-700);
+}
+
+.searchHint {
+  flex: 1;
+}
+
+.searchKbd {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  color: var(--ink-500);
+  font-feature-settings: var(--ff-tnum);
+}
+
+.right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.copilot {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-13);
+  font-weight: var(--fw-semibold);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--paper-50);
+  color: var(--ink-900);
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-paper),
+    color var(--dur-fast) var(--ease-paper),
+    border-color var(--dur-fast) var(--ease-paper);
+}
+
+.copilot:hover {
+  background: var(--paper-100);
+}
+
+.copilot:focus-visible {
+  outline: none;
+  border-color: var(--accent-ink-700);
+}
+
+.copilotActive {
+  background: var(--action-primary);
+  color: var(--fg-on-accent);
+  border-color: var(--action-primary);
+}
+
+.copilotActive:hover {
+  background: var(--action-primary-hover);
+  border-color: var(--action-primary-hover);
+}

@@ -1,15 +1,27 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import HomePage from "./page";
+import { QUADRANTS } from "@/components/chrome/QUADRANTS";
 
 describe("HomePage", () => {
-  it("renders the Moshimo Box wordmark", () => {
+  it("renders an h2 heading for each quadrant", () => {
     render(<HomePage />);
-    expect(screen.getByRole("heading", { name: /Moshimo Box/i, level: 1 })).toBeInTheDocument();
+    for (const quadrant of QUADRANTS) {
+      expect(
+        screen.getByRole("heading", { name: quadrant.label, level: 2 }),
+      ).toBeInTheDocument();
+    }
   });
 
-  it("shows the empty workspace caption", () => {
+  it("anchors each section to its quadrant id", () => {
+    const { container } = render(<HomePage />);
+    for (const quadrant of QUADRANTS) {
+      expect(container.querySelector(`section#${quadrant.id}`)).not.toBeNull();
+    }
+  });
+
+  it("shows an empty caption per section", () => {
     render(<HomePage />);
-    expect(screen.getByText(/no widgets yet/i)).toBeInTheDocument();
+    expect(screen.getAllByText("No widgets yet.")).toHaveLength(QUADRANTS.length);
   });
 });
