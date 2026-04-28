@@ -22,10 +22,7 @@ export const searchIndicators = (filters: IndicatorSearchFilters = {}): Indicato
     if (filters.category && seed.category.toLowerCase() !== filters.category.toLowerCase()) {
       return false;
     }
-    if (
-      filters.country &&
-      seed.country.code.toUpperCase() !== filters.country.toUpperCase()
-    ) {
+    if (filters.country && seed.country.code.toUpperCase() !== filters.country.toUpperCase()) {
       return false;
     }
     if (filters.source && seed.metadata.source.provider !== filters.source) {

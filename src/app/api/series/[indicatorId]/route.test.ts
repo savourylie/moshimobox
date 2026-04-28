@@ -3,10 +3,9 @@ import { ApiErrorSchema, SingleSeriesResponseSchema } from "@/domain/schemas";
 import { GET } from "./route";
 
 const callRoute = (indicatorId: string, query = "") =>
-  GET(
-    new Request(`http://test/api/series/${indicatorId}${query ? `?${query}` : ""}`),
-    { params: Promise.resolve({ indicatorId }) },
-  );
+  GET(new Request(`http://test/api/series/${indicatorId}${query ? `?${query}` : ""}`), {
+    params: Promise.resolve({ indicatorId }),
+  });
 
 describe("GET /api/series/[indicatorId]", () => {
   it("returns a parseable SingleSeriesResponse with default level transform", async () => {

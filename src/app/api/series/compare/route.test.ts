@@ -2,8 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ApiErrorSchema, ComparisonResponseSchema } from "@/domain/schemas";
 import { GET } from "./route";
 
-const callRoute = (query: string) =>
-  GET(new Request(`http://test/api/series/compare?${query}`));
+const callRoute = (query: string) => GET(new Request(`http://test/api/series/compare?${query}`));
 
 describe("GET /api/series/compare", () => {
   it("returns a parseable ComparisonResponse with two series", async () => {
@@ -57,9 +56,7 @@ describe("GET /api/series/compare", () => {
   });
 
   it("rejects duplicate indicator ids", async () => {
-    const response = await callRoute(
-      "indicatorIds=us_headline_cpi,us_headline_cpi",
-    );
+    const response = await callRoute("indicatorIds=us_headline_cpi,us_headline_cpi");
 
     expect(response.status).toBe(400);
     const body = await response.json();
@@ -81,9 +78,7 @@ describe("GET /api/series/compare", () => {
     });
 
     try {
-      const response = await callRoute(
-        "indicatorIds=us_headline_cpi,us_core_cpi",
-      );
+      const response = await callRoute("indicatorIds=us_headline_cpi,us_core_cpi");
       expect(response.status).toBe(500);
       const body = await response.json();
       expect(body.error.code).toBe("unexpected_error");

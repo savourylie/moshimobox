@@ -86,9 +86,7 @@ export async function GET(request: Request): Promise<Response> {
   }
 }
 
-const deriveUnionRange = (
-  series: SingleSeriesResponse[],
-): ComparisonResponse["range"] => {
+const deriveUnionRange = (series: SingleSeriesResponse[]): ComparisonResponse["range"] => {
   let start = series[0].range.start;
   let end = series[0].range.end ?? series[0].range.start;
   for (const item of series.slice(1)) {

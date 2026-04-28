@@ -9,18 +9,12 @@ interface TopBarProps {
 }
 
 export function TopBar({ chatOpen, onToggleChat }: TopBarProps) {
-  const copilotClass = chatOpen
-    ? `${styles.copilot} ${styles.copilotActive}`
-    : styles.copilot;
+  const copilotClass = chatOpen ? `${styles.copilot} ${styles.copilotActive}` : styles.copilot;
   return (
     <header role="banner" className={styles.bar}>
       <Link href="/" className={styles.logo} aria-label="Moshimo Box home">
         {/* eslint-disable-next-line @next/next/no-img-element -- brand chrome, fixed-size static asset; next/image adds runtime overhead */}
-        <img
-          src="/brand/logo-lockup.svg"
-          alt="Moshimo Box"
-          className={styles.logoImg}
-        />
+        <img src="/brand/logo-lockup.svg" alt="Moshimo Box" className={styles.logoImg} />
       </Link>
       <button
         type="button"
@@ -28,9 +22,7 @@ export function TopBar({ chatOpen, onToggleChat }: TopBarProps) {
         aria-label="Search indicators, sources, or layouts"
       >
         <Search size={15} strokeWidth={1.5} aria-hidden="true" />
-        <span className={styles.searchHint}>
-          Search indicators, sources, or layouts
-        </span>
+        <span className={styles.searchHint}>Search indicators, sources, or layouts</span>
         <span className={styles.searchKbd} aria-hidden="true">
           ⌘K
         </span>

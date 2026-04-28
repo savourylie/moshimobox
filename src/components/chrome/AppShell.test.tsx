@@ -11,9 +11,7 @@ describe("AppShell", () => {
       </AppShell>,
     );
     expect(screen.getByRole("banner")).toBeInTheDocument();
-    expect(
-      screen.getByRole("navigation", { name: /quadrants/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: /quadrants/i })).toBeInTheDocument();
     expect(screen.getByRole("main")).toBeInTheDocument();
   });
 
@@ -45,9 +43,7 @@ describe("AppShell", () => {
         <div />
       </AppShell>,
     );
-    expect(
-      screen.getByRole("link", { name: "Policy / Liquidity" }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Policy / Liquidity" })).toBeInTheDocument();
   });
 
   it("exposes the logo, search, and settings affordances", () => {
@@ -62,9 +58,7 @@ describe("AppShell", () => {
         name: /search indicators, sources, or layouts/i,
       }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /settings/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /settings/i })).toBeInTheDocument();
   });
 
   it("toggles the copilot button and chat panel slot", () => {
@@ -75,15 +69,11 @@ describe("AppShell", () => {
     );
     const copilot = screen.getByRole("button", { name: /copilot/i });
     expect(copilot).toHaveAttribute("aria-pressed", "true");
-    expect(
-      screen.getByRole("complementary", { name: /chat panel/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("complementary", { name: /chat panel/i })).toBeInTheDocument();
 
     fireEvent.click(copilot);
     expect(copilot).toHaveAttribute("aria-pressed", "false");
-    expect(
-      screen.queryByRole("complementary", { name: /chat panel/i }),
-    ).toBeNull();
+    expect(screen.queryByRole("complementary", { name: /chat panel/i })).toBeNull();
 
     fireEvent.click(copilot);
     expect(copilot).toHaveAttribute("aria-pressed", "true");

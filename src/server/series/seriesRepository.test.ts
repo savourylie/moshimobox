@@ -29,8 +29,8 @@ describe("seriesRepository", () => {
   });
 
   it("propagates ApiError from the provider for unknown indicators", async () => {
-    await expect(
-      seriesRepository.getSeries({ indicatorId: "us_unknown" }),
-    ).rejects.toBeInstanceOf(ApiError);
+    await expect(seriesRepository.getSeries({ indicatorId: "us_unknown" })).rejects.toBeInstanceOf(
+      ApiError,
+    );
   });
 });

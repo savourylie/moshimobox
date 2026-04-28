@@ -1,8 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import {
-  ApiErrorSchema,
-  IndicatorSearchResponseSchema,
-} from "@/domain/schemas";
+import { ApiErrorSchema, IndicatorSearchResponseSchema } from "@/domain/schemas";
 import { GET } from "./route";
 
 const callRoute = (url: string) => GET(new Request(url));
@@ -20,9 +17,7 @@ describe("GET /api/indicators", () => {
   });
 
   it("filters by quadrant and source when provided", async () => {
-    const response = await callRoute(
-      "http://test/api/indicators?quadrant=policy&source=fred",
-    );
+    const response = await callRoute("http://test/api/indicators?quadrant=policy&source=fred");
 
     expect(response.status).toBe(200);
     const body = await response.json();

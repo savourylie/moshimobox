@@ -7,9 +7,7 @@ describe("HomePage", () => {
   it("renders an h2 heading for each quadrant", () => {
     render(<HomePage />);
     for (const quadrant of QUADRANTS) {
-      expect(
-        screen.getByRole("heading", { name: quadrant.label, level: 2 }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: quadrant.label, level: 2 })).toBeInTheDocument();
     }
   });
 

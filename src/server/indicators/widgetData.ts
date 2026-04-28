@@ -80,7 +80,8 @@ export const getWidgetData = async (widgetId: string): Promise<WidgetDataRespons
   }
 
   const deltaValue = round(last.value - prev.value);
-  const deltaPercent = prev.value === 0 ? undefined : round(((last.value - prev.value) / prev.value) * 100);
+  const deltaPercent =
+    prev.value === 0 ? undefined : round(((last.value - prev.value) / prev.value) * 100);
   const period = periodLabel(seed.metadata.frequency);
 
   return {

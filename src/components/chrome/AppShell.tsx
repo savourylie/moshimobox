@@ -16,10 +16,7 @@ export function AppShell({ children }: AppShellProps) {
   return (
     <div className={styles.shell}>
       <div className={styles.topbarSlot}>
-        <TopBar
-          chatOpen={chatOpen}
-          onToggleChat={() => setChatOpen((prev) => !prev)}
-        />
+        <TopBar chatOpen={chatOpen} onToggleChat={() => setChatOpen((prev) => !prev)} />
       </div>
       <div className={styles.sidebarSlot}>
         <Sidebar />
