@@ -7,10 +7,10 @@
 
 | Status        | Count |
 | ------------- | ----- |
-| ✅ Done        | 0     |
+| ✅ Done        | 1     |
 | 🔧 In Progress | 0     |
-| 📋 Pending     | 1     |
-| 🚫 Blocked     | 25    |
+| 📋 Pending     | 2     |
+| 🚫 Blocked     | 23    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -21,9 +21,9 @@
 
 | #   | Ticket | Status | Depends On | Notes |
 | --- | ------ | ------ | ---------- | ----- |
-| 001 | [Scaffold the production app](./001-scaffold-production-app.md) | `pending` | — | Selects and initializes the real production stack |
-| 002 | [Build app chrome and navigation shell](./002-build-app-chrome-and-navigation-shell.md) | `blocked` | #001 | Can run in parallel with #003 after #001 |
-| 003 | [Define core domain schemas](./003-define-core-domain-schemas.md) | `blocked` | #001 | Contracts for data, layout, and actions |
+| 001 | [Scaffold the production app](./001-scaffold-production-app.md) | `done` | — | Next.js 15 App Router + TS + pnpm; tokens mirrored to `src/styles/tokens.css` |
+| 002 | [Build app chrome and navigation shell](./002-build-app-chrome-and-navigation-shell.md) | `pending` | #001 ✅ | Unblocked — can run in parallel with #003 |
+| 003 | [Define core domain schemas](./003-define-core-domain-schemas.md) | `pending` | #001 ✅ | Unblocked — contracts for data, layout, and actions |
 | 004 | [Seed MVP indicator catalog and default layout](./004-seed-mvp-indicator-catalog-and-default-layout.md) | `blocked` | #003 | Provisional indicator list from PRD assumptions |
 | 005 | [Implement fixture-backed data APIs](./005-implement-fixture-backed-data-apis.md) | `blocked` | #004 | Contract-first API surface |
 | 006 | [**TEST: Checkpoint 0 — Foundation scaffold**](./006-test-checkpoint-0-foundation-scaffold.md) | `blocked` | #002, #005 | Gate: Phase 1 |

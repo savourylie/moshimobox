@@ -1,10 +1,10 @@
 # [TICKET-002] Build app chrome and navigation shell
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #001
+- Requires: #001 ✅
 
 ## Description
 Create the persistent dashboard frame: top bar, left navigation, content area, and reserved chat panel region. This unlocks later dashboard and chat work while keeping the visual language aligned with the canonical design system.

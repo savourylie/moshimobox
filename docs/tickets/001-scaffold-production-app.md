@@ -1,7 +1,7 @@
 # [TICKET-001] Scaffold the production app
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: None
@@ -10,10 +10,10 @@
 Create the first production implementation scaffold for Moshimo Box. The repo currently contains only documentation and a CDN React click-through, so this ticket selects and initializes a real full-stack app structure without treating the design-system mock as production code.
 
 ## Acceptance Criteria
-- [ ] A production app scaffold exists with runnable `dev`, `build`, `test`, and `lint` scripts.
-- [ ] The root route renders a minimal Moshimo Box shell and imports `docs/design/design-system/colors_and_type.css`.
-- [ ] A short stack decision is recorded in `README.md` or `docs/TECH_DECISIONS.md`, including why the CDN UI kit is reference-only.
-- [ ] The scaffold includes no authentication, billing, broker integration, or multi-dashboard assumptions.
+- [x] A production app scaffold exists with runnable `dev`, `build`, `test`, and `lint` scripts.
+- [x] The root route renders a minimal Moshimo Box shell and imports `docs/design/design-system/colors_and_type.css`.
+- [x] A short stack decision is recorded in `README.md` or `docs/TECH_DECISIONS.md`, including why the CDN UI kit is reference-only.
+- [x] The scaffold includes no authentication, billing, broker integration, or multi-dashboard assumptions.
 
 ## Design Reference
 - **Tokens**: `docs/design/design-system/colors_and_type.css`

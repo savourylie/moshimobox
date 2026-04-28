@@ -1,10 +1,10 @@
 # [TICKET-003] Define core domain schemas
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #001
+- Requires: #001 ✅
 
 ## Description
 Define the shared data contracts that the dashboard, APIs, and agent tools will use. The PRD requires every visible widget to map to a backend API and every UI mutation to pass through controlled validation, so schemas need to exist before implementation fans out.
