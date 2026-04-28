@@ -1,10 +1,10 @@
 # [TICKET-007] Build provider boundary and FRED adapter
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #006
+- Requires: #006 ✅
 
 ## Description
 Create the data-provider boundary and first live-data adapter for FRED. FRED is a primary MVP source, and the adapter should normalize external observations into the internal series contract without coupling the rest of the app to provider-specific response shapes.
