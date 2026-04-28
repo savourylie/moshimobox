@@ -1,10 +1,10 @@
 # [TICKET-005] Implement fixture-backed data APIs
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #004
+- Requires: #004 ✅
 
 ## Description
 Expose the first stable API surface using local fixtures and the seeded catalog. These endpoints let the dashboard and agent tools build against the PRD contracts before live provider adapters are complete.
