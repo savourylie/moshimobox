@@ -324,6 +324,86 @@ export const ActionLogEntrySchema = z
   })
   .strict();
 
+export const CountrySchema = z
+  .object({
+    code: z
+      .string()
+      .trim()
+      .regex(/^[A-Z]{2,3}$/),
+    name: NonEmptyStringSchema,
+  })
+  .strict();
+
+export const IndicatorSummarySchema = z
+  .object({
+    metadata: IndicatorMetadataSchema,
+    category: NonEmptyStringSchema,
+    country: CountrySchema,
+    definition: NonEmptyStringSchema,
+  })
+  .strict();
+
+export const IndicatorSearchResponseSchema = z
+  .object({
+    indicators: z.array(IndicatorSummarySchema),
+    fetchedAt: DateTimeSchema,
+  })
+  .strict();
+
+export const SingleSeriesResponseSchema = z
+  .object({
+    indicator: IndicatorMetadataSchema,
+    unit: NonEmptyStringSchema,
+    frequency: FrequencySchema,
+    transform: TransformSchema,
+    range: DateRangeSchema,
+    source: SourceSchema,
+    observationDate: CalendarDateSchema,
+    releaseDate: ReleaseDateSchema,
+    fetchedAt: DateTimeSchema,
+    points: z.array(TimeSeriesPointSchema).min(1),
+  })
+  .strict();
+
+export const ComparisonResponseSchema = z
+  .object({
+    series: z.array(SingleSeriesResponseSchema).min(2).max(4),
+    range: DateRangeSchema,
+    transform: TransformSchema,
+    fetchedAt: DateTimeSchema,
+  })
+  .strict();
+
+export const API_ERROR_CODES = [
+  "indicator_not_found",
+  "widget_not_found",
+  "invalid_query",
+  "widget_type_unsupported",
+  "unexpected_error",
+] as const;
+
+export const ApiErrorCodeSchema = z.enum(API_ERROR_CODES);
+
+export const ApiErrorFieldSchema = z
+  .object({
+    path: NonEmptyStringSchema,
+    message: NonEmptyStringSchema,
+  })
+  .strict();
+
+export const ApiErrorSchema = z
+  .object({
+    error: z
+      .object({
+        code: ApiErrorCodeSchema,
+        message: NonEmptyStringSchema,
+        fields: z.array(ApiErrorFieldSchema).optional(),
+      })
+      .strict(),
+    requestId: NonEmptyStringSchema,
+  })
+  .strict();
+
 export type QuadrantId = z.infer<typeof QuadrantIdSchema>;
 export type WidgetType = z.infer<typeof WidgetTypeSchema>;
 export type ActionType = (typeof ACTION_TYPES)[number];
@@ -346,3 +426,12 @@ export type DashboardLayout = z.infer<typeof DashboardLayoutSchema>;
 export type LayoutAction = z.infer<typeof LayoutActionSchema>;
 export type UIActionProposal = z.infer<typeof UIActionProposalSchema>;
 export type ActionLogEntry = z.infer<typeof ActionLogEntrySchema>;
+export type Country = z.infer<typeof CountrySchema>;
+export type IndicatorSummary = z.infer<typeof IndicatorSummarySchema>;
+export type IndicatorSearchResponse = z.infer<typeof IndicatorSearchResponseSchema>;
+export type SingleSeriesResponse = z.infer<typeof SingleSeriesResponseSchema>;
+export type ComparisonResponse = z.infer<typeof ComparisonResponseSchema>;
+export type ApiErrorCode = z.infer<typeof ApiErrorCodeSchema>;
+export type ApiErrorField = z.infer<typeof ApiErrorFieldSchema>;
+export type ApiError = z.infer<typeof ApiErrorSchema>;
+export type DateRange = z.infer<typeof DateRangeSchema>;

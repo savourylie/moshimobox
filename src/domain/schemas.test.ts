@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   ActionLogEntrySchema,
+  ApiErrorSchema,
+  ComparisonResponseSchema,
   DashboardLayoutSchema,
+  IndicatorSearchResponseSchema,
+  IndicatorSummarySchema,
+  SingleSeriesResponseSchema,
   UIActionProposalSchema,
   WidgetDataResponseSchema,
 } from "./schemas";
@@ -234,6 +239,148 @@ describe("domain schemas", () => {
 
     expect(UIActionProposalSchema.safeParse(unknownAction).success).toBe(false);
     expect(UIActionProposalSchema.safeParse(extraPayload).success).toBe(false);
+  });
+
+  it("accepts an indicator summary projection", () => {
+    const summary = {
+      metadata: indicator,
+      category: "Consumer prices",
+      country: { code: "US", name: "United States" },
+      definition: "Headline US CPI for all urban consumers.",
+    };
+
+    expect(IndicatorSummarySchema.safeParse(summary).success).toBe(true);
+  });
+
+  it("rejects indicator summaries with extra catalog-only fields", () => {
+    const summary = {
+      metadata: indicator,
+      category: "Consumer prices",
+      country: { code: "US", name: "United States" },
+      definition: "Headline US CPI for all urban consumers.",
+      display: {
+        defaultWidgetType: "metric_card",
+        observationDatePlaceholder: "2026-03",
+        guidance: "leak",
+      },
+    };
+
+    expect(IndicatorSummarySchema.safeParse(summary).success).toBe(false);
+  });
+
+  it("accepts a search response and a fetchedAt with offset", () => {
+    const response = {
+      indicators: [
+        {
+          metadata: indicator,
+          category: "Consumer prices",
+          country: { code: "US", name: "United States" },
+          definition: "Headline US CPI for all urban consumers.",
+        },
+      ],
+      fetchedAt: "2026-04-28T12:00:00.000Z",
+    };
+
+    expect(IndicatorSearchResponseSchema.safeParse(response).success).toBe(true);
+  });
+
+  it("rejects fetchedAt without offset", () => {
+    const response = {
+      indicators: [],
+      fetchedAt: "2026-04-28T12:00:00",
+    };
+
+    expect(IndicatorSearchResponseSchema.safeParse(response).success).toBe(false);
+  });
+
+  const sourceFred = {
+    provider: "fred",
+    name: "Federal Reserve Economic Data",
+    seriesId: "CPIAUCSL",
+    url: "https://fred.stlouisfed.org/series/CPIAUCSL",
+  };
+
+  const singleSeriesResponse = {
+    indicator,
+    unit: "index points",
+    frequency: "monthly",
+    transform: "level",
+    range: { start: "2024-01" },
+    source: sourceFred,
+    observationDate: "2026-03",
+    releaseDate: "2026-04-15",
+    fetchedAt: "2026-04-28T12:00:00.000Z",
+    points: [
+      { date: "2024-01", value: 309.7 },
+      { date: "2024-02", value: 310.4 },
+    ],
+  };
+
+  it("accepts a single series response with at least one point", () => {
+    expect(SingleSeriesResponseSchema.safeParse(singleSeriesResponse).success).toBe(true);
+  });
+
+  it("rejects a single series response with no points", () => {
+    expect(
+      SingleSeriesResponseSchema.safeParse({ ...singleSeriesResponse, points: [] }).success,
+    ).toBe(false);
+  });
+
+  it("accepts a comparison response with two to four series", () => {
+    const comparison = {
+      series: [singleSeriesResponse, singleSeriesResponse],
+      range: { start: "2024-01" },
+      transform: "level",
+      fetchedAt: "2026-04-28T12:00:00.000Z",
+    };
+
+    expect(ComparisonResponseSchema.safeParse(comparison).success).toBe(true);
+  });
+
+  it("rejects a comparison response with fewer than two series", () => {
+    const comparison = {
+      series: [singleSeriesResponse],
+      range: { start: "2024-01" },
+      transform: "level",
+      fetchedAt: "2026-04-28T12:00:00.000Z",
+    };
+
+    expect(ComparisonResponseSchema.safeParse(comparison).success).toBe(false);
+  });
+
+  it("rejects a comparison response with more than four series", () => {
+    const comparison = {
+      series: Array.from({ length: 5 }, () => singleSeriesResponse),
+      range: { start: "2024-01" },
+      transform: "level",
+      fetchedAt: "2026-04-28T12:00:00.000Z",
+    };
+
+    expect(ComparisonResponseSchema.safeParse(comparison).success).toBe(false);
+  });
+
+  it("accepts an API error envelope with a known code", () => {
+    const error = {
+      error: {
+        code: "indicator_not_found",
+        message: "Indicator us_unknown was not found.",
+      },
+      requestId: "11111111-2222-3333-4444-555555555555",
+    };
+
+    expect(ApiErrorSchema.safeParse(error).success).toBe(true);
+  });
+
+  it("rejects an API error envelope with an unknown code", () => {
+    const error = {
+      error: {
+        code: "internal_error",
+        message: "Bad",
+      },
+      requestId: "11111111-2222-3333-4444-555555555555",
+    };
+
+    expect(ApiErrorSchema.safeParse(error).success).toBe(false);
   });
 
   it("accepts action log entries for proposal outcomes", () => {
