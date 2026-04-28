@@ -1,4 +1,6 @@
-export type QuadrantId = "growth" | "inflation" | "policy" | "market";
+import type { QuadrantId } from "@/domain";
+
+export type { QuadrantId };
 
 export interface QuadrantNavItem {
   id: QuadrantId;

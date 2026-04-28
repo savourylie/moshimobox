@@ -1,6 +1,6 @@
 # Tech Decisions
 
-> Last updated: 2026-04-28 (TICKET-001)
+> Last updated: 2026-04-28 (TICKET-003)
 > This file captures stack-level decisions for Moshimo Box. Update when you change a load-bearing default.
 
 ## 1. Stack
@@ -14,6 +14,7 @@
 | Linter | ESLint flat config (`eslint-config-next`) | Ships with `create-next-app`. |
 | Formatter | Prettier | Standard. Configured in `.prettierrc.json`. |
 | Styling | Plain CSS + CSS Modules driven by design tokens — **no Tailwind** | The design system is already a tokens-first CSS system. Tailwind would add a parallel abstraction and risk drift. |
+| Runtime validation | Zod 4 | Shared contracts need runtime parsing for API responses, fixture seeds, and agent-proposed layout actions. |
 | Node version | 22 (see `.nvmrc`) | Current LTS as of 2026-04. |
 | App location | Project root | The repo *is* the moshimo app. No monorepo motivation yet. |
 
