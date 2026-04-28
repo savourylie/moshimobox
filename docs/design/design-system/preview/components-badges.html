@@ -1,0 +1,24 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Badges</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background: var(--bg-page); }
+  .card { width:660px; padding:24px; background: var(--bg-surface); border:1px solid var(--border-default); border-radius: var(--radius-lg); display:flex; flex-wrap:wrap; gap:8px; }
+  .b { font-family: var(--font-sans); font-size:11px; font-weight:600; padding:4px 10px; border-radius: 999px; letter-spacing:0.04em; text-transform:uppercase; border:1px solid transparent; }
+  .src { background:#ECE6D9; color:#4A4339; border-color:#D8D1C3; text-transform:none; letter-spacing:0; font-family: var(--font-mono); font-weight:500; padding:3px 8px; }
+  .live { background:#E8EFE6; color:#2F4D2C; }
+  .stale { background:#F6EBD2; color:#6E5018; }
+  .new { background:#DCE2EC; color:#1F2D4B; }
+  .deleted { background:#F2E2DD; color:#6B2F22; }
+  .quad { background:#F5EAE2; color:#7A4126; }
+</style></head>
+<body><div class="card">
+  <span class="b live">Live</span>
+  <span class="b stale">Stale</span>
+  <span class="b new">Suggested</span>
+  <span class="b deleted">Removed</span>
+  <span class="b quad">Inflation</span>
+  <span class="b src">FRED</span>
+  <span class="b src">World Bank</span>
+  <span class="b src">BLS</span>
+</div></body></html>

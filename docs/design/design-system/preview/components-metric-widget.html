@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Widget — Metric</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background: var(--paper-100); }
+  .card { width:300px; padding:24px; background: var(--paper-50); border:1px solid var(--ink-150); border-radius:12px; box-shadow: 0 1px 2px rgba(40,30,20,0.04), 0 1px 1px rgba(40,30,20,0.03); display:flex; flex-direction:column; gap:14px; position:relative; overflow:hidden; }
+  .accent { position:absolute; top:0; left:8px; right:8px; height:3px; background:#B66A45; border-radius:0 0 2px 2px; }
+  .head { display:flex; justify-content:space-between; align-items:flex-start; }
+  .title { font-family: var(--font-sans); font-size:13px; font-weight:600; color:#4A4339; }
+  .src { font-family: var(--font-mono); font-size:10px; color:#8B8377; }
+  .metric { font-family: var(--font-serif); font-size:48px; font-weight:500; line-height:1; letter-spacing:-0.02em; color:#1F1B16; font-feature-settings:"tnum"; }
+  .sub { display:flex; gap:10px; align-items:center; font-family: var(--font-sans); font-size:12px; }
+  .delta { color:#A55142; font-weight:600; }
+  .stamp { color:#8B8377; }
+  .container { display:flex; gap:14px; }
+</style></head>
+<body><div class="container">
+  <div class="card">
+    <div class="accent"></div>
+    <div class="head"><div class="title">US headline CPI <span style="color:#8B8377">YoY</span></div></div>
+    <div class="metric">3.2<span style="font-size:24px">%</span></div>
+    <div class="sub"><span class="delta">+0.1</span><span class="stamp">vs Feb · as of Mar 2026</span></div>
+    <div class="src">FRED · CPIAUCSL</div>
+  </div>
+  <div class="card">
+    <div class="accent" style="background:#6B8758"></div>
+    <div class="head"><div class="title">US unemployment</div></div>
+    <div class="metric">3.8<span style="font-size:24px">%</span></div>
+    <div class="sub"><span class="delta" style="color:#4F7A4A">−0.1</span><span class="stamp">vs Feb · as of Mar 2026</span></div>
+    <div class="src">FRED · UNRATE</div>
+  </div>
+</div></body></html>

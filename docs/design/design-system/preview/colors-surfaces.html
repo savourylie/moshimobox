@@ -1,0 +1,30 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Colors — Paper surfaces</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:20px; background:#F5F1E9; }
+  .frame { width:660px; padding:20px; background:#F5F1E9; border-radius:12px; display:flex; flex-direction:column; gap:14px; }
+  .row { display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; }
+  .sw { aspect-ratio: 1.6/1; border-radius:8px; border:1px solid #E2DBCD; padding:10px; display:flex; flex-direction:column; justify-content:space-between; }
+  .role { font-family: var(--font-sans); font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#8B8377; }
+  .n { font-family: var(--font-sans); font-size:11px; font-weight:600; color:#1F1B16; }
+  .h { font-family: var(--font-mono); font-size:10px; color:#4A4339; }
+  .demo { display:flex; gap:10px; align-items:stretch; padding:14px; background:#F5F1E9; border:1px dashed #D8D1C3; border-radius:8px; }
+  .demo .card { flex:1; background:#FBF8F3; border:1px solid #E2DBCD; border-radius:8px; padding:12px; box-shadow:0 1px 2px rgba(40,30,20,0.04); }
+  .demo .ink { font-family:var(--font-serif); font-size:14px; color:#1F1B16; font-weight:500; }
+  .demo .slate { font-family:var(--font-sans); font-size:11px; color:#5D6E7E; margin-top:4px; }
+</style></head>
+<body><div class="frame">
+  <div class="row">
+    <div class="sw" style="background:#FBF8F3"><div class="role">card · lifted</div><div><div class="n">paper-50</div><div class="h">#FBF8F3</div></div></div>
+    <div class="sw" style="background:#F5F1E9"><div class="role">page · default</div><div><div class="n">paper-100</div><div class="h">#F5F1E9</div></div></div>
+    <div class="sw" style="background:#EDE7DC"><div class="role">sunken / disabled</div><div><div class="n">paper-150</div><div class="h">#EDE7DC</div></div></div>
+    <div class="sw" style="background:#E3DCCD"><div class="role">strong sunken</div><div><div class="n">paper-200</div><div class="h">#E3DCCD</div></div></div>
+  </div>
+  <div class="demo">
+    <div class="card">
+      <div class="ink">Card sits one shade lighter than page.</div>
+      <div class="slate">Border 1px in #E2DBCD (warm gray).</div>
+    </div>
+  </div>
+</div></body></html>

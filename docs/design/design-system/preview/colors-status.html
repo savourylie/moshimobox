@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Colors — Status</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:20px; background:#F5F1E9; }
+  .card { width:660px; padding:20px; background:#FBF8F3; border:1px solid #E2DBCD; border-radius:12px; display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; }
+  .pill { padding:14px; border-radius:8px; display:flex; flex-direction:column; gap:6px; border:1px solid transparent; }
+  .lbl { font-family: var(--font-sans); font-size:10px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; }
+  .val { font-family: var(--font-serif); font-size:22px; font-weight:500; font-feature-settings: "tnum"; line-height:1; }
+  .h { font-family: var(--font-mono); font-size:9px; opacity:.75; margin-top:2px; }
+</style></head>
+<body><div class="card">
+  <div class="pill" style="background:#E5EFEA;border-color:#C7DDD0">
+    <div class="lbl" style="color:#1B5341">Positive</div>
+    <div class="val" style="color:#1B5341">+0.3%</div>
+    <div class="h" style="color:#2F8267">emerald · #2F8267</div>
+  </div>
+  <div class="pill" style="background:#F4E2E2;border-color:#E1C2C2">
+    <div class="lbl" style="color:#74332F">Negative</div>
+    <div class="val" style="color:#74332F">−0.1%</div>
+    <div class="h" style="color:#B25A5A">soft rose · #B25A5A</div>
+  </div>
+  <div class="pill" style="background:#F7E9CD;border-color:#E5D2A8">
+    <div class="lbl" style="color:#7A5618">Warning</div>
+    <div class="val" style="color:#7A5618">stale</div>
+    <div class="h" style="color:#B5832A">amber · #B5832A</div>
+  </div>
+  <div class="pill" style="background:#E8ECEF;border-color:#CFD7DE">
+    <div class="lbl" style="color:#364350">Neutral</div>
+    <div class="val" style="color:#364350">flat</div>
+    <div class="h" style="color:#5D6E7E">blue-gray · #5D6E7E</div>
+  </div>
+</div></body></html>

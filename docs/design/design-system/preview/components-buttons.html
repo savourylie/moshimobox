@@ -1,0 +1,22 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background: var(--bg-page); }
+  .card { width:660px; padding:24px; background: var(--bg-surface); border:1px solid var(--border-default); border-radius: var(--radius-lg); display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+  .btn { font-family: var(--font-sans); font-size:14px; font-weight:600; padding:10px 18px; border-radius: 8px; border:1px solid transparent; cursor:pointer; line-height:1; }
+  .primary { background:#2C3E64; color:#FBF8F3; }
+  .secondary { background:#FBF8F3; color:#1F1B16; border-color:#D8D1C3; }
+  .ghost { background:transparent; color:#1F1B16; }
+  .danger { background:#FBF8F3; color:#6B2F22; border-color:#A55142; }
+  .sm { font-size:13px; padding:7px 12px; }
+  .icon { display:inline-flex; align-items:center; gap:8px; }
+</style></head>
+<body><div class="card">
+  <button class="btn primary">Apply changes</button>
+  <button class="btn secondary">Cancel</button>
+  <button class="btn ghost">Skip</button>
+  <button class="btn primary icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Add widget</button>
+  <button class="btn secondary sm">Compare</button>
+  <button class="btn danger sm">Remove</button>
+</div></body></html>

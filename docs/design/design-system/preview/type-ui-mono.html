@@ -1,0 +1,19 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Type — UI & Mono</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background: var(--bg-page); }
+  .card { width:660px; padding:24px; background: var(--bg-surface); border:1px solid var(--border-default); border-radius: var(--radius-lg); display:flex; flex-direction:column; gap:14px; }
+  .row { display:flex; gap:14px; align-items:baseline; }
+  .meta { font-family: var(--font-mono); font-size:10px; color: var(--fg-tertiary); width:120px; flex-shrink:0; }
+  .ui { font-family: var(--font-sans); font-size:14px; font-weight:500; color:var(--ink-900); }
+  .ui-sm { font-family: var(--font-sans); font-size:13px; font-weight:500; color:var(--ink-700); }
+  .label { font-family: var(--font-sans); font-size:12px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color: var(--fg-tertiary); }
+  .mono { font-family: var(--font-mono); font-size:13px; color:var(--ink-700); font-feature-settings: "tnum"; }
+</style></head>
+<body><div class="card">
+  <div class="row"><div class="meta">ui · 14/21</div><div class="ui">Add widget</div></div>
+  <div class="row"><div class="meta">ui-sm · 13/19</div><div class="ui-sm">Compare with eurozone</div></div>
+  <div class="row"><div class="meta">label · 12/18</div><div class="label">As of Mar 2026</div></div>
+  <div class="row"><div class="meta">mono · 13</div><div class="mono">FRED · CPIAUCSL · 2026-03-12</div></div>
+</div></body></html>

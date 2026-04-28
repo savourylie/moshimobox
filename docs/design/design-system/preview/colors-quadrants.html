@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Colors — Quadrants</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:20px; background: var(--bg-page); }
+  .card { width:660px; padding:20px; background: var(--bg-surface); border:1px solid var(--border-default); border-radius: var(--radius-lg); display:flex; flex-direction:column; gap:10px; }
+  .grp { display:grid; grid-template-columns: 110px repeat(4, 1fr); gap:8px; align-items:center; }
+  .sw { height:42px; border-radius: var(--radius-sm); border:1px solid var(--border-default); padding:6px; display:flex; flex-direction:column; justify-content:flex-end; }
+  .n { font-family: var(--font-mono); font-size:9px; font-weight:500; }
+  .label { font-family: var(--font-serif); font-size:14px; font-weight:600; color: var(--fg-primary); }
+</style></head>
+<body><div class="card">
+  <div class="grp">
+    <div class="label">Growth</div>
+    <div class="sw" style="background:#E5EFEA;color:#1B5341"><div class="n">50</div></div>
+    <div class="sw" style="background:#C7DDD0;color:#1B5341"><div class="n">100</div></div>
+    <div class="sw" style="background:#2F8267;color:#FBF8F3"><div class="n">600</div></div>
+    <div class="sw" style="background:#1B5341;color:#FBF8F3"><div class="n">800</div></div>
+  </div>
+  <div class="grp">
+    <div class="label">Inflation</div>
+    <div class="sw" style="background:#F4E2E2;color:#74332F"><div class="n">50</div></div>
+    <div class="sw" style="background:#E1C2C2;color:#74332F"><div class="n">100</div></div>
+    <div class="sw" style="background:#B25A5A;color:#FBF8F3"><div class="n">600</div></div>
+    <div class="sw" style="background:#74332F;color:#FBF8F3"><div class="n">800</div></div>
+  </div>
+  <div class="grp">
+    <div class="label">Policy</div>
+    <div class="sw" style="background:#E8ECEF;color:#364350"><div class="n">50</div></div>
+    <div class="sw" style="background:#CFD7DE;color:#364350"><div class="n">100</div></div>
+    <div class="sw" style="background:#5D6E7E;color:#FBF8F3"><div class="n">600</div></div>
+    <div class="sw" style="background:#364350;color:#FBF8F3"><div class="n">800</div></div>
+  </div>
+  <div class="grp">
+    <div class="label">Market</div>
+    <div class="sw" style="background:#F7E9CD;color:#7A5618"><div class="n">50</div></div>
+    <div class="sw" style="background:#E5D2A8;color:#7A5618"><div class="n">100</div></div>
+    <div class="sw" style="background:#B5832A;color:#FBF8F3"><div class="n">600</div></div>
+    <div class="sw" style="background:#7A5618;color:#FBF8F3"><div class="n">800</div></div>
+  </div>
+</div></body></html>

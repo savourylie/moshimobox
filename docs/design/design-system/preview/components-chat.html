@@ -1,0 +1,17 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Chat bubble</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background: var(--paper-100); }
+  .wrap { width:660px; display:flex; flex-direction:column; gap:14px; }
+  .msg { max-width: 80%; padding:14px 16px; border-radius: 14px; font-family: var(--font-serif); font-size: 15px; line-height: 1.55; }
+  .agent { background:#FBF8F3; border:1px solid #E2DBCD; color:#2E2820; align-self:flex-start; border-bottom-left-radius:4px; }
+  .user { background:#2C3E64; color:#FBF8F3; align-self:flex-end; border-bottom-right-radius:4px; }
+  .name { font-family: var(--font-sans); font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#8B8377; margin-bottom:6px; }
+  .agent .name { color:#6B6357; }
+  em { font-style: italic; color:#6B6357; }
+</style></head>
+<body><div class="wrap">
+  <div class="msg user">Compare US and eurozone inflation over the last year.</div>
+  <div class="msg agent"><div class="name">Copilot</div>US headline CPI is at 3.2%, up 0.1 from February. The eurozone HICP is at 2.4%, flat for two months. <em>Want me to add a comparison chart to Inflation?</em></div>
+</div></body></html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Type — Metric</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background: var(--bg-page); }
+  .card { width:660px; padding:24px; background: var(--bg-surface); border:1px solid var(--border-default); border-radius: var(--radius-lg); display:flex; gap:48px; align-items:flex-end; }
+  .group { display:flex; flex-direction:column; gap:6px; }
+  .label { font-family: var(--font-sans); font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color: var(--fg-tertiary); }
+  .metric { font-family: var(--font-serif); font-size:56px; line-height:1; font-weight:500; letter-spacing:-0.02em; font-feature-settings:"tnum","lnum"; color: var(--ink-900); }
+  .metric-sm { font-family: var(--font-serif); font-size:32px; line-height:1; font-weight:500; font-feature-settings:"tnum","lnum"; color: var(--ink-900); }
+  .delta-pos { font-family: var(--font-sans); font-size:14px; font-weight:600; color:#4F7A4A; font-feature-settings:"tnum"; }
+</style></head>
+<body><div class="card">
+  <div class="group">
+    <div class="label">US CPI YoY</div>
+    <div class="metric">3.2%</div>
+    <div class="delta-pos">+0.1 vs Feb</div>
+  </div>
+  <div class="group">
+    <div class="label">10Y yield</div>
+    <div class="metric-sm">4.43%</div>
+  </div>
+  <div class="group" style="margin-left:auto"><div class="label" style="text-align:right">metric · 56 · serif tnum</div></div>
+</div></body></html>

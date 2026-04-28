@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Inputs</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background: var(--bg-page); }
+  .card { width:660px; padding:24px; background: var(--bg-surface); border:1px solid var(--border-default); border-radius: var(--radius-lg); display:flex; flex-direction:column; gap:14px; }
+  .field { display:flex; flex-direction:column; gap:6px; }
+  .label { font-family: var(--font-sans); font-size:12px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color: var(--ink-600); }
+  .input { font-family: var(--font-sans); font-size:14px; padding:10px 12px; border-radius: 8px; border:1px solid var(--ink-200); background:#FBF8F3; color:#1F1B16; }
+  .input:focus { outline:none; border-color:#2C3E64; box-shadow: 0 0 0 3px rgba(44,62,100,0.12); }
+  .row { display:flex; gap:10px; }
+  .pill { font-family: var(--font-sans); font-size:13px; padding:6px 12px; border-radius: 999px; border:1px solid var(--ink-200); background:#FBF8F3; cursor:pointer; }
+  .pill.active { background:#2C3E64; color:#FBF8F3; border-color:#2C3E64; }
+</style></head>
+<body><div class="card">
+  <div class="field">
+    <div class="label">Search indicators</div>
+    <input class="input" value="US CPI" />
+  </div>
+  <div class="row">
+    <div class="pill active">Growth</div>
+    <div class="pill">Inflation</div>
+    <div class="pill">Policy</div>
+    <div class="pill">Market</div>
+  </div>
+</div></body></html>

@@ -1,0 +1,19 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Radii</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background: var(--bg-page); }
+  .card { width:660px; padding:24px; background: var(--bg-surface); border:1px solid var(--border-default); border-radius: var(--radius-lg); display:flex; gap:14px; }
+  .item { flex:1; display:flex; flex-direction:column; gap:8px; align-items:center; }
+  .box { width:84px; height:84px; background:#EDE7DC; border:1px solid var(--ink-200); }
+  .pill { width:84px; height:36px; background:#EDE7DC; border:1px solid var(--ink-200); border-radius:999px; }
+  .n { font-family: var(--font-sans); font-size:11px; font-weight:600; color: var(--ink-900); }
+  .h { font-family: var(--font-mono); font-size:10px; color: var(--ink-500); }
+</style></head>
+<body><div class="card">
+  <div class="item"><div class="box" style="border-radius:4px"></div><div class="n">sm</div><div class="h">4 px</div></div>
+  <div class="item"><div class="box" style="border-radius:8px"></div><div class="n">md</div><div class="h">8 px</div></div>
+  <div class="item"><div class="box" style="border-radius:12px"></div><div class="n">lg</div><div class="h">12 px</div></div>
+  <div class="item"><div class="box" style="border-radius:20px"></div><div class="n">xl</div><div class="h">20 px</div></div>
+  <div class="item"><div class="pill"></div><div class="n">full</div><div class="h">999 px</div></div>
+</div></body></html>
