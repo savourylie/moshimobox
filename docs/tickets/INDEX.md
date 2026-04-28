@@ -7,10 +7,10 @@
 
 | Status        | Count |
 | ------------- | ----- |
-| ✅ Done        | 4     |
+| ✅ Done        | 5     |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 21    |
+| 🚫 Blocked     | 20    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -25,8 +25,8 @@
 | 002 | [Build app chrome and navigation shell](./002-build-app-chrome-and-navigation-shell.md) | `done` | #001 ✅ | Persistent dashboard chrome (top bar, sidebar, reserved chat slot) on lucide-react |
 | 003 | [Define core domain schemas](./003-define-core-domain-schemas.md) | `done` | #001 ✅ | Implemented and verified — contracts for data, layout, and actions |
 | 004 | [Seed MVP indicator catalog and default layout](./004-seed-mvp-indicator-catalog-and-default-layout.md) | `done` | #003 ✅ | Implemented and verified — seed catalog and default layout ready |
-| 005 | [Implement fixture-backed data APIs](./005-implement-fixture-backed-data-apis.md) | `pending` | #004 ✅ | Unblocked — #004 now done |
-| 006 | [**TEST: Checkpoint 0 — Foundation scaffold**](./006-test-checkpoint-0-foundation-scaffold.md) | `blocked` | #002 ✅, #005 | Gate: Phase 1 |
+| 005 | [Implement fixture-backed data APIs](./005-implement-fixture-backed-data-apis.md) | `done` | #004 ✅ | Implemented and verified — search, widget, series, and comparison APIs |
+| 006 | [**TEST: Checkpoint 0 — Foundation scaffold**](./006-test-checkpoint-0-foundation-scaffold.md) | `pending` | #002 ✅, #005 ✅ | Unblocked — #005 now done |
 
 ## Phase 2 — Data pipeline
 

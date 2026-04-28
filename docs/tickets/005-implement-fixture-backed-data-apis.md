@@ -1,7 +1,7 @@
 # [TICKET-005] Implement fixture-backed data APIs
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #004 ✅
@@ -10,11 +10,11 @@
 Expose the first stable API surface using local fixtures and the seeded catalog. These endpoints let the dashboard and agent tools build against the PRD contracts before live provider adapters are complete.
 
 ## Acceptance Criteria
-- [ ] Indicator search supports filtering by name, category, country, and data source.
-- [ ] Widget data lookup returns indicator metadata, current value, previous value, change, observation date, release date, source, and trend/status metadata.
+- [x] Indicator search supports filtering by name, category, country, and data source.
+- [x] Widget data lookup returns indicator metadata, current value, previous value, change, observation date, release date, source, and trend/status metadata.
 - [ ] Time-series retrieval supports date range, frequency, and optional transformation parameters against fixtures.
-- [ ] Series comparison returns two or more normalized series with aligned dates and source attribution.
-- [ ] API error responses are stable, factual, and do not leak implementation details.
+- [x] Series comparison returns two or more normalized series with aligned dates and source attribution.
+- [x] API error responses are stable, factual, and do not leak implementation details.
 
 ## Implementation Notes
 - Suggested files: API route module, fixture repository module, API contract tests.
