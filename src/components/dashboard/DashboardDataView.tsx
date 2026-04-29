@@ -1,13 +1,7 @@
 "use client";
 
-import type {
-  DashboardLayout,
-  QuadrantId,
-  SingleSeriesResponse,
-  WidgetConfig,
-} from "@/domain/schemas";
+import type { DashboardLayout, QuadrantId, WidgetConfig } from "@/domain/schemas";
 import {
-  latestObservedPoint,
   metadataFromDashboardWidgetData,
   type DashboardFetchMetadata,
   type DashboardWidgetData,
@@ -18,6 +12,7 @@ import {
   formatObservationDate,
   formatSignedNumber,
 } from "./dashboardFormat";
+import { ComparisonChartWidget, LineChartWidget } from "./ChartWidget";
 import { MetricWidget } from "./MetricWidget";
 import { useDashboardData, type DashboardWidgetLoadState } from "./useDashboardData";
 import styles from "./DashboardDataView.module.css";
@@ -80,6 +75,32 @@ function WidgetEntryView({ onRetry, quadrantId, state, widget }: WidgetEntryView
   if (state.status === "success" && widget.type === "metric_card" && state.data.kind === "widget") {
     return (
       <MetricWidget
+        data={state.data.data}
+        description={widget.description}
+        quadrantId={quadrantId}
+        title={widget.title}
+      />
+    );
+  }
+
+  if (state.status === "success" && widget.type === "line_chart" && state.data.kind === "series") {
+    return (
+      <LineChartWidget
+        data={state.data.data}
+        description={widget.description}
+        quadrantId={quadrantId}
+        title={widget.title}
+      />
+    );
+  }
+
+  if (
+    state.status === "success" &&
+    widget.type === "comparison_chart" &&
+    state.data.kind === "comparison"
+  ) {
+    return (
+      <ComparisonChartWidget
         data={state.data.data}
         description={widget.description}
         quadrantId={quadrantId}
@@ -164,12 +185,15 @@ function WidgetErrorState({
 }
 
 function WidgetSuccessState({ data, widget }: { data: DashboardWidgetData; widget: WidgetConfig }) {
-  if (data.kind === "comparison") {
-    return <ComparisonSuccessState data={data} />;
-  }
-
-  if (data.kind === "series") {
-    return <SeriesSuccessState data={data.data} title={widget.title} />;
+  if (data.kind === "comparison" || data.kind === "series") {
+    return (
+      <div className={styles.successState}>
+        <p className={styles.empty}>
+          {widget.title} returned chart data, but the widget renderer did not match it.
+        </p>
+        <SuccessMetadata metadata={metadataFromDashboardWidgetData(data)} />
+      </div>
+    );
   }
 
   return (
@@ -183,66 +207,6 @@ function WidgetSuccessState({ data, widget }: { data: DashboardWidgetData; widge
         Change {formatSignedNumber(data.data.change.value)} {data.data.change.unit},{" "}
         {data.data.change.period}
       </p>
-      <SuccessMetadata metadata={metadataFromDashboardWidgetData(data)} />
-    </div>
-  );
-}
-
-function SeriesSuccessState({ data, title }: { data: SingleSeriesResponse; title: string }) {
-  const latest = latestObservedPoint(data.points);
-
-  return (
-    <div className={styles.successState}>
-      {latest ? (
-        <>
-          <p className={styles.valueLine}>
-            <span className={styles.value}>{formatNumber(latest.value)}</span>
-            <span className={styles.unit}>{data.unit}</span>
-          </p>
-          <p className={styles.observation}>as of {formatObservationDate(latest.date)}</p>
-        </>
-      ) : (
-        <p className={styles.empty}>No observed values returned for {title}.</p>
-      )}
-      <p className={styles.seriesMeta}>
-        Range {formatObservationDate(data.range.start)}
-        {data.range.end ? ` to ${formatObservationDate(data.range.end)}` : ""}.
-      </p>
-      <SuccessMetadata
-        metadata={metadataFromDashboardWidgetData({
-          kind: "series",
-          data,
-        })}
-      />
-    </div>
-  );
-}
-
-function ComparisonSuccessState({
-  data,
-}: {
-  data: Extract<DashboardWidgetData, { kind: "comparison" }>;
-}) {
-  return (
-    <div className={styles.successState}>
-      <ul className={styles.comparisonList}>
-        {data.data.series.map((series) => {
-          const latest = latestObservedPoint(series.points);
-          return (
-            <li key={series.indicator.id} className={styles.comparisonRow}>
-              <span className={styles.comparisonName}>{series.indicator.name}</span>
-              {latest ? (
-                <span className={styles.comparisonValue}>
-                  {formatNumber(latest.value)} {series.unit} as of{" "}
-                  {formatObservationDate(latest.date)}
-                </span>
-              ) : (
-                <span className={styles.comparisonValue}>No observed values returned.</span>
-              )}
-            </li>
-          );
-        })}
-      </ul>
       <SuccessMetadata metadata={metadataFromDashboardWidgetData(data)} />
     </div>
   );

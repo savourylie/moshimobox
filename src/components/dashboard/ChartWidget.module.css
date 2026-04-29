@@ -1,0 +1,293 @@
+.card {
+  position: relative;
+  overflow: hidden;
+  min-block-size: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-6);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-1);
+  outline: none;
+  transition:
+    border-color var(--dur-fast) var(--ease-paper),
+    box-shadow var(--dur-fast) var(--ease-paper),
+    background-color var(--dur-fast) var(--ease-paper);
+}
+
+.card:hover {
+  border-color: var(--ink-200);
+  box-shadow: var(--shadow-2);
+}
+
+.card:focus-visible {
+  border-color: var(--ink-200);
+  box-shadow: var(--shadow-2);
+  outline: 2px solid var(--accent-ink-500);
+  outline-offset: 3px;
+}
+
+.accent {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: var(--sp-2);
+  block-size: 3px;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: var(--neutral-600);
+}
+
+.card[data-quadrant="growth"] .accent {
+  background: var(--growth-600);
+}
+
+.card[data-quadrant="inflation"] .accent {
+  background: var(--inflation-600);
+}
+
+.card[data-quadrant="policy"] .accent {
+  background: var(--policy-600);
+}
+
+.card[data-quadrant="market"] .accent {
+  background: var(--market-600);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.titleBlock {
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.kind {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  color: var(--ink-500);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-15);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-semibold);
+  color: var(--ink-900);
+}
+
+.cadenceBadge {
+  flex: 0 0 auto;
+  max-inline-size: 45%;
+  border: 1px solid var(--neutral-600);
+  border-radius: var(--radius-full);
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--neutral-50);
+  color: var(--neutral-800);
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  text-align: end;
+}
+
+.description {
+  min-block-size: 42px;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  color: var(--ink-700);
+}
+
+.latestGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--sp-3);
+  margin: 0;
+}
+
+.latestItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.latestItem dt {
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  color: var(--ink-500);
+}
+
+.latestItem dd {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  color: var(--ink-700);
+  font-feature-settings: var(--ff-tnum);
+}
+
+.latestValue {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.value {
+  font-family: var(--font-serif);
+  font-size: var(--fs-28);
+  line-height: 1;
+  font-weight: var(--fw-medium);
+  font-feature-settings: var(--ff-tnum);
+  color: var(--ink-900);
+}
+
+.unit {
+  font-family: var(--font-serif);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  color: var(--ink-600);
+}
+
+.chartSurface {
+  min-block-size: 190px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--sp-2) var(--sp-2) var(--sp-1);
+  background: var(--paper-100);
+}
+
+.chartSvg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  overflow: visible;
+}
+
+.gridLine {
+  stroke: var(--ink-100);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  vector-effect: non-scaling-stroke;
+}
+
+.axisText {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  fill: var(--ink-500);
+  font-feature-settings: var(--ff-tnum);
+}
+
+.chartPath {
+  fill: none;
+  stroke: var(--series-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.latestPoint {
+  fill: var(--paper-50);
+  stroke: var(--series-color);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.emptyState {
+  min-block-size: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-md);
+  padding: var(--sp-5);
+  background: var(--paper-100);
+}
+
+.emptyText,
+.note {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  color: var(--ink-600);
+}
+
+.legendList,
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legendItem {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--sp-2);
+  row-gap: var(--sp-1);
+  align-items: baseline;
+}
+
+.legendSwatch {
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: var(--radius-full);
+  background: var(--series-color);
+  transform: translateY(1px);
+}
+
+.legendName {
+  min-inline-size: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-13);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  color: var(--ink-800);
+}
+
+.legendValue {
+  grid-column: 2;
+  font-family: var(--font-serif);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  color: var(--ink-600);
+  font-feature-settings: var(--ff-tnum);
+}
+
+.note {
+  padding-inline-start: var(--sp-3);
+  border-inline-start: 2px solid var(--border-default);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  margin-block-start: auto;
+  padding-block-start: var(--sp-3);
+  border-block-start: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  color: var(--ink-500);
+  font-feature-settings: var(--ff-tnum);
+}
