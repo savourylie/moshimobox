@@ -7,10 +7,10 @@
 
 | Status        | Count |
 | ------------- | ----- |
-| ✅ Done        | 9     |
+| ✅ Done        | 10    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 16    |
+| 🚫 Blocked     | 15    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -35,13 +35,13 @@
 | 007 | [Build provider boundary and FRED adapter](./007-build-provider-boundary-and-fred-adapter.md) | `done` | #006 ✅ | Implemented and verified — FRED adapter wired through provider resolver, fixtures stay default when key absent |
 | 008 | [Build World Bank adapter and country metadata](./008-build-world-bank-adapter-and-country-metadata.md) | `done` | #007 ✅ | Implemented and verified — World Bank adapter wired through resolver, country registry seeded |
 | 009 | [Add normalized cache and freshness metadata](./009-add-normalized-cache-and-freshness-metadata.md) | `done` | #007 ✅, #008 ✅ | Implemented and verified — caching provider, freshness metadata, provider_error code |
-| 010 | [**TEST: Checkpoint 1 — Data APIs and normalization**](./010-test-checkpoint-1-data-apis-and-normalization.md) | `pending` | #009 ✅ | Unblocked — #009 now done; gate for Phase 2 |
+| 010 | [**TEST: Checkpoint 1 — Data APIs and normalization**](./010-test-checkpoint-1-data-apis-and-normalization.md) | `done` | #009 ✅ | Verified — checkpoint passed; widget null-walkback bug fixed during testing |
 
 ## Phase 3 — Dashboard exploration
 
 | #   | Ticket | Status | Depends On | Notes |
 | --- | ------ | ------ | ---------- | ----- |
-| 011 | [Connect dashboard data loading](./011-connect-dashboard-data-loading.md) | `blocked` | #010 | Bridges APIs to widgets |
+| 011 | [Connect dashboard data loading](./011-connect-dashboard-data-loading.md) | `pending` | #010 ✅ | Unblocked — #010 now done; bridges APIs to widgets |
 | 012 | [Build metric widget component](./012-build-metric-widget-component.md) | `blocked` | #011 | Can run in parallel with #013 |
 | 013 | [Build line and comparison chart widgets](./013-build-line-and-comparison-chart-widgets.md) | `blocked` | #011 | Can run in parallel with #012 |
 | 014 | [Render dashboard from layout schema](./014-render-dashboard-from-layout-schema.md) | `blocked` | #012, #013 | Controlled schema-rendered dashboard |

@@ -1,10 +1,10 @@
 # [TICKET-011] Connect dashboard data loading
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #010
+- Requires: #010 ✅
 
 ## Description
 Connect the dashboard page to the fixture/provider-backed API layer and prepare shared loading, empty, and error states for widgets. This ticket bridges backend data contracts and frontend rendering without yet implementing the final widget visuals.
