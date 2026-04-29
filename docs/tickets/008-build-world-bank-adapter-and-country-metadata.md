@@ -1,10 +1,10 @@
 # [TICKET-008] Build World Bank adapter and country metadata
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #007
+- Requires: #007 ✅
 
 ## Description
 Add the second MVP provider path for World Bank data and country-aware metadata. This supports the PRD’s country-comparison use cases while keeping high-frequency market data out of scope for the first provider pass.
