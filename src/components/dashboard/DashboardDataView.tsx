@@ -1,12 +1,24 @@
 "use client";
 
-import type { DashboardLayout, SingleSeriesResponse, WidgetConfig } from "@/domain/schemas";
+import type {
+  DashboardLayout,
+  QuadrantId,
+  SingleSeriesResponse,
+  WidgetConfig,
+} from "@/domain/schemas";
 import {
   latestObservedPoint,
   metadataFromDashboardWidgetData,
   type DashboardFetchMetadata,
   type DashboardWidgetData,
 } from "./dashboardData";
+import {
+  formatFetchedAt,
+  formatNumber,
+  formatObservationDate,
+  formatSignedNumber,
+} from "./dashboardFormat";
+import { MetricWidget } from "./MetricWidget";
 import { useDashboardData, type DashboardWidgetLoadState } from "./useDashboardData";
 import styles from "./DashboardDataView.module.css";
 
@@ -39,23 +51,13 @@ export function DashboardDataView({ layout }: DashboardDataViewProps) {
           {section.widgets.length > 0 ? (
             <div className={styles.widgetGrid}>
               {section.widgets.map(({ widget, state }) => (
-                <article
+                <WidgetEntryView
                   key={widget.id}
-                  className={styles.widget}
-                  data-state={state.status}
-                  aria-busy={state.status === "loading"}
-                >
-                  <header className={styles.widgetHeader}>
-                    <p className={styles.widgetKind}>{widgetKindLabel(widget)}</p>
-                    <h3 className={styles.widgetTitle}>{widget.title}</h3>
-                  </header>
-                  <p className={styles.widgetDescription}>{widget.description}</p>
-                  <WidgetLoadStateView
-                    state={state}
-                    widget={widget}
-                    onRetry={() => reloadWidget(widget)}
-                  />
-                </article>
+                  onRetry={() => reloadWidget(widget)}
+                  quadrantId={section.id}
+                  state={state}
+                  widget={widget}
+                />
               ))}
             </div>
           ) : (
@@ -64,6 +66,41 @@ export function DashboardDataView({ layout }: DashboardDataViewProps) {
         </section>
       ))}
     </div>
+  );
+}
+
+interface WidgetEntryViewProps {
+  onRetry: () => void;
+  quadrantId: QuadrantId;
+  state: DashboardWidgetLoadState;
+  widget: WidgetConfig;
+}
+
+function WidgetEntryView({ onRetry, quadrantId, state, widget }: WidgetEntryViewProps) {
+  if (state.status === "success" && widget.type === "metric_card" && state.data.kind === "widget") {
+    return (
+      <MetricWidget
+        data={state.data.data}
+        description={widget.description}
+        quadrantId={quadrantId}
+        title={widget.title}
+      />
+    );
+  }
+
+  return (
+    <article
+      className={styles.widget}
+      data-state={state.status}
+      aria-busy={state.status === "loading"}
+    >
+      <header className={styles.widgetHeader}>
+        <p className={styles.widgetKind}>{widgetKindLabel(widget)}</p>
+        <h3 className={styles.widgetTitle}>{widget.title}</h3>
+      </header>
+      <p className={styles.widgetDescription}>{widget.description}</p>
+      <WidgetLoadStateView state={state} widget={widget} onRetry={onRetry} />
+    </article>
   );
 }
 
@@ -241,54 +278,3 @@ const widgetKindLabel = (widget: WidgetConfig): string => {
       return "Comparison";
   }
 };
-
-const formatNumber = (value: number): string =>
-  new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 2,
-    minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
-  }).format(value);
-
-const formatSignedNumber = (value: number): string => {
-  const formatted = formatNumber(Math.abs(value));
-  if (value > 0) return `+${formatted}`;
-  if (value < 0) return `-${formatted}`;
-  return formatted;
-};
-
-const formatObservationDate = (value: string): string => {
-  const quarter = /^(\d{4})-Q([1-4])$/.exec(value);
-  if (quarter) {
-    return `Q${quarter[2]} ${quarter[1]}`;
-  }
-
-  const month = /^(\d{4})-(\d{2})$/.exec(value);
-  if (month) {
-    return `${MONTHS[Number(month[2]) - 1]} ${month[1]}`;
-  }
-
-  return value;
-};
-
-const formatFetchedAt = (value: string): string => {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-
-  const datePart = date.toISOString().slice(0, 10);
-  const timePart = date.toISOString().slice(11, 16);
-  return `${datePart} ${timePart} UTC`;
-};
-
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-] as const;
