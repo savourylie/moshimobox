@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type {
   ComparisonResponse,
@@ -383,6 +383,40 @@ describe("DashboardDataView", () => {
     expect(articlesIn("inflation")).toHaveLength(3);
     expect(articlesIn("policy")).toHaveLength(4);
     expect(articlesIn("market")).toHaveLength(2);
+  });
+
+  it("opens the indicator detail panel when a widget card is activated", async () => {
+    const fetchMock = vi.fn((input: RequestInfo | URL) => {
+      const path = input.toString();
+      if (path === "/api/widgets/widget_cpi") return responseJson(widgetResponse);
+      if (path.startsWith("/api/series/us_headline_cpi")) {
+        return responseJson(seriesResponse("us_headline_cpi", "CPI"));
+      }
+      if (path.startsWith("/api/series/us_core_cpi")) {
+        return responseJson(seriesResponse("us_core_cpi", "Core CPI"));
+      }
+      if (path.startsWith("/api/series/compare")) {
+        return responseJson(comparisonResponse);
+      }
+      return new Promise<Response>(() => {});
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<DashboardDataView layout={testLayout} />);
+
+    const openButton = await screen.findByRole("button", { name: "Open details for CPI" });
+    fireEvent.click(openButton);
+
+    const panel = await screen.findByTestId("indicator-detail-panel");
+    expect(within(panel).getByRole("heading", { name: "CPI", level: 2 })).toBeInTheDocument();
+
+    const closeButton = within(panel).getByRole("button", { name: "Close indicator details" });
+    fireEvent.click(closeButton);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId("indicator-detail-panel")).not.toBeInTheDocument();
+    });
+    expect(openButton).toHaveFocus();
   });
 
   it("renders a factual widget-level error when fetched data does not match the widget type", async () => {

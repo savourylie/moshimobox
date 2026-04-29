@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import type { IndicatorMetadata, Source } from "@/domain/schemas";
 import { MetricWidget, type MetricWidgetData } from "./MetricWidget";
 
@@ -163,5 +163,35 @@ describe("MetricWidget", () => {
     expect(
       screen.getByText("Source: Federal Reserve Economic Data · CPIAUCSL"),
     ).toBeInTheDocument();
+  });
+
+  it("renders a selection button that fires onSelect when the card is activated", () => {
+    const onSelect = vi.fn();
+    render(
+      <MetricWidget
+        data={metricData()}
+        description="Headline consumer prices as the inflation anchor."
+        onSelect={onSelect}
+        quadrantId="inflation"
+        title="CPI"
+      />,
+    );
+
+    const button = screen.getByRole("button", { name: "Open details for CPI" });
+    fireEvent.click(button);
+    expect(onSelect).toHaveBeenCalledTimes(1);
+  });
+
+  it("omits the selection button when no onSelect handler is supplied", () => {
+    render(
+      <MetricWidget
+        data={metricData()}
+        description="Headline consumer prices as the inflation anchor."
+        quadrantId="inflation"
+        title="CPI"
+      />,
+    );
+
+    expect(screen.queryByRole("button", { name: /Open details/ })).not.toBeInTheDocument();
   });
 });

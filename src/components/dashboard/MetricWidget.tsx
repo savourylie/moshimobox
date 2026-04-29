@@ -15,11 +15,22 @@ export type MetricWidgetData = Omit<WidgetDataResponse, "releaseDate"> & {
 interface MetricWidgetProps {
   data: MetricWidgetData;
   description: string;
+  onSelect?: () => void;
   quadrantId: QuadrantId;
+  selectId?: string;
+  selectLabel?: string;
   title: string;
 }
 
-export function MetricWidget({ data, description, quadrantId, title }: MetricWidgetProps) {
+export function MetricWidget({
+  data,
+  description,
+  onSelect,
+  quadrantId,
+  selectId,
+  selectLabel,
+  title,
+}: MetricWidgetProps) {
   const displayUnit = displayUnitLabel(data.unit);
   const changeUnit = displayUnitLabel(data.change.unit);
   const sourceLabel = formatSource(data.source.name, data.source.seriesId);
@@ -31,7 +42,6 @@ export function MetricWidget({ data, description, quadrantId, title }: MetricWid
       className={styles.card}
       data-quadrant={quadrantId}
       data-tone={data.status.tone}
-      tabIndex={0}
     >
       <span className={styles.accent} aria-hidden="true" />
 
@@ -91,6 +101,16 @@ export function MetricWidget({ data, description, quadrantId, title }: MetricWid
           Fetched {formatFetchedAt(data.fetchedAt)} · {data.cacheStatus}
         </span>
       </footer>
+
+      {onSelect ? (
+        <button
+          aria-label={selectLabel ?? `Open details for ${title}`}
+          className={styles.cardLink}
+          id={selectId}
+          onClick={onSelect}
+          type="button"
+        />
+      ) : null}
     </article>
   );
 }

@@ -47,7 +47,21 @@ type SeriesColorStyle = CSSProperties & {
   "--series-color": string;
 };
 
-export function LineChartWidget({ data, description, quadrantId, title }: LineChartWidgetProps) {
+interface SelectableChartProps {
+  onSelect?: () => void;
+  selectId?: string;
+  selectLabel?: string;
+}
+
+export function LineChartWidget({
+  data,
+  description,
+  onSelect,
+  quadrantId,
+  selectId,
+  selectLabel,
+  title,
+}: LineChartWidgetProps & SelectableChartProps) {
   const series = seriesModelFromResponse(data);
   const analysis = analyzeChartSeries(series);
   const layout = buildRenderableLineLayout([series]);
@@ -60,7 +74,10 @@ export function LineChartWidget({ data, description, quadrantId, title }: LineCh
       cadenceLabel={frequencyLabel(data.frequency)}
       description={description}
       kind="Line chart"
+      onSelect={onSelect}
       quadrantId={quadrantId}
+      selectId={selectId}
+      selectLabel={selectLabel ?? `Open details for ${title}`}
       title={title}
       titleId={titleId}
     >
@@ -89,9 +106,12 @@ export function LineChartWidget({ data, description, quadrantId, title }: LineCh
 export function ComparisonChartWidget({
   data,
   description,
+  onSelect,
   quadrantId,
+  selectId,
+  selectLabel,
   title,
-}: ComparisonChartWidgetProps) {
+}: ComparisonChartWidgetProps & SelectableChartProps) {
   const series = data.series.map(seriesModelFromResponse);
   const analyses = series.map(analyzeChartSeries);
   const mixedFrequency = hasMixedFrequencies(series.map((item) => item.frequency));
@@ -105,7 +125,10 @@ export function ComparisonChartWidget({
       cadenceLabel={comparisonCadenceLabel(series)}
       description={description}
       kind="Comparison chart"
+      onSelect={onSelect}
       quadrantId={quadrantId}
+      selectId={selectId}
+      selectLabel={selectLabel ?? `Open details for ${title}`}
       title={title}
       titleId={titleId}
     >
@@ -130,12 +153,73 @@ export function ComparisonChartWidget({
   );
 }
 
+export function SingleSeriesDetailChart({
+  data,
+  quadrantId,
+}: {
+  data: SingleSeriesResponse;
+  quadrantId: QuadrantId;
+}) {
+  const series = seriesModelFromResponse(data);
+  const analysis = analyzeChartSeries(series);
+  const layout = buildRenderableLineLayout([series]);
+  const chartId = `${series.id}-detail-chart`;
+
+  return (
+    <>
+      <ChartSurface
+        chartId={chartId}
+        description={lineChartDescription(series.label, series.unit, analysis)}
+        emptyMessage={lineSuppressionReason(analysis, series.label, layout)}
+        layout={layout}
+        seriesColors={[seriesColorFor(quadrantId, 0)]}
+        title={`${series.label} historical chart`}
+      />
+      <QualityNotes notes={qualityNotes([analysis])} />
+    </>
+  );
+}
+
+export function ComparisonSeriesDetailChart({
+  data,
+  quadrantId,
+  title,
+}: {
+  data: ComparisonResponse;
+  quadrantId: QuadrantId;
+  title: string;
+}) {
+  const series = data.series.map(seriesModelFromResponse);
+  const analyses = series.map(analyzeChartSeries);
+  const mixedFrequency = hasMixedFrequencies(series.map((item) => item.frequency));
+  const layout = mixedFrequency ? null : buildRenderableComparisonLayout(series);
+  const seriesColors = series.map((_, index) => seriesColorFor(quadrantId, index));
+  const chartId = `${series.map((item) => item.id).join("-")}-detail-comparison-chart`;
+
+  return (
+    <>
+      <ChartSurface
+        chartId={chartId}
+        description={comparisonChartDescription(title, analyses, series)}
+        emptyMessage={comparisonSuppressionReason(analyses, series, layout, mixedFrequency)}
+        layout={layout}
+        seriesColors={seriesColors}
+        title={`${title} historical comparison chart`}
+      />
+      <QualityNotes notes={mixedFrequency ? [] : qualityNotes(analyses)} />
+    </>
+  );
+}
+
 function ChartCard({
   cadenceLabel,
   children,
   description,
   kind,
+  onSelect,
   quadrantId,
+  selectId,
+  selectLabel,
   title,
   titleId,
 }: {
@@ -143,17 +227,15 @@ function ChartCard({
   children: ReactNode;
   description: string;
   kind: string;
+  onSelect?: () => void;
   quadrantId: QuadrantId;
+  selectId?: string;
+  selectLabel?: string;
   title: string;
   titleId: string;
 }) {
   return (
-    <article
-      aria-labelledby={titleId}
-      className={styles.card}
-      data-quadrant={quadrantId}
-      tabIndex={0}
-    >
+    <article aria-labelledby={titleId} className={styles.card} data-quadrant={quadrantId}>
       <span className={styles.accent} aria-hidden="true" />
 
       <header className={styles.header}>
@@ -168,6 +250,16 @@ function ChartCard({
 
       <p className={styles.description}>{description}</p>
       {children}
+
+      {onSelect ? (
+        <button
+          aria-label={selectLabel ?? `Open details for ${title}`}
+          className={styles.cardLink}
+          id={selectId}
+          onClick={onSelect}
+          type="button"
+        />
+      ) : null}
     </article>
   );
 }

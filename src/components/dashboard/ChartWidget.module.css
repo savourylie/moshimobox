@@ -17,14 +17,32 @@
     background-color var(--dur-fast) var(--ease-paper);
 }
 
-.card:hover {
+.card:hover,
+.card:focus-within {
   border-color: var(--ink-200);
   box-shadow: var(--shadow-2);
 }
 
-.card:focus-visible {
-  border-color: var(--ink-200);
-  box-shadow: var(--shadow-2);
+.cardLink {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  font: inherit;
+  color: inherit;
+}
+
+.cardLink:focus {
+  outline: none;
+}
+
+.cardLink:focus-visible {
   outline: 2px solid var(--accent-ink-500);
   outline-offset: 3px;
 }

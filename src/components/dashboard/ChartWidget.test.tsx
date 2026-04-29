@@ -1,5 +1,5 @@
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import type {
   ComparisonResponse,
   IndicatorMetadata,
@@ -168,6 +168,23 @@ describe("LineChartWidget", () => {
     expect(screen.queryByRole("img", { name: /Core CPI chart/ })).not.toBeInTheDocument();
     expect(screen.getByText("No observed values returned for Core CPI.")).toBeInTheDocument();
   });
+
+  it("renders an opt-in selection button for line charts when onSelect is provided", () => {
+    const onSelect = vi.fn();
+    render(
+      <LineChartWidget
+        data={singleSeries()}
+        description="Underlying consumer price trend."
+        onSelect={onSelect}
+        quadrantId="inflation"
+        title="Core CPI"
+      />,
+    );
+
+    const button = screen.getByRole("button", { name: "Open details for Core CPI" });
+    fireEvent.click(button);
+    expect(onSelect).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("ComparisonChartWidget", () => {
@@ -193,6 +210,23 @@ describe("ComparisonChartWidget", () => {
       ),
     ).toBeInTheDocument();
     expect(container.querySelectorAll('[data-testid="chart-path"]')).toHaveLength(2);
+  });
+
+  it("renders an opt-in selection button for comparison charts when onSelect is provided", () => {
+    const onSelect = vi.fn();
+    render(
+      <ComparisonChartWidget
+        data={comparisonResponse()}
+        description="10Y and 2Y Treasury yields."
+        onSelect={onSelect}
+        quadrantId="market"
+        title="Yield curve"
+      />,
+    );
+
+    const button = screen.getByRole("button", { name: "Open details for Yield curve" });
+    fireEvent.click(button);
+    expect(onSelect).toHaveBeenCalledTimes(1);
   });
 
   it("withholds mixed-frequency comparison charts instead of implying one cadence", () => {

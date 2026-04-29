@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import type { DashboardLayout, QuadrantId, WidgetConfig } from "@/domain/schemas";
 import {
   metadataFromDashboardWidgetData,
@@ -13,6 +14,7 @@ import {
   formatSignedNumber,
 } from "./dashboardFormat";
 import { ComparisonChartWidget, LineChartWidget } from "./ChartWidget";
+import { IndicatorDetailPanel, type DetailPanelLoaded } from "./IndicatorDetailPanel";
 import { MetricWidget } from "./MetricWidget";
 import { useDashboardData, type DashboardWidgetLoadState } from "./useDashboardData";
 import styles from "./DashboardDataView.module.css";
@@ -21,8 +23,22 @@ interface DashboardDataViewProps {
   layout: DashboardLayout;
 }
 
+interface SelectedDetail {
+  widget: WidgetConfig;
+  loaded: DetailPanelLoaded;
+  quadrantId: QuadrantId;
+  originId: string;
+}
+
 export function DashboardDataView({ layout }: DashboardDataViewProps) {
   const { reloadWidget, sections } = useDashboardData(layout);
+  const [selected, setSelected] = useState<SelectedDetail | null>(null);
+
+  const handleClose = useCallback(() => {
+    if (!selected) return;
+    document.getElementById(selected.originId)?.focus();
+    setSelected(null);
+  }, [selected]);
 
   return (
     <div className={styles.dashboard} data-testid="dashboard-data-view">
@@ -49,6 +65,14 @@ export function DashboardDataView({ layout }: DashboardDataViewProps) {
                 <WidgetEntryView
                   key={widget.id}
                   onRetry={() => reloadWidget(widget)}
+                  onSelect={(loaded) =>
+                    setSelected({
+                      widget,
+                      loaded,
+                      quadrantId: section.id,
+                      originId: widgetSelectId(widget.id),
+                    })
+                  }
                   quadrantId={section.id}
                   state={state}
                   widget={widget}
@@ -60,35 +84,53 @@ export function DashboardDataView({ layout }: DashboardDataViewProps) {
           )}
         </section>
       ))}
+
+      {selected ? (
+        <IndicatorDetailPanel
+          loaded={selected.loaded}
+          onClose={handleClose}
+          quadrantId={selected.quadrantId}
+          widget={selected.widget}
+        />
+      ) : null}
     </div>
   );
 }
 
+const widgetSelectId = (widgetId: string): string => `widget-select-${widgetId}`;
+
 interface WidgetEntryViewProps {
   onRetry: () => void;
+  onSelect: (loaded: DetailPanelLoaded) => void;
   quadrantId: QuadrantId;
   state: DashboardWidgetLoadState;
   widget: WidgetConfig;
 }
 
-function WidgetEntryView({ onRetry, quadrantId, state, widget }: WidgetEntryViewProps) {
+function WidgetEntryView({ onRetry, onSelect, quadrantId, state, widget }: WidgetEntryViewProps) {
   if (state.status === "success" && widget.type === "metric_card" && state.data.kind === "widget") {
+    const loaded = state.data.data;
     return (
       <MetricWidget
-        data={state.data.data}
+        data={loaded}
         description={widget.description}
+        onSelect={() => onSelect({ kind: "widget", data: loaded })}
         quadrantId={quadrantId}
+        selectId={widgetSelectId(widget.id)}
         title={widget.title}
       />
     );
   }
 
   if (state.status === "success" && widget.type === "line_chart" && state.data.kind === "series") {
+    const loaded = state.data.data;
     return (
       <LineChartWidget
-        data={state.data.data}
+        data={loaded}
         description={widget.description}
+        onSelect={() => onSelect({ kind: "series", data: loaded })}
         quadrantId={quadrantId}
+        selectId={widgetSelectId(widget.id)}
         title={widget.title}
       />
     );
@@ -99,11 +141,14 @@ function WidgetEntryView({ onRetry, quadrantId, state, widget }: WidgetEntryView
     widget.type === "comparison_chart" &&
     state.data.kind === "comparison"
   ) {
+    const loaded = state.data.data;
     return (
       <ComparisonChartWidget
-        data={state.data.data}
+        data={loaded}
         description={widget.description}
+        onSelect={() => onSelect({ kind: "comparison", data: loaded })}
         quadrantId={quadrantId}
+        selectId={widgetSelectId(widget.id)}
         title={widget.title}
       />
     );
