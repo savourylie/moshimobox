@@ -1,4 +1,5 @@
 import type { IndicatorMetadata, QuadrantId, WidgetType } from "@/domain/schemas";
+import { getCountrySummary } from "./countries";
 
 export interface SeedIndicator {
   metadata: IndicatorMetadata;
@@ -40,10 +41,10 @@ const worldBankSource = (seriesId: string) => ({
   url: `https://data.worldbank.org/indicator/${seriesId}`,
 });
 
-const usCountry = {
-  code: "US",
-  name: "United States",
-};
+const usCountry = getCountrySummary("US");
+if (!usCountry) {
+  throw new Error("MVP_COUNTRY_REGISTRY is missing the United States entry required by the catalog.");
+}
 
 export const MVP_INDICATOR_CATALOG: SeedIndicator[] = [
   {

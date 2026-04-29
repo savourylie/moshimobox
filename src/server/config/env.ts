@@ -6,3 +6,14 @@ export const getFredApiKey = (): string | undefined => {
   const trimmed = raw.trim();
   return trimmed.length > 0 ? trimmed : undefined;
 };
+
+export const WORLD_BANK_BASE_URL_ENV = "WORLD_BANK_BASE_URL";
+
+export const DEFAULT_WORLD_BANK_BASE_URL = "https://api.worldbank.org/v2";
+
+export const getWorldBankBaseUrl = (): string | undefined => {
+  const raw = process.env[WORLD_BANK_BASE_URL_ENV];
+  if (raw === undefined) return DEFAULT_WORLD_BANK_BASE_URL;
+  const trimmed = raw.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+};
