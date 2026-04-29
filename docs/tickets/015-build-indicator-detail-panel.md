@@ -1,10 +1,10 @@
 # [TICKET-015] Build indicator detail panel
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #014
+- Requires: #014 ✅
 
 ## Description
 Add a detail view for a user to inspect an indicator’s definition, historical trend, recent change, and source metadata. This covers the PRD story where a user clicks an indicator to understand its meaning and context.

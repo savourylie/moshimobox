@@ -7,10 +7,10 @@
 
 | Status        | Count |
 | ------------- | ----- |
-| ✅ Done        | 13    |
+| ✅ Done        | 14    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 12    |
+| 🚫 Blocked     | 11    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -44,8 +44,8 @@
 | 011 | [Connect dashboard data loading](./011-connect-dashboard-data-loading.md) | `done` | #010 ✅ | Implemented and verified — dashboard APIs now feed visible widgets |
 | 012 | [Build metric widget component](./012-build-metric-widget-component.md) | `done` | #011 ✅ | Implemented and verified — metric card component ready |
 | 013 | [Build line and comparison chart widgets](./013-build-line-and-comparison-chart-widgets.md) | `done` | #011 ✅ | Implemented and verified — line and comparison chart widgets ready |
-| 014 | [Render dashboard from layout schema](./014-render-dashboard-from-layout-schema.md) | `pending` | #012 ✅, #013 ✅ | Unblocked — chart widgets now done |
-| 015 | [Build indicator detail panel](./015-build-indicator-detail-panel.md) | `blocked` | #014 | Click-through indicator context |
+| 014 | [Render dashboard from layout schema](./014-render-dashboard-from-layout-schema.md) | `done` | #012 ✅, #013 ✅ | Implemented and verified — schema-driven dashboard with macro snapshot |
+| 015 | [Build indicator detail panel](./015-build-indicator-detail-panel.md) | `pending` | #014 ✅ | Unblocked — schema-driven dashboard now done |
 | 016 | [**TEST: Checkpoint 2 — Dashboard exploration**](./016-test-checkpoint-2-dashboard-exploration.md) | `blocked` | #015 | Gate: Phase 3 |
 
 ## Phase 4 — Chat and controlled actions

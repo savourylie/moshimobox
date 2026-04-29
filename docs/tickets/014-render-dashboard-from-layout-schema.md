@@ -1,7 +1,7 @@
 # [TICKET-014] Render dashboard from layout schema
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #012 ✅, #013 ✅
@@ -10,10 +10,10 @@
 Render the full dashboard from the validated layout schema rather than hard-coded widget placement. This creates the controlled surface that later chat actions can modify.
 
 ## Acceptance Criteria
-- [ ] The dashboard renders all four quadrants from the default layout schema with 2-4 widgets per quadrant.
-- [ ] Widget order, type, indicator id, and config come from schema data rather than component-local hard-coding.
-- [ ] Unknown widget ids or invalid widget configs fail gracefully with a factual widget-level error.
-- [ ] The dashboard includes a concise macro snapshot summary without presenting it as investment advice.
+- [x] The dashboard renders all four quadrants from the default layout schema with 2-4 widgets per quadrant.
+- [x] Widget order, type, indicator id, and config come from schema data rather than component-local hard-coding.
+- [x] Unknown widget ids or invalid widget configs fail gracefully with a factual widget-level error.
+- [x] The dashboard includes a concise macro snapshot summary without presenting it as investment advice.
 
 ## Design Reference
 - **Layout**: `docs/design/design-system/README.md` section "Layout rules"
