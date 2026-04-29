@@ -1,10 +1,10 @@
 # [TICKET-013] Build line and comparison chart widgets
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #011
+- Requires: #011 ✅
 
 ## Description
 Implement the line chart and comparison chart widget types. These widgets support historical trends and multi-series comparison without turning the dashboard into a dense trading terminal.

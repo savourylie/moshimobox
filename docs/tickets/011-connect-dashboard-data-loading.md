@@ -1,7 +1,7 @@
 # [TICKET-011] Connect dashboard data loading
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #010 ✅
@@ -10,10 +10,10 @@
 Connect the dashboard page to the fixture/provider-backed API layer and prepare shared loading, empty, and error states for widgets. This ticket bridges backend data contracts and frontend rendering without yet implementing the final widget visuals.
 
 ## Acceptance Criteria
-- [ ] The dashboard loads the default layout schema and fetches data for each visible widget through backend APIs.
-- [ ] Loading states name what is being fetched, such as "Fetching CPI series", and use skeleton or progress treatment rather than spinning loaders.
-- [ ] Error states are factual and include source or last successful fetch metadata when available.
-- [ ] Data loading code preserves unit and observation date for downstream widget components.
+- [x] The dashboard loads the default layout schema and fetches data for each visible widget through backend APIs.
+- [x] Loading states name what is being fetched, such as "Fetching CPI series", and use skeleton or progress treatment rather than spinning loaders.
+- [x] Error states are factual and include source or last successful fetch metadata when available.
+- [x] Data loading code preserves unit and observation date for downstream widget components.
 
 ## Design Reference
 - **Motion and loading**: `docs/design/design-system/README.md` sections "Animation" and "Microcopy patterns"

@@ -1,10 +1,10 @@
 # [TICKET-012] Build metric widget component
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #011
+- Requires: #011 ✅
 
 ## Description
 Implement the metric card widget for single-value macro indicators. Metric cards are one of the PRD’s three MVP widget types and must make unit, date, source, and change legible at a glance.
