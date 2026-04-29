@@ -3,10 +3,7 @@ import type { SeriesRequest } from "./types";
 
 const WILDCARD = "*";
 
-export const makeCacheKey = (
-  request: SeriesRequest,
-  indicator: IndicatorMetadata,
-): string => {
+export const makeCacheKey = (request: SeriesRequest, indicator: IndicatorMetadata): string => {
   const seriesId = indicator.source.seriesId ?? indicator.id;
   const country = indicator.countryCode ?? WILDCARD;
   const start = request.range?.start ?? WILDCARD;

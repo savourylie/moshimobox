@@ -1,9 +1,20 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import HomePage from "./page";
 import { QUADRANTS } from "@/components/chrome/QUADRANTS";
 
 describe("HomePage", () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => new Promise<Response>(() => {})),
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("renders an h2 heading for each quadrant", () => {
     render(<HomePage />);
     for (const quadrant of QUADRANTS) {
@@ -18,8 +29,10 @@ describe("HomePage", () => {
     }
   });
 
-  it("shows an empty caption per section", () => {
+  it("renders loading states for seeded default-layout widgets", () => {
     render(<HomePage />);
-    expect(screen.getAllByText("No widgets yet.")).toHaveLength(QUADRANTS.length);
+    expect(screen.getByText("Fetching Unemployment rate widget data")).toBeInTheDocument();
+    expect(screen.getByText("Fetching Core CPI series")).toBeInTheDocument();
+    expect(screen.getByText("Fetching Yield curve comparison series")).toBeInTheDocument();
   });
 });

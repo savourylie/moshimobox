@@ -138,9 +138,7 @@ export const normalizeWorldBankDate = (
   }
 };
 
-export const parseWorldBankValue = (
-  raw: number | null | undefined,
-): number | null => {
+export const parseWorldBankValue = (raw: number | null | undefined): number | null => {
   if (raw === null || raw === undefined) return null;
   if (typeof raw !== "number") return null;
   if (!Number.isFinite(raw)) return null;

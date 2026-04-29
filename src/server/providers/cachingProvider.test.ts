@@ -124,9 +124,7 @@ describe("createCachingProvider", () => {
     const first = await cache.getSeries({ indicatorId: "us_headline_cpi" });
 
     clock.advanceMs(25 * HOUR_MS);
-    inner.getSeries.mockRejectedValueOnce(
-      new ApiError("provider_error", "FRED request failed."),
-    );
+    inner.getSeries.mockRejectedValueOnce(new ApiError("provider_error", "FRED request failed."));
 
     const stale = await cache.getSeries({ indicatorId: "us_headline_cpi" });
 
@@ -136,14 +134,13 @@ describe("createCachingProvider", () => {
   });
 
   it("propagates the provider error when there is no cached entry to fall back on", async () => {
-    inner.getSeries.mockRejectedValueOnce(
-      new ApiError("provider_error", "FRED request failed."),
-    );
+    inner.getSeries.mockRejectedValueOnce(new ApiError("provider_error", "FRED request failed."));
     const cache = createCachingProvider({ provider: inner, now: clock.now });
 
-    await expect(
-      cache.getSeries({ indicatorId: "us_headline_cpi" }),
-    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
+    await expect(cache.getSeries({ indicatorId: "us_headline_cpi" })).rejects.toMatchObject({
+      code: "provider_error",
+      status: 502,
+    });
   });
 
   it("does not cache or swallow indicator_not_found errors", async () => {

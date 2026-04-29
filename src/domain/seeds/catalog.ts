@@ -43,7 +43,9 @@ const worldBankSource = (seriesId: string) => ({
 
 const usCountry = getCountrySummary("US");
 if (!usCountry) {
-  throw new Error("MVP_COUNTRY_REGISTRY is missing the United States entry required by the catalog.");
+  throw new Error(
+    "MVP_COUNTRY_REGISTRY is missing the United States entry required by the catalog.",
+  );
 }
 
 export const MVP_INDICATOR_CATALOG: SeedIndicator[] = [

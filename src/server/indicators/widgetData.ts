@@ -1,6 +1,7 @@
 import type {
   Frequency,
   QuadrantId,
+  TimeSeriesPoint,
   TrendMetadata,
   WidgetConfig,
   WidgetDataResponse,
@@ -8,8 +9,28 @@ import type {
 import { QUADRANT_IDS } from "@/domain/schemas";
 import { DEFAULT_DASHBOARD_LAYOUT, getSeedIndicator } from "@/domain/seeds";
 import { ApiError } from "@/server/api/errors";
-import { periodLabel } from "@/server/fixtures/dateAxis";
+import { computeReleaseDate, periodLabel } from "@/server/fixtures/dateAxis";
 import { seriesRepository } from "@/server/series/seriesRepository";
+
+interface ObservedPoint {
+  date: string;
+  value: number;
+}
+
+export const pickLatestPair = (
+  points: readonly TimeSeriesPoint[],
+): { current: ObservedPoint; previous: ObservedPoint } | null => {
+  let lastIdx = points.length - 1;
+  while (lastIdx >= 0 && points[lastIdx].value === null) lastIdx--;
+  if (lastIdx < 0) return null;
+  let prevIdx = lastIdx - 1;
+  while (prevIdx >= 0 && points[prevIdx].value === null) prevIdx--;
+  if (prevIdx < 0) return null;
+  return {
+    current: { date: points[lastIdx].date, value: points[lastIdx].value as number },
+    previous: { date: points[prevIdx].date, value: points[prevIdx].value as number },
+  };
+};
 
 const findWidget = (
   widgetId: string,
@@ -62,42 +83,38 @@ export const getWidgetData = async (widgetId: string): Promise<WidgetDataRespons
 
   const series = await seriesRepository.getSeries({ indicatorId: widget.indicatorId });
 
-  if (series.points.length < 2) {
+  const pair = pickLatestPair(series.points);
+  if (!pair) {
     throw new ApiError(
       "unexpected_error",
-      `Widget ${widgetId} requires at least two observations.`,
+      `Widget ${widgetId} requires at least two non-null observations.`,
     );
   }
 
-  const last = series.points[series.points.length - 1];
-  const prev = series.points[series.points.length - 2];
-
-  if (last.value === null || prev.value === null) {
-    throw new ApiError(
-      "unexpected_error",
-      `Widget ${widgetId} has missing values in the latest observations.`,
-    );
-  }
-
-  const deltaValue = round(last.value - prev.value);
+  const { current, previous } = pair;
+  const deltaValue = round(current.value - previous.value);
   const deltaPercent =
-    prev.value === 0 ? undefined : round(((last.value - prev.value) / prev.value) * 100);
+    previous.value === 0
+      ? undefined
+      : round(((current.value - previous.value) / previous.value) * 100);
   const period = periodLabel(seed.metadata.frequency);
+  const observationDate = current.date;
+  const releaseDate = computeReleaseDate(observationDate, seed.metadata.frequency);
 
   return {
     widgetId,
     indicator: seed.metadata,
     unit: seed.metadata.unit,
-    currentValue: last.value,
-    previousValue: prev.value,
+    currentValue: current.value,
+    previousValue: previous.value,
     change: {
       value: deltaValue,
       unit: seed.metadata.unit,
       ...(deltaPercent !== undefined ? { percent: deltaPercent } : {}),
       period,
     },
-    observationDate: series.observationDate,
-    releaseDate: series.releaseDate,
+    observationDate,
+    releaseDate,
     fetchedAt: series.fetchedAt,
     cacheStatus: series.cacheStatus,
     source: seed.metadata.source,

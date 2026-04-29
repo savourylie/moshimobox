@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { QUADRANT_IDS, WidgetDataResponseSchema } from "@/domain/schemas";
 import { DEFAULT_DASHBOARD_LAYOUT } from "@/domain/seeds";
 import { ApiError } from "@/server/api/errors";
-import { getWidgetData } from "./widgetData";
+import { getWidgetData, pickLatestPair } from "./widgetData";
 
 const ALL_WIDGETS = QUADRANT_IDS.flatMap(
   (quadrantId) => DEFAULT_DASHBOARD_LAYOUT.quadrants[quadrantId].widgets,
@@ -48,5 +48,61 @@ describe("getWidgetData", () => {
       code: "widget_not_found",
       status: 404,
     });
+  });
+});
+
+describe("pickLatestPair", () => {
+  it("returns the last two points when both are non-null", () => {
+    const result = pickLatestPair([
+      { date: "2024-01", value: 1 },
+      { date: "2024-02", value: 2 },
+      { date: "2024-03", value: 3 },
+    ]);
+    expect(result).toEqual({
+      current: { date: "2024-03", value: 3 },
+      previous: { date: "2024-02", value: 2 },
+    });
+  });
+
+  it("walks back over trailing null observations", () => {
+    const result = pickLatestPair([
+      { date: "2022-12", value: 5 },
+      { date: "2023-12", value: 6 },
+      { date: "2024-12", value: 7 },
+      { date: "2025-12", value: null },
+    ]);
+    expect(result).toEqual({
+      current: { date: "2024-12", value: 7 },
+      previous: { date: "2023-12", value: 6 },
+    });
+  });
+
+  it("walks back over null gaps between non-null observations", () => {
+    const result = pickLatestPair([
+      { date: "2022-12", value: 5 },
+      { date: "2023-12", value: null },
+      { date: "2024-12", value: 7 },
+      { date: "2025-12", value: null },
+    ]);
+    expect(result).toEqual({
+      current: { date: "2024-12", value: 7 },
+      previous: { date: "2022-12", value: 5 },
+    });
+  });
+
+  it("returns null when fewer than two non-null observations exist", () => {
+    expect(
+      pickLatestPair([
+        { date: "2024-12", value: null },
+        { date: "2025-12", value: 3 },
+      ]),
+    ).toBeNull();
+    expect(
+      pickLatestPair([
+        { date: "2024-12", value: null },
+        { date: "2025-12", value: null },
+      ]),
+    ).toBeNull();
+    expect(pickLatestPair([])).toBeNull();
   });
 });

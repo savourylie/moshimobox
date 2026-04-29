@@ -29,7 +29,14 @@ const captureUrl = (
   return { fetchImpl, getUrl: () => captured };
 };
 
-const META = { page: 1, pages: 1, per_page: 50, total: 1, sourceid: "2", lastupdated: "2025-04-15" };
+const META = {
+  page: 1,
+  pages: 1,
+  per_page: 50,
+  total: 1,
+  sourceid: "2",
+  lastupdated: "2025-04-15",
+};
 
 const wbObservation = (date: string, value: number | null) => ({
   indicator: { id: "NY.GDP.MKTP.KD.ZG", value: "GDP growth (annual %)" },
@@ -93,7 +100,9 @@ describe("normalizeWorldBankDate", () => {
 
   it("throws provider_error on malformed annual input", () => {
     expect(() => normalizeWorldBankDate("", "annual", "x")).toThrowError(ApiError);
-    expect(() => normalizeWorldBankDate("twenty-twenty-four", "annual", "x")).toThrowError(ApiError);
+    expect(() => normalizeWorldBankDate("twenty-twenty-four", "annual", "x")).toThrowError(
+      ApiError,
+    );
   });
 });
 
@@ -160,11 +169,7 @@ describe("createWorldBankProvider.getSeries", () => {
   it("normalizes annual observations, sorts ascending, and computes the annual release date", async () => {
     const { fetchImpl } = captureUrl([
       META,
-      [
-        wbObservation("2024", 2.8),
-        wbObservation("2023", 2.5),
-        wbObservation("2022", 1.9),
-      ],
+      [wbObservation("2024", 2.8), wbObservation("2023", 2.5), wbObservation("2022", 1.9)],
     ]);
     const provider = createWorldBankProvider({ baseUrl: TEST_BASE_URL, fetch: fetchImpl });
 
@@ -246,9 +251,9 @@ describe("createWorldBankProvider.getSeries", () => {
     const fetchImpl = vi.fn() as unknown as typeof fetch;
     const provider = createWorldBankProvider({ baseUrl: "", fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "unexpected_error", status: 500 });
+    await expect(provider.getSeries({ indicatorId: "us_gdp_growth_annual" })).rejects.toMatchObject(
+      { code: "unexpected_error", status: 500 },
+    );
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 
@@ -256,18 +261,18 @@ describe("createWorldBankProvider.getSeries", () => {
     const { fetchImpl } = captureUrl([META, []]);
     const provider = createWorldBankProvider({ baseUrl: TEST_BASE_URL, fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "invalid_query", status: 400 });
+    await expect(provider.getSeries({ indicatorId: "us_gdp_growth_annual" })).rejects.toMatchObject(
+      { code: "invalid_query", status: 400 },
+    );
   });
 
   it("throws invalid_query when the response body has null observations", async () => {
     const { fetchImpl } = captureUrl([META, null]);
     const provider = createWorldBankProvider({ baseUrl: TEST_BASE_URL, fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "invalid_query", status: 400 });
+    await expect(provider.getSeries({ indicatorId: "us_gdp_growth_annual" })).rejects.toMatchObject(
+      { code: "invalid_query", status: 400 },
+    );
   });
 
   it("throws invalid_query and surfaces the World Bank error message on a 200-with-message envelope", async () => {
@@ -302,9 +307,9 @@ describe("createWorldBankProvider.getSeries", () => {
     ) as unknown as typeof fetch;
     const provider = createWorldBankProvider({ baseUrl: TEST_BASE_URL, fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
+    await expect(provider.getSeries({ indicatorId: "us_gdp_growth_annual" })).rejects.toMatchObject(
+      { code: "provider_error", status: 502 },
+    );
   });
 
   it("throws provider_error on a network failure", async () => {
@@ -313,9 +318,9 @@ describe("createWorldBankProvider.getSeries", () => {
     }) as unknown as typeof fetch;
     const provider = createWorldBankProvider({ baseUrl: TEST_BASE_URL, fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
+    await expect(provider.getSeries({ indicatorId: "us_gdp_growth_annual" })).rejects.toMatchObject(
+      { code: "provider_error", status: 502 },
+    );
   });
 
   it("throws provider_error when the response body is not JSON", async () => {
@@ -328,17 +333,17 @@ describe("createWorldBankProvider.getSeries", () => {
     ) as unknown as typeof fetch;
     const provider = createWorldBankProvider({ baseUrl: TEST_BASE_URL, fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
+    await expect(provider.getSeries({ indicatorId: "us_gdp_growth_annual" })).rejects.toMatchObject(
+      { code: "provider_error", status: 502 },
+    );
   });
 
   it("throws provider_error when the JSON body is not an envelope array", async () => {
     const { fetchImpl } = captureUrl({ unexpected: true });
     const provider = createWorldBankProvider({ baseUrl: TEST_BASE_URL, fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
+    await expect(provider.getSeries({ indicatorId: "us_gdp_growth_annual" })).rejects.toMatchObject(
+      { code: "provider_error", status: 502 },
+    );
   });
 });

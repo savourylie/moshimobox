@@ -45,10 +45,7 @@ const QUARTER_FOR_MONTH: Record<number, 1 | 2 | 3 | 4> = {
   12: 4,
 };
 
-const parseFredDate = (
-  value: string,
-  indicatorId: string,
-): { y: number; m: number; d: number } => {
+const parseFredDate = (value: string, indicatorId: string): { y: number; m: number; d: number } => {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
   if (!match) {
     throw new ApiError(
@@ -162,10 +159,7 @@ export const createFredProvider = ({
 
     const { metadata } = seed;
     if (metadata.source.provider !== "fred") {
-      throw new ApiError(
-        "invalid_query",
-        `Indicator ${indicatorId} is not sourced from FRED.`,
-      );
+      throw new ApiError("invalid_query", `Indicator ${indicatorId} is not sourced from FRED.`);
     }
 
     const fredSeriesId = metadata.source.seriesId;
@@ -195,10 +189,7 @@ export const createFredProvider = ({
     try {
       body = (await response.json()) as FredObservationsResponse;
     } catch {
-      throw new ApiError(
-        "provider_error",
-        `FRED returned a non-JSON response for ${indicatorId}.`,
-      );
+      throw new ApiError("provider_error", `FRED returned a non-JSON response for ${indicatorId}.`);
     }
 
     if (!response.ok) {
@@ -213,18 +204,12 @@ export const createFredProvider = ({
           `FRED rejected the request for ${indicatorId}: ${detail}.`,
         );
       }
-      throw new ApiError(
-        "provider_error",
-        `FRED request failed for ${indicatorId}: ${detail}.`,
-      );
+      throw new ApiError("provider_error", `FRED request failed for ${indicatorId}: ${detail}.`);
     }
 
     const rawObservations = Array.isArray(body.observations) ? body.observations : [];
     if (rawObservations.length === 0) {
-      throw new ApiError(
-        "invalid_query",
-        `FRED returned no observations for ${indicatorId}.`,
-      );
+      throw new ApiError("invalid_query", `FRED returned no observations for ${indicatorId}.`);
     }
 
     const points = rawObservations.map((obs) =>

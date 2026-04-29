@@ -176,12 +176,7 @@ describe("createFredProvider.getSeries", () => {
 
     const result = await provider.getSeries({ indicatorId: "us_real_gdp" });
 
-    expect(result.points.map((p) => p.date)).toEqual([
-      "2025-Q1",
-      "2025-Q2",
-      "2025-Q3",
-      "2025-Q4",
-    ]);
+    expect(result.points.map((p) => p.date)).toEqual(["2025-Q1", "2025-Q2", "2025-Q3", "2025-Q4"]);
     expect(result.observationDate).toBe("2025-Q4");
     expect(result.releaseDate).toBe("2026-01-30");
   });
@@ -218,9 +213,9 @@ describe("createFredProvider.getSeries", () => {
     const fetchImpl = vi.fn() as unknown as typeof fetch;
     const provider = createFredProvider({ apiKey: "k", fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "invalid_query", status: 400 });
+    await expect(provider.getSeries({ indicatorId: "us_gdp_growth_annual" })).rejects.toMatchObject(
+      { code: "invalid_query", status: 400 },
+    );
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 
@@ -248,9 +243,10 @@ describe("createFredProvider.getSeries", () => {
     ) as unknown as typeof fetch;
     const provider = createFredProvider({ apiKey: "k", fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_headline_cpi" }),
-    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
+    await expect(provider.getSeries({ indicatorId: "us_headline_cpi" })).rejects.toMatchObject({
+      code: "provider_error",
+      status: 502,
+    });
   });
 
   it("throws provider_error on a network failure", async () => {
@@ -259,9 +255,10 @@ describe("createFredProvider.getSeries", () => {
     }) as unknown as typeof fetch;
     const provider = createFredProvider({ apiKey: "k", fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_headline_cpi" }),
-    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
+    await expect(provider.getSeries({ indicatorId: "us_headline_cpi" })).rejects.toMatchObject({
+      code: "provider_error",
+      status: 502,
+    });
   });
 
   it("throws provider_error when FRED returns a non-JSON body", async () => {
@@ -274,27 +271,32 @@ describe("createFredProvider.getSeries", () => {
     ) as unknown as typeof fetch;
     const provider = createFredProvider({ apiKey: "k", fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_headline_cpi" }),
-    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
+    await expect(provider.getSeries({ indicatorId: "us_headline_cpi" })).rejects.toMatchObject({
+      code: "provider_error",
+      status: 502,
+    });
   });
 
   it("throws invalid_query when FRED returns no observations", async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse({ observations: [] })) as unknown as typeof fetch;
+    const fetchImpl = vi.fn(async () =>
+      jsonResponse({ observations: [] }),
+    ) as unknown as typeof fetch;
     const provider = createFredProvider({ apiKey: "k", fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_headline_cpi" }),
-    ).rejects.toMatchObject({ code: "invalid_query", status: 400 });
+    await expect(provider.getSeries({ indicatorId: "us_headline_cpi" })).rejects.toMatchObject({
+      code: "invalid_query",
+      status: 400,
+    });
   });
 
   it("throws unexpected_error if invoked without an api key", async () => {
     const fetchImpl = vi.fn() as unknown as typeof fetch;
     const provider = createFredProvider({ apiKey: "", fetch: fetchImpl });
 
-    await expect(
-      provider.getSeries({ indicatorId: "us_headline_cpi" }),
-    ).rejects.toMatchObject({ code: "unexpected_error", status: 500 });
+    await expect(provider.getSeries({ indicatorId: "us_headline_cpi" })).rejects.toMatchObject({
+      code: "unexpected_error",
+      status: 500,
+    });
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 });

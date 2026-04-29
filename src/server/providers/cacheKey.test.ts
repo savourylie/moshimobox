@@ -85,10 +85,7 @@ describe("makeCacheKey", () => {
 
   it("differentiates by frequency", () => {
     const monthly = makeCacheKey({ indicatorId: fredCpi.id }, fredCpi);
-    const annual = makeCacheKey(
-      { indicatorId: fredCpi.id },
-      { ...fredCpi, frequency: "annual" },
-    );
+    const annual = makeCacheKey({ indicatorId: fredCpi.id }, { ...fredCpi, frequency: "annual" });
     expect(monthly).not.toBe(annual);
   });
 });

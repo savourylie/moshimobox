@@ -1,0 +1,304 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-10);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  scroll-margin-top: calc(var(--topbar-h) + var(--sp-4));
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.sectionAccent {
+  inline-size: 10px;
+  block-size: 40px;
+  border-radius: var(--radius-full);
+  background: var(--neutral-600);
+}
+
+.section[data-quadrant="growth"] .sectionAccent {
+  background: var(--growth-600);
+}
+
+.section[data-quadrant="inflation"] .sectionAccent {
+  background: var(--inflation-600);
+}
+
+.section[data-quadrant="policy"] .sectionAccent {
+  background: var(--policy-600);
+}
+
+.section[data-quadrant="market"] .sectionAccent {
+  background: var(--market-600);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-28);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-medium);
+  color: var(--ink-900);
+}
+
+.sectionMeta {
+  margin: var(--sp-1) 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-13);
+  line-height: var(--lh-normal);
+  color: var(--ink-600);
+}
+
+.widgetGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-4);
+}
+
+.widget {
+  min-block-size: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-5);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-1);
+}
+
+.widget[data-state="error"] {
+  border-color: var(--warning-600);
+  background: color-mix(in srgb, var(--warning-50) 48%, var(--paper-50));
+}
+
+.widgetHeader {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.widgetKind {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  color: var(--ink-500);
+}
+
+.widgetTitle {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-20);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-semibold);
+  color: var(--ink-900);
+}
+
+.widgetDescription {
+  min-block-size: 42px;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  color: var(--ink-700);
+}
+
+.loadingState,
+.successState,
+.errorState {
+  margin-block-start: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.progressTrack {
+  overflow: hidden;
+  inline-size: 100%;
+  block-size: 3px;
+  border-radius: var(--radius-full);
+  background: var(--paper-150);
+}
+
+.progressBar {
+  display: block;
+  inline-size: 44%;
+  block-size: 100%;
+  border-radius: inherit;
+  background: var(--accent-ink-500);
+  animation: progressSweep var(--dur-slow) var(--ease-paper) infinite alternate;
+}
+
+.stateText,
+.errorMessage,
+.empty {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  color: var(--ink-600);
+}
+
+.skeletonStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.skeletonLine,
+.skeletonLineShort {
+  display: block;
+  block-size: 12px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--paper-150), var(--paper-200), var(--paper-150));
+  animation: skeletonPulse var(--dur-slow) var(--ease-paper) infinite alternate;
+}
+
+.skeletonLineShort {
+  inline-size: 62%;
+}
+
+.valueLine {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  margin: 0;
+}
+
+.value {
+  font-family: var(--font-serif);
+  font-size: var(--fs-32);
+  line-height: 1;
+  font-weight: var(--fw-medium);
+  font-feature-settings: var(--ff-tnum);
+  color: var(--ink-900);
+}
+
+.unit {
+  font-family: var(--font-serif);
+  font-size: var(--fs-15);
+  line-height: var(--lh-normal);
+  color: var(--ink-600);
+}
+
+.observation,
+.change,
+.seriesMeta,
+.sourceMeta,
+.lastSuccessful,
+.errorMeta {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  color: var(--ink-600);
+}
+
+.sourceMeta,
+.lastSuccessful {
+  color: var(--ink-500);
+}
+
+.errorTitle {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-semibold);
+  color: var(--ink-900);
+}
+
+.retryButton {
+  align-self: flex-start;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--paper-50);
+  color: var(--ink-900);
+  font-family: var(--font-sans);
+  font-size: var(--fs-13);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-paper),
+    background var(--dur-fast) var(--ease-paper),
+    transform 100ms var(--ease-paper);
+}
+
+.retryButton:hover {
+  border-color: var(--ink-300);
+  background: var(--paper-100);
+}
+
+.retryButton:active {
+  transform: scale(0.98);
+}
+
+.comparisonList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.comparisonRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding-block-end: var(--sp-2);
+  border-block-end: 1px solid var(--border-subtle);
+}
+
+.comparisonRow:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
+}
+
+.comparisonName {
+  font-family: var(--font-sans);
+  font-size: var(--fs-13);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-medium);
+  color: var(--ink-800);
+}
+
+.comparisonValue {
+  font-family: var(--font-serif);
+  font-size: var(--fs-14);
+  line-height: var(--lh-normal);
+  font-feature-settings: var(--ff-tnum);
+  color: var(--ink-600);
+}
+
+@keyframes progressSweep {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(128%);
+  }
+}
+
+@keyframes skeletonPulse {
+  from {
+    opacity: 0.55;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
