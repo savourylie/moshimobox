@@ -1,7 +1,7 @@
 # [TICKET-015] Build indicator detail panel
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #014 ✅
@@ -10,10 +10,10 @@
 Add a detail view for a user to inspect an indicator’s definition, historical trend, recent change, and source metadata. This covers the PRD story where a user clicks an indicator to understand its meaning and context.
 
 ## Acceptance Criteria
-- [ ] Clicking or keyboard-selecting a widget opens an indicator detail panel or drawer.
-- [ ] The detail view shows definition, source, unit, frequency, observation date, release date, recent change, and a historical series view.
-- [ ] The detail view supports closing, focus return, and keyboard navigation.
-- [ ] Missing metadata displays factual unavailable states without hiding the unit/date requirement for displayed values.
+- [x] Clicking or keyboard-selecting a widget opens an indicator detail panel or drawer.
+- [x] The detail view shows definition, source, unit, frequency, observation date, release date, recent change, and a historical series view.
+- [x] The detail view supports closing, focus return, and keyboard navigation.
+- [x] Missing metadata displays factual unavailable states without hiding the unit/date requirement for displayed values.
 
 ## Design Reference
 - **Components**: `docs/design/design-system/README.md` sections "Cards", "Transparency & blur", and "Iconography"

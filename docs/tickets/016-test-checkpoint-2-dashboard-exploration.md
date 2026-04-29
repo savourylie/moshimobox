@@ -1,10 +1,10 @@
 # [TICKET-016] TEST: Checkpoint 2 — Dashboard exploration
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #015
+- Requires: #015 ✅
 
 ## Description
 This checkpoint verifies that the dashboard can be used as a standalone macro exploration tool before chat features are added. It is a gate for chat and agent work because the agent will depend on stable dashboard data, schema-driven layout, and indicator detail behavior.
