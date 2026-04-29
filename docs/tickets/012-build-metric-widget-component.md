@@ -1,7 +1,7 @@
 # [TICKET-012] Build metric widget component
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #011 ✅
@@ -10,10 +10,10 @@
 Implement the metric card widget for single-value macro indicators. Metric cards are one of the PRD’s three MVP widget types and must make unit, date, source, and change legible at a glance.
 
 ## Acceptance Criteria
-- [ ] The metric card renders indicator title, current value, unit, signed change, comparison label, observation date, release date when available, source, and short semantic description.
-- [ ] Numbers use tabular numerals and never render without a display unit; index-like values use explicit labels such as `index` or `points`.
-- [ ] Status coloring uses muted design tokens and does not imply trading alarms.
-- [ ] Hover and focus states follow the tokenized border, shadow, and motion rules.
+- [x] The metric card renders indicator title, current value, unit, signed change, comparison label, observation date, release date when available, source, and short semantic description.
+- [x] Numbers use tabular numerals and never render without a display unit; index-like values use explicit labels such as `index` or `points`.
+- [x] Status coloring uses muted design tokens and does not imply trading alarms.
+- [x] Hover and focus states follow the tokenized border, shadow, and motion rules.
 
 ## Design Reference
 - **Components**: `docs/design/design-system/preview/components-metric-widget.html`

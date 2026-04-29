@@ -4,7 +4,7 @@
 `blocked`
 
 ## Dependencies
-- Requires: #012, #013
+- Requires: #012 ✅, #013
 
 ## Description
 Render the full dashboard from the validated layout schema rather than hard-coded widget placement. This creates the controlled surface that later chat actions can modify.
