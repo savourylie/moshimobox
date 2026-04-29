@@ -1,10 +1,10 @@
 # [TICKET-009] Add normalized cache and freshness metadata
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #007 ✅, #008
+- Requires: #007 ✅, #008 ✅
 
 ## Description
 Add a small caching layer around normalized provider responses and expose freshness metadata to the API layer. The PRD calls out update frequency as an open question, so this ticket implements a conservative configurable cache instead of background scheduling.

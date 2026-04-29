@@ -7,10 +7,10 @@
 
 | Status        | Count |
 | ------------- | ----- |
-| ✅ Done        | 7     |
+| ✅ Done        | 8     |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 18    |
+| 🚫 Blocked     | 17    |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -33,8 +33,8 @@
 | #   | Ticket | Status | Depends On | Notes |
 | --- | ------ | ------ | ---------- | ----- |
 | 007 | [Build provider boundary and FRED adapter](./007-build-provider-boundary-and-fred-adapter.md) | `done` | #006 ✅ | Implemented and verified — FRED adapter wired through provider resolver, fixtures stay default when key absent |
-| 008 | [Build World Bank adapter and country metadata](./008-build-world-bank-adapter-and-country-metadata.md) | `pending` | #007 ✅ | Unblocked — #007 now done; second live provider path |
-| 009 | [Add normalized cache and freshness metadata](./009-add-normalized-cache-and-freshness-metadata.md) | `blocked` | #007 ✅, #008 | Configurable request-time freshness model |
+| 008 | [Build World Bank adapter and country metadata](./008-build-world-bank-adapter-and-country-metadata.md) | `done` | #007 ✅ | Implemented and verified — World Bank adapter wired through resolver, country registry seeded |
+| 009 | [Add normalized cache and freshness metadata](./009-add-normalized-cache-and-freshness-metadata.md) | `pending` | #007 ✅, #008 ✅ | Unblocked — #008 now done; configurable request-time freshness model |
 | 010 | [**TEST: Checkpoint 1 — Data APIs and normalization**](./010-test-checkpoint-1-data-apis-and-normalization.md) | `blocked` | #009 | Gate: Phase 2 |
 
 ## Phase 3 — Dashboard exploration
