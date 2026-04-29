@@ -1,5 +1,5 @@
 import type { DateRange, SingleSeriesResponse, Transform } from "@/domain/schemas";
-import { fixtureProvider } from "@/server/providers/fixtureProvider";
+import { defaultProviderResolver } from "@/server/providers/providerResolver";
 import type { SeriesProvider } from "@/server/providers/types";
 import { applyTransform } from "@/server/transforms/apply";
 
@@ -17,7 +17,7 @@ export interface SeriesRepositoryDeps {
 const defaultNow = () => new Date();
 
 export const createSeriesRepository = ({
-  provider = fixtureProvider,
+  provider = defaultProviderResolver,
   now = defaultNow,
 }: SeriesRepositoryDeps = {}) => ({
   async getSeries(input: GetSeriesInput): Promise<SingleSeriesResponse> {
