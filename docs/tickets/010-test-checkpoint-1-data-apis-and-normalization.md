@@ -1,10 +1,10 @@
 # [TICKET-010] TEST: Checkpoint 1 — Data APIs and normalization
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #009
+- Requires: #009 ✅
 
 ## Description
 This checkpoint verifies that live-provider boundaries, normalized data responses, cache behavior, and fixture fallbacks are reliable enough for dashboard integration. It is a gate before frontend widgets depend on provider-backed API behavior.

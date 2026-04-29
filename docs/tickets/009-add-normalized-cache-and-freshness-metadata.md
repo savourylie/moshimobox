@@ -1,7 +1,7 @@
 # [TICKET-009] Add normalized cache and freshness metadata
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #007 ✅, #008 ✅
@@ -10,10 +10,10 @@
 Add a small caching layer around normalized provider responses and expose freshness metadata to the API layer. The PRD calls out update frequency as an open question, so this ticket implements a conservative configurable cache instead of background scheduling.
 
 ## Acceptance Criteria
-- [ ] Cached series are keyed by provider, series id, country where applicable, date range, frequency, and transformation.
-- [ ] API responses expose observation date, release date when available, fetched-at timestamp, and source name.
-- [ ] Stale, missing, and provider-error states are represented explicitly so widgets can show factual loading or error copy.
-- [ ] Cache behavior is covered by tests for hits, misses, stale entries, and provider errors.
+- [x] Cached series are keyed by provider, series id, country where applicable, date range, frequency, and transformation.
+- [x] API responses expose observation date, release date when available, fetched-at timestamp, and source name.
+- [x] Stale, missing, and provider-error states are represented explicitly so widgets can show factual loading or error copy.
+- [x] Cache behavior is covered by tests for hits, misses, stale entries, and provider errors.
 
 ## Implementation Notes
 - Suggested files: normalized cache module, freshness metadata helpers, cache tests.
