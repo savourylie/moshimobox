@@ -1,0 +1,36 @@
+.snapshot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-block-end: var(--sp-2);
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  line-height: var(--lh-normal);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.headline {
+  margin: var(--sp-2) 0 0;
+  font-family: var(--font-serif);
+  font-size: var(--fs-32);
+  line-height: var(--lh-snug);
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.015em;
+  color: var(--ink-900);
+}
+
+.body {
+  margin: var(--sp-3) 0 0;
+  max-inline-size: 62ch;
+  font-family: var(--font-serif);
+  font-size: var(--fs-16);
+  line-height: var(--lh-loose);
+  color: var(--ink-700);
+}

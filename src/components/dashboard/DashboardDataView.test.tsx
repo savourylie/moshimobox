@@ -4,6 +4,7 @@ import type {
   ComparisonResponse,
   DashboardLayout,
   IndicatorMetadata,
+  MetricWidgetConfig,
   SingleSeriesResponse,
   Source,
   WidgetDataResponse,
@@ -278,5 +279,148 @@ describe("DashboardDataView", () => {
     expect(screen.getAllByText("FRED is not responding.").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("Code: provider_error").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByRole("button", { name: "Retry" }).length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("renders widgets in the order defined by the layout schema", () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => new Promise<Response>(() => {})),
+    );
+
+    const reorderedLayout: DashboardLayout = {
+      id: "main",
+      version: 1,
+      quadrants: {
+        growth: {
+          id: "growth",
+          label: "Growth",
+          widgets: [
+            {
+              id: "widget_zeta",
+              type: "metric_card",
+              title: "Zeta indicator",
+              description: "Second indicator alphabetically.",
+              indicatorId: "us_unemployment_rate",
+            },
+            {
+              id: "widget_alpha",
+              type: "metric_card",
+              title: "Alpha indicator",
+              description: "First indicator alphabetically.",
+              indicatorId: "us_real_gdp",
+            },
+          ],
+        },
+        inflation: { id: "inflation", label: "Inflation", widgets: [] },
+        policy: { id: "policy", label: "Policy / Liquidity", widgets: [] },
+        market: { id: "market", label: "Market", widgets: [] },
+      },
+    };
+
+    const { container } = render(<DashboardDataView layout={reorderedLayout} />);
+
+    const growthSection = container.querySelector('section[data-quadrant="growth"]');
+    expect(growthSection).not.toBeNull();
+    const titles = Array.from(growthSection!.querySelectorAll("h3")).map((node) => node.textContent);
+    expect(titles).toEqual(["Zeta indicator", "Alpha indicator"]);
+  });
+
+  it("renders the widget count from each quadrant config", () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => new Promise<Response>(() => {})),
+    );
+
+    const buildMetric = (id: string): MetricWidgetConfig => ({
+      id,
+      type: "metric_card",
+      title: id,
+      description: `${id} description.`,
+      indicatorId: "us_unemployment_rate",
+    });
+
+    const variedLayout: DashboardLayout = {
+      id: "main",
+      version: 1,
+      quadrants: {
+        growth: {
+          id: "growth",
+          label: "Growth",
+          widgets: [buildMetric("widget_growth_a"), buildMetric("widget_growth_b")],
+        },
+        inflation: {
+          id: "inflation",
+          label: "Inflation",
+          widgets: [
+            buildMetric("widget_inflation_a"),
+            buildMetric("widget_inflation_b"),
+            buildMetric("widget_inflation_c"),
+          ],
+        },
+        policy: {
+          id: "policy",
+          label: "Policy / Liquidity",
+          widgets: [
+            buildMetric("widget_policy_a"),
+            buildMetric("widget_policy_b"),
+            buildMetric("widget_policy_c"),
+            buildMetric("widget_policy_d"),
+          ],
+        },
+        market: {
+          id: "market",
+          label: "Market",
+          widgets: [buildMetric("widget_market_a"), buildMetric("widget_market_b")],
+        },
+      },
+    };
+
+    const { container } = render(<DashboardDataView layout={variedLayout} />);
+
+    const articlesIn = (quadrant: string) =>
+      container.querySelectorAll(`section[data-quadrant="${quadrant}"] article`);
+    expect(articlesIn("growth")).toHaveLength(2);
+    expect(articlesIn("inflation")).toHaveLength(3);
+    expect(articlesIn("policy")).toHaveLength(4);
+    expect(articlesIn("market")).toHaveLength(2);
+  });
+
+  it("renders a factual widget-level error when fetched data does not match the widget type", async () => {
+    const fetchMock = vi.fn((input: RequestInfo | URL) => {
+      const path = input.toString();
+      if (path === "/api/widgets/widget_cpi") {
+        return responseJson(seriesResponse("us_headline_cpi", "CPI"));
+      }
+      return new Promise<Response>(() => {});
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const mismatchLayout: DashboardLayout = {
+      id: "main",
+      version: 1,
+      quadrants: {
+        growth: {
+          id: "growth",
+          label: "Growth",
+          widgets: [
+            {
+              id: "widget_cpi",
+              type: "metric_card",
+              title: "CPI",
+              description: "Headline consumer prices.",
+              indicatorId: "us_headline_cpi",
+            },
+          ],
+        },
+        inflation: { id: "inflation", label: "Inflation", widgets: [] },
+        policy: { id: "policy", label: "Policy / Liquidity", widgets: [] },
+        market: { id: "market", label: "Market", widgets: [] },
+      },
+    };
+
+    render(<DashboardDataView layout={mismatchLayout} />);
+
+    expect(await screen.findByText("Could not fetch CPI")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
   });
 });

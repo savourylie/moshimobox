@@ -25,6 +25,9 @@ export const formatObservationDate = (value: string): string => {
   return value;
 };
 
+export const formatMonthYear = (date: Date): string =>
+  new Intl.DateTimeFormat("en-US", { month: "short", year: "numeric" }).format(date);
+
 export const formatFetchedAt = (value: string): string => {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
