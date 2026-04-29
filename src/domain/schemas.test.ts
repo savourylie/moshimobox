@@ -104,6 +104,8 @@ const widgetDataResponse = {
   },
   observationDate: "2026-03",
   releaseDate: "2026-04-10",
+  fetchedAt: "2026-04-28T12:00:00.000Z",
+  cacheStatus: "fresh",
   source,
   trend: {
     direction: "up",
@@ -310,6 +312,7 @@ describe("domain schemas", () => {
     observationDate: "2026-03",
     releaseDate: "2026-04-15",
     fetchedAt: "2026-04-28T12:00:00.000Z",
+    cacheStatus: "fresh",
     points: [
       { date: "2024-01", value: 309.7 },
       { date: "2024-02", value: 310.4 },
@@ -332,6 +335,7 @@ describe("domain schemas", () => {
       range: { start: "2024-01" },
       transform: "level",
       fetchedAt: "2026-04-28T12:00:00.000Z",
+      cacheStatus: "fresh",
     };
 
     expect(ComparisonResponseSchema.safeParse(comparison).success).toBe(true);
@@ -343,6 +347,7 @@ describe("domain schemas", () => {
       range: { start: "2024-01" },
       transform: "level",
       fetchedAt: "2026-04-28T12:00:00.000Z",
+      cacheStatus: "fresh",
     };
 
     expect(ComparisonResponseSchema.safeParse(comparison).success).toBe(false);
@@ -354,6 +359,7 @@ describe("domain schemas", () => {
       range: { start: "2024-01" },
       transform: "level",
       fetchedAt: "2026-04-28T12:00:00.000Z",
+      cacheStatus: "fresh",
     };
 
     expect(ComparisonResponseSchema.safeParse(comparison).success).toBe(false);

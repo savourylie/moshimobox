@@ -19,6 +19,7 @@ const STATUS_FOR_CODE: Record<ApiErrorCode, number> = {
   widget_not_found: 404,
   invalid_query: 400,
   widget_type_unsupported: 400,
+  provider_error: 502,
   unexpected_error: 500,
 };
 

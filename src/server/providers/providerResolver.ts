@@ -1,5 +1,6 @@
 import { getSeedIndicator } from "@/domain/seeds";
 import { getFredApiKey, getWorldBankBaseUrl } from "@/server/config/env";
+import { createCachingProvider } from "./cachingProvider";
 import { fixtureProvider } from "./fixtureProvider";
 import { createFredProvider } from "./fredProvider";
 import { createWorldBankProvider } from "./worldBankProvider";
@@ -49,7 +50,9 @@ export const createProviderResolver = ({
   };
 };
 
-export const defaultProviderResolver: SeriesProvider = createProviderResolver({
-  fredApiKey: getFredApiKey(),
-  worldBankBaseUrl: getWorldBankBaseUrl(),
+export const defaultProviderResolver: SeriesProvider = createCachingProvider({
+  provider: createProviderResolver({
+    fredApiKey: getFredApiKey(),
+    worldBankBaseUrl: getWorldBankBaseUrl(),
+  }),
 });

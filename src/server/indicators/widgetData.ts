@@ -98,6 +98,8 @@ export const getWidgetData = async (widgetId: string): Promise<WidgetDataRespons
     },
     observationDate: series.observationDate,
     releaseDate: series.releaseDate,
+    fetchedAt: series.fetchedAt,
+    cacheStatus: series.cacheStatus,
     source: seed.metadata.source,
     trend: trendFor(deltaValue, seed.metadata.frequency),
     status: {

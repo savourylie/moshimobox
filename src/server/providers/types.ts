@@ -1,4 +1,5 @@
 import type {
+  CacheStatus,
   DateRange,
   IndicatorMetadata,
   Source,
@@ -19,6 +20,8 @@ export interface ProviderSeriesResult {
   points: TimeSeriesPoint[];
   observationDate: string;
   releaseDate: string;
+  fetchedAt: string;
+  cacheStatus: CacheStatus;
   range: DateRange;
 }
 

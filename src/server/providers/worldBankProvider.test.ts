@@ -91,7 +91,7 @@ describe("normalizeWorldBankDate", () => {
     expect(() => normalizeWorldBankDate("2024-04-15", "weekly", "x")).toThrowError(ApiError);
   });
 
-  it("throws unexpected_error on malformed annual input", () => {
+  it("throws provider_error on malformed annual input", () => {
     expect(() => normalizeWorldBankDate("", "annual", "x")).toThrowError(ApiError);
     expect(() => normalizeWorldBankDate("twenty-twenty-four", "annual", "x")).toThrowError(ApiError);
   });
@@ -296,7 +296,7 @@ describe("createWorldBankProvider.getSeries", () => {
     await expect(promise).rejects.toThrow(/Country not found/);
   });
 
-  it("throws unexpected_error on HTTP 500", async () => {
+  it("throws provider_error on HTTP 500", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({ error: "boom" }, { status: 500 }),
     ) as unknown as typeof fetch;
@@ -304,10 +304,10 @@ describe("createWorldBankProvider.getSeries", () => {
 
     await expect(
       provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "unexpected_error", status: 500 });
+    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
   });
 
-  it("throws unexpected_error on a network failure", async () => {
+  it("throws provider_error on a network failure", async () => {
     const fetchImpl = vi.fn(async () => {
       throw new TypeError("fetch failed");
     }) as unknown as typeof fetch;
@@ -315,10 +315,10 @@ describe("createWorldBankProvider.getSeries", () => {
 
     await expect(
       provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "unexpected_error", status: 500 });
+    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
   });
 
-  it("throws unexpected_error when the response body is not JSON", async () => {
+  it("throws provider_error when the response body is not JSON", async () => {
     const fetchImpl = vi.fn(
       async () =>
         new Response("<html>not json</html>", {
@@ -330,15 +330,15 @@ describe("createWorldBankProvider.getSeries", () => {
 
     await expect(
       provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "unexpected_error", status: 500 });
+    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
   });
 
-  it("throws unexpected_error when the JSON body is not an envelope array", async () => {
+  it("throws provider_error when the JSON body is not an envelope array", async () => {
     const { fetchImpl } = captureUrl({ unexpected: true });
     const provider = createWorldBankProvider({ baseUrl: TEST_BASE_URL, fetch: fetchImpl });
 
     await expect(
       provider.getSeries({ indicatorId: "us_gdp_growth_annual" }),
-    ).rejects.toMatchObject({ code: "unexpected_error", status: 500 });
+    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
   });
 });

@@ -86,7 +86,7 @@ export const normalizeWorldBankDate = (
 ): string => {
   if (typeof raw !== "string" || raw.length === 0) {
     throw new ApiError(
-      "unexpected_error",
+      "provider_error",
       `World Bank returned an unexpected date "${raw}" for ${indicatorId}.`,
     );
   }
@@ -96,7 +96,7 @@ export const normalizeWorldBankDate = (
       const match = /^(\d{4})$/.exec(raw);
       if (!match) {
         throw new ApiError(
-          "unexpected_error",
+          "provider_error",
           `World Bank returned a non-annual date "${raw}" for ${indicatorId}.`,
         );
       }
@@ -106,7 +106,7 @@ export const normalizeWorldBankDate = (
       const match = /^(\d{4})Q([1-4])$/.exec(raw);
       if (!match) {
         throw new ApiError(
-          "unexpected_error",
+          "provider_error",
           `World Bank returned a non-quarterly date "${raw}" for ${indicatorId}.`,
         );
       }
@@ -116,14 +116,14 @@ export const normalizeWorldBankDate = (
       const match = /^(\d{4})M(\d{1,2})$/.exec(raw);
       if (!match) {
         throw new ApiError(
-          "unexpected_error",
+          "provider_error",
           `World Bank returned a non-monthly date "${raw}" for ${indicatorId}.`,
         );
       }
       const month = Number(match[2]);
       if (!Number.isFinite(month) || month < 1 || month > 12) {
         throw new ApiError(
-          "unexpected_error",
+          "provider_error",
           `World Bank returned an invalid month in date "${raw}" for ${indicatorId}.`,
         );
       }
@@ -234,7 +234,7 @@ export const createWorldBankProvider = ({
       });
     } catch {
       throw new ApiError(
-        "unexpected_error",
+        "provider_error",
         `World Bank request failed for ${indicatorId}: network error.`,
       );
     }
@@ -244,7 +244,7 @@ export const createWorldBankProvider = ({
       body = await response.json();
     } catch {
       throw new ApiError(
-        "unexpected_error",
+        "provider_error",
         `World Bank returned a non-JSON response for ${indicatorId}.`,
       );
     }
@@ -258,7 +258,7 @@ export const createWorldBankProvider = ({
         );
       }
       throw new ApiError(
-        "unexpected_error",
+        "provider_error",
         `World Bank request failed for ${indicatorId}: ${detail}.`,
       );
     }
@@ -273,7 +273,7 @@ export const createWorldBankProvider = ({
 
     if (!Array.isArray(body) || body.length < 2) {
       throw new ApiError(
-        "unexpected_error",
+        "provider_error",
         `World Bank returned an unexpected response shape for ${indicatorId}.`,
       );
     }
@@ -287,7 +287,7 @@ export const createWorldBankProvider = ({
     }
     if (!Array.isArray(rawObservations)) {
       throw new ApiError(
-        "unexpected_error",
+        "provider_error",
         `World Bank returned an unexpected observations payload for ${indicatorId}.`,
       );
     }
@@ -326,6 +326,8 @@ export const createWorldBankProvider = ({
       points: sliced,
       observationDate,
       releaseDate,
+      fetchedAt: new Date().toISOString(),
+      cacheStatus: "fresh",
       range: { start: firstPoint.date, end: lastPoint.date },
     };
   },

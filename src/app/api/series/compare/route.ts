@@ -72,12 +72,22 @@ export async function GET(request: Request): Promise<Response> {
     }
 
     const responseRange = range ?? deriveUnionRange(series);
+    const fetchedAt = series.reduce(
+      (oldest, item) => (item.fetchedAt < oldest ? item.fetchedAt : oldest),
+      series[0].fetchedAt,
+    );
+    const cacheStatus: ComparisonResponse["cacheStatus"] = series.some(
+      (item) => item.cacheStatus === "stale",
+    )
+      ? "stale"
+      : "fresh";
 
     const response: ComparisonResponse = {
       series: series as ComparisonResponse["series"],
       range: responseRange,
       transform,
-      fetchedAt: new Date().toISOString(),
+      fetchedAt,
+      cacheStatus,
     };
 
     return ok(response);

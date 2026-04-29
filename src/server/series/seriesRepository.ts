@@ -11,14 +11,10 @@ export interface GetSeriesInput {
 
 export interface SeriesRepositoryDeps {
   provider?: SeriesProvider;
-  now?: () => Date;
 }
-
-const defaultNow = () => new Date();
 
 export const createSeriesRepository = ({
   provider = defaultProviderResolver,
-  now = defaultNow,
 }: SeriesRepositoryDeps = {}) => ({
   async getSeries(input: GetSeriesInput): Promise<SingleSeriesResponse> {
     const transform: Transform = input.transform ?? "level";
@@ -43,7 +39,8 @@ export const createSeriesRepository = ({
       source: result.source,
       observationDate: result.observationDate,
       releaseDate: result.releaseDate,
-      fetchedAt: now().toISOString(),
+      fetchedAt: result.fetchedAt,
+      cacheStatus: result.cacheStatus,
       points: transformed.points,
     };
   },

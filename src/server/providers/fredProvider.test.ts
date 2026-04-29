@@ -70,7 +70,7 @@ describe("normalizeFredDate", () => {
     expect(normalizeFredDate("2024-01-01", "annual", "x")).toBe("2024-12");
   });
 
-  it("throws unexpected_error on a malformed FRED date", () => {
+  it("throws provider_error on a malformed FRED date", () => {
     expect(() => normalizeFredDate("not-a-date", "daily", "us_headline_cpi")).toThrowError(
       ApiError,
     );
@@ -242,7 +242,7 @@ describe("createFredProvider.getSeries", () => {
     await expect(promise).rejects.toThrow(/Series does not exist/);
   });
 
-  it("throws unexpected_error on FRED 500", async () => {
+  it("throws provider_error on FRED 500", async () => {
     const fetchImpl = vi.fn(async () =>
       jsonResponse({ error_code: 500, error_message: "boom" }, { status: 500 }),
     ) as unknown as typeof fetch;
@@ -250,10 +250,10 @@ describe("createFredProvider.getSeries", () => {
 
     await expect(
       provider.getSeries({ indicatorId: "us_headline_cpi" }),
-    ).rejects.toMatchObject({ code: "unexpected_error", status: 500 });
+    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
   });
 
-  it("throws unexpected_error on a network failure", async () => {
+  it("throws provider_error on a network failure", async () => {
     const fetchImpl = vi.fn(async () => {
       throw new TypeError("fetch failed");
     }) as unknown as typeof fetch;
@@ -261,10 +261,10 @@ describe("createFredProvider.getSeries", () => {
 
     await expect(
       provider.getSeries({ indicatorId: "us_headline_cpi" }),
-    ).rejects.toMatchObject({ code: "unexpected_error", status: 500 });
+    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
   });
 
-  it("throws unexpected_error when FRED returns a non-JSON body", async () => {
+  it("throws provider_error when FRED returns a non-JSON body", async () => {
     const fetchImpl = vi.fn(
       async () =>
         new Response("<html>not json</html>", {
@@ -276,7 +276,7 @@ describe("createFredProvider.getSeries", () => {
 
     await expect(
       provider.getSeries({ indicatorId: "us_headline_cpi" }),
-    ).rejects.toMatchObject({ code: "unexpected_error", status: 500 });
+    ).rejects.toMatchObject({ code: "provider_error", status: 502 });
   });
 
   it("throws invalid_query when FRED returns no observations", async () => {

@@ -15,6 +15,9 @@ describe("fixtureProvider", () => {
     expect(result.releaseDate).toBe("2026-04-15");
     expect(result.range.start).toBe(result.points[0].date);
     expect(result.range.end).toBe(result.points[result.points.length - 1].date);
+    expect(result.cacheStatus).toBe("fresh");
+    expect(typeof result.fetchedAt).toBe("string");
+    expect(() => new Date(result.fetchedAt).toISOString()).not.toThrow();
   });
 
   it("slices results by range", async () => {

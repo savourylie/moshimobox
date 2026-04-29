@@ -57,6 +57,8 @@ export const createFixtureProvider = (): SeriesProvider => ({
       points: sliced,
       observationDate,
       releaseDate,
+      fetchedAt: new Date().toISOString(),
+      cacheStatus: "fresh",
       range: { start: firstPoint.date, end: lastPoint.date },
     };
   },

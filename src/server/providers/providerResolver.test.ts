@@ -19,6 +19,8 @@ const stubResult = (indicatorId: string): ProviderSeriesResult => ({
   points: [{ date: "2026-03", value: 1 }],
   observationDate: "2026-03",
   releaseDate: "2026-04-15",
+  fetchedAt: "2026-04-29T12:00:00.000Z",
+  cacheStatus: "fresh",
   range: { start: "2026-03", end: "2026-03" },
 });
 

@@ -52,7 +52,7 @@ const parseFredDate = (
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
   if (!match) {
     throw new ApiError(
-      "unexpected_error",
+      "provider_error",
       `FRED returned an unexpected date "${value}" for ${indicatorId}.`,
     );
   }
@@ -186,7 +186,7 @@ export const createFredProvider = ({
       });
     } catch {
       throw new ApiError(
-        "unexpected_error",
+        "provider_error",
         `FRED request failed for ${indicatorId}: network error.`,
       );
     }
@@ -196,7 +196,7 @@ export const createFredProvider = ({
       body = (await response.json()) as FredObservationsResponse;
     } catch {
       throw new ApiError(
-        "unexpected_error",
+        "provider_error",
         `FRED returned a non-JSON response for ${indicatorId}.`,
       );
     }
@@ -214,7 +214,7 @@ export const createFredProvider = ({
         );
       }
       throw new ApiError(
-        "unexpected_error",
+        "provider_error",
         `FRED request failed for ${indicatorId}: ${detail}.`,
       );
     }
@@ -243,6 +243,8 @@ export const createFredProvider = ({
       points,
       observationDate,
       releaseDate,
+      fetchedAt: new Date().toISOString(),
+      cacheStatus: "fresh",
       range: { start: firstPoint.date, end: lastPoint.date },
     };
   },

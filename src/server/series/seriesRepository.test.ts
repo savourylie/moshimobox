@@ -13,6 +13,8 @@ describe("seriesRepository", () => {
     expect(response.frequency).toBe("monthly");
     expect(response.unit).toBe("index points");
     expect(response.points.at(-1)?.date).toBe("2026-03");
+    expect(response.cacheStatus).toBe("fresh");
+    expect(typeof response.fetchedAt).toBe("string");
   });
 
   it("applies the percent_change transform and overrides unit", async () => {

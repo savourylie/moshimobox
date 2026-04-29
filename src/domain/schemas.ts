@@ -60,6 +60,8 @@ export const TrendDirectionSchema = z.enum(["up", "down", "flat", "mixed", "unkn
 
 export const StatusToneSchema = z.enum(["positive", "negative", "warning", "neutral", "unknown"]);
 
+export const CacheStatusSchema = z.enum(["fresh", "stale"]);
+
 export const ActionResultSchema = z.enum([
   "proposed",
   "validated",
@@ -150,6 +152,8 @@ export const WidgetDataResponseSchema = z
     change: ChangeSchema,
     observationDate: CalendarDateSchema,
     releaseDate: ReleaseDateSchema,
+    fetchedAt: DateTimeSchema,
+    cacheStatus: CacheStatusSchema,
     source: SourceSchema,
     trend: TrendMetadataSchema,
     status: StatusMetadataSchema,
@@ -361,6 +365,7 @@ export const SingleSeriesResponseSchema = z
     observationDate: CalendarDateSchema,
     releaseDate: ReleaseDateSchema,
     fetchedAt: DateTimeSchema,
+    cacheStatus: CacheStatusSchema,
     points: z.array(TimeSeriesPointSchema).min(1),
   })
   .strict();
@@ -371,6 +376,7 @@ export const ComparisonResponseSchema = z
     range: DateRangeSchema,
     transform: TransformSchema,
     fetchedAt: DateTimeSchema,
+    cacheStatus: CacheStatusSchema,
   })
   .strict();
 
@@ -379,6 +385,7 @@ export const API_ERROR_CODES = [
   "widget_not_found",
   "invalid_query",
   "widget_type_unsupported",
+  "provider_error",
   "unexpected_error",
 ] as const;
 
@@ -415,6 +422,7 @@ export type IndicatorMetadata = z.infer<typeof IndicatorMetadataSchema>;
 export type TimeSeriesPoint = z.infer<typeof TimeSeriesPointSchema>;
 export type TrendMetadata = z.infer<typeof TrendMetadataSchema>;
 export type StatusMetadata = z.infer<typeof StatusMetadataSchema>;
+export type CacheStatus = z.infer<typeof CacheStatusSchema>;
 export type WidgetDataResponse = z.infer<typeof WidgetDataResponseSchema>;
 export type MetricWidgetConfig = z.infer<typeof MetricWidgetConfigSchema>;
 export type LineChartWidgetConfig = z.infer<typeof LineChartWidgetConfigSchema>;
