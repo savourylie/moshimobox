@@ -15,6 +15,7 @@
     "sync:tokens": "node scripts/sync-tokens.mjs"
   },
   "dependencies": {
+    "@openai/agents": "^0.8.5",
     "lucide-react": "^1.11.0",
     "next": "15.5.15",
     "react": "19.1.0",

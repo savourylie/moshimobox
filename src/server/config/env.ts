@@ -29,3 +29,23 @@ export const getCacheTtlOverrideMs = (): number | undefined => {
   if (!Number.isFinite(parsed) || parsed < 0) return undefined;
   return parsed;
 };
+
+export const OPENAI_API_KEY_ENV = "OPENAI_API_KEY";
+
+export const getOpenaiApiKey = (): string | undefined => {
+  const raw = process.env[OPENAI_API_KEY_ENV];
+  if (!raw) return undefined;
+  const trimmed = raw.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+};
+
+export const OPENAI_AGENT_MODEL_ENV = "OPENAI_AGENT_MODEL";
+
+export const DEFAULT_OPENAI_AGENT_MODEL = "gpt-4o-mini";
+
+export const getOpenaiAgentModel = (): string => {
+  const raw = process.env[OPENAI_AGENT_MODEL_ENV];
+  if (!raw) return DEFAULT_OPENAI_AGENT_MODEL;
+  const trimmed = raw.trim();
+  return trimmed.length > 0 ? trimmed : DEFAULT_OPENAI_AGENT_MODEL;
+};

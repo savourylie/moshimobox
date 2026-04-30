@@ -1,13 +1,8 @@
 import { z } from "zod";
-import {
-  CalendarDateSchema,
-  type ComparisonResponse,
-  type SingleSeriesResponse,
-  TransformSchema,
-} from "@/domain/schemas";
+import { CalendarDateSchema, TransformSchema } from "@/domain/schemas";
 import { failure, failureFromUnknown, ok } from "@/server/api/response";
 import { newRequestId } from "@/server/api/requestId";
-import { seriesRepository } from "@/server/series/seriesRepository";
+import { compareSeries } from "@/server/series/comparison";
 
 const QuerySchema = z
   .object({
@@ -17,9 +12,6 @@ const QuerySchema = z
     transform: TransformSchema.optional(),
   })
   .strict();
-
-const minDate = (a: string, b: string): string => (a <= b ? a : b);
-const maxDate = (a: string, b: string): string => (a >= b ? a : b);
 
 export async function GET(request: Request): Promise<Response> {
   const requestId = newRequestId();
@@ -36,74 +28,27 @@ export async function GET(request: Request): Promise<Response> {
       });
     }
 
+    if (parsed.data.end && !parsed.data.start) {
+      return failure("invalid_query", "An end date requires a start date.", { requestId });
+    }
+
     const ids = parsed.data.indicatorIds
       .split(",")
       .map((value) => value.trim())
       .filter((value) => value.length > 0);
 
-    if (ids.length < 2 || ids.length > 4) {
-      return failure("invalid_query", "indicatorIds must include 2 to 4 indicators.", {
-        requestId,
-      });
-    }
-
-    const uniqueIds = new Set(ids);
-    if (uniqueIds.size !== ids.length) {
-      return failure("invalid_query", "indicatorIds must be unique.", { requestId });
-    }
-
-    if (parsed.data.end && !parsed.data.start) {
-      return failure("invalid_query", "An end date requires a start date.", { requestId });
-    }
-
-    const transform = parsed.data.transform ?? "level";
     const range = parsed.data.start
       ? { start: parsed.data.start, ...(parsed.data.end ? { end: parsed.data.end } : {}) }
       : undefined;
 
-    const series: SingleSeriesResponse[] = [];
-    for (const indicatorId of ids) {
-      const result = await seriesRepository.getSeries({
-        indicatorId,
-        transform,
-        range,
-      });
-      series.push(result);
-    }
-
-    const responseRange = range ?? deriveUnionRange(series);
-    const fetchedAt = series.reduce(
-      (oldest, item) => (item.fetchedAt < oldest ? item.fetchedAt : oldest),
-      series[0].fetchedAt,
-    );
-    const cacheStatus: ComparisonResponse["cacheStatus"] = series.some(
-      (item) => item.cacheStatus === "stale",
-    )
-      ? "stale"
-      : "fresh";
-
-    const response: ComparisonResponse = {
-      series: series as ComparisonResponse["series"],
-      range: responseRange,
-      transform,
-      fetchedAt,
-      cacheStatus,
-    };
+    const response = await compareSeries({
+      indicatorIds: ids,
+      range,
+      transform: parsed.data.transform,
+    });
 
     return ok(response);
   } catch (err) {
     return failureFromUnknown(err, requestId);
   }
 }
-
-const deriveUnionRange = (series: SingleSeriesResponse[]): ComparisonResponse["range"] => {
-  let start = series[0].range.start;
-  let end = series[0].range.end ?? series[0].range.start;
-  for (const item of series.slice(1)) {
-    start = minDate(start, item.range.start);
-    if (item.range.end) {
-      end = maxDate(end, item.range.end);
-    }
-  }
-  return { start, end };
-};
