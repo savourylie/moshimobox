@@ -1,10 +1,10 @@
 # [TICKET-020] Implement layout mutation history and action log
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #019
+- Requires: #019 ✅
 
 ## Description
 Apply validated layout actions through a backend-controlled mutation path and record what changed. The PRD requires layout changes to be traceable and agent actions to be recordable.
