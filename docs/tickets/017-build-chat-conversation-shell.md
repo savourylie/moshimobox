@@ -1,10 +1,10 @@
 # [TICKET-017] Build chat conversation shell
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #016
+- Requires: #016 ✅
 
 ## Description
 Build the chat side panel as a real conversation surface, independent of the agent service. The panel should feel like a research copilot embedded in the dashboard, not a generic support chat.
