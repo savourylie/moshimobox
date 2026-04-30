@@ -25,7 +25,7 @@ export function AppShell({ children }: AppShellProps) {
         <div className={styles.mainInner}>{children}</div>
       </main>
       <div className={styles.chatSlot}>
-        <ChatPanelSlot open={chatOpen} />
+        <ChatPanelSlot open={chatOpen} onClose={() => setChatOpen(false)} />
       </div>
     </div>
   );

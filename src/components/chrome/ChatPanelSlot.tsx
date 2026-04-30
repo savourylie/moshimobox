@@ -1,14 +1,11 @@
-import styles from "./ChatPanelSlot.module.css";
+import { ChatPanel } from "../chat/ChatPanel";
 
 interface ChatPanelSlotProps {
   open: boolean;
+  onClose: () => void;
 }
 
-export function ChatPanelSlot({ open }: ChatPanelSlotProps) {
+export function ChatPanelSlot({ open, onClose }: ChatPanelSlotProps) {
   if (!open) return null;
-  return (
-    <aside aria-label="Chat panel" className={styles.chat}>
-      <span className={styles.placeholder}>Chat panel</span>
-    </aside>
-  );
+  return <ChatPanel onClose={onClose} />;
 }
