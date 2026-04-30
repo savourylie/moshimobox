@@ -7,10 +7,10 @@
 
 | Status        | Count |
 | ------------- | ----- |
-| ✅ Done        | 16    |
+| ✅ Done        | 17    |
 | 🔧 In Progress | 0     |
-| 📋 Pending     | 1     |
-| 🚫 Blocked     | 9     |
+| 📋 Pending     | 2     |
+| 🚫 Blocked     | 7     |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -52,9 +52,9 @@
 
 | #   | Ticket | Status | Depends On | Notes |
 | --- | ------ | ------ | ---------- | ----- |
-| 017 | [Build chat conversation shell](./017-build-chat-conversation-shell.md) | `pending` | #016 ✅ | Unblocked — service-agnostic chat UI |
-| 018 | [Integrate Agents SDK research tools](./018-integrate-agents-sdk-research-tools.md) | `blocked` | #017 | Can run in parallel with #019 |
-| 019 | [Build action proposal validation](./019-build-action-proposal-validation.md) | `blocked` | #017 | Safe proposal layer |
+| 017 | [Build chat conversation shell](./017-build-chat-conversation-shell.md) | `done` | #016 ✅ | Implemented and verified — service-agnostic chat panel with composer, scrollback, and onboarding copy |
+| 018 | [Integrate Agents SDK research tools](./018-integrate-agents-sdk-research-tools.md) | `pending` | #017 ✅ | Unblocked — can run in parallel with #019 |
+| 019 | [Build action proposal validation](./019-build-action-proposal-validation.md) | `pending` | #017 ✅ | Unblocked — safe proposal layer |
 | 020 | [Implement layout mutation history and action log](./020-implement-layout-mutation-history-and-action-log.md) | `blocked` | #019 | Backend-controlled layout changes |
 | 021 | [Connect chat proposals to dashboard actions](./021-connect-chat-proposals-to-dashboard-actions.md) | `blocked` | #018, #020 | Full agentic interaction loop |
 | 022 | [**TEST: Checkpoint 3 — Chat and controlled actions**](./022-test-checkpoint-3-chat-and-controlled-actions.md) | `blocked` | #021 | Gate: Phase 4 |

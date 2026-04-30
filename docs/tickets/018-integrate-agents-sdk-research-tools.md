@@ -1,10 +1,10 @@
 # [TICKET-018] Integrate Agents SDK research tools
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #017
+- Requires: #017 ✅
 
 ## Description
 Create the server-side agent integration and research tools for indicator lookup, widget data reading, time-series retrieval, and series comparison. The agent can explain and compare data, but it must not directly mutate frontend state.

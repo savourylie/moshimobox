@@ -1,7 +1,7 @@
 # [TICKET-017] Build chat conversation shell
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #016 ✅
@@ -10,10 +10,10 @@
 Build the chat side panel as a real conversation surface, independent of the agent service. The panel should feel like a research copilot embedded in the dashboard, not a generic support chat.
 
 ## Acceptance Criteria
-- [ ] The right chat panel can open, close, scroll message history, and preserve dashboard layout without overlap.
-- [ ] The composer accepts text, sends on Enter, supports a multiline path, and prevents empty sends.
-- [ ] User and assistant messages render with distinct but calm styling, using the product voice rules.
-- [ ] Initial helper copy explains data lookup, comparison, and dashboard layout actions without hype or emoji.
+- [x] The right chat panel can open, close, scroll message history, and preserve dashboard layout without overlap.
+- [x] The composer accepts text, sends on Enter, supports a multiline path, and prevents empty sends.
+- [x] User and assistant messages render with distinct but calm styling, using the product voice rules.
+- [x] Initial helper copy explains data lookup, comparison, and dashboard layout actions without hype or emoji.
 
 ## Design Reference
 - **Components**: `docs/design/design-system/preview/components-chat.html`

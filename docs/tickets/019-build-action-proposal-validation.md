@@ -1,10 +1,10 @@
 # [TICKET-019] Build action proposal validation
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #017
+- Requires: #017 ✅
 
 ## Description
 Implement the controlled action proposal layer that lets an agent suggest dashboard changes without directly changing UI state. This satisfies the PRD’s action-safety requirement and creates a reviewable bridge between chat intent and layout mutation.
