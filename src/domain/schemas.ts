@@ -328,6 +328,90 @@ export const ActionLogEntrySchema = z
   })
   .strict();
 
+export const PROPOSAL_VALIDATION_ISSUE_CODES = [
+  "proposal_schema_invalid",
+  "layout_schema_invalid",
+  "dashboard_mismatch",
+  "widget_not_found",
+  "widget_already_exists",
+  "indicator_not_found",
+  "indicator_not_unique",
+  "indicator_quadrant_mismatch",
+  "invalid_target",
+  "invalid_widget_config",
+  "quadrant_limit_exceeded",
+  "layout_incompatible",
+] as const;
+
+export const ProposalValidationIssueCodeSchema = z.enum(PROPOSAL_VALIDATION_ISSUE_CODES);
+
+export const ProposalValidationIssueSchema = z
+  .object({
+    code: ProposalValidationIssueCodeSchema,
+    message: NonEmptyStringSchema,
+    actionIndex: z.number().int().nonnegative().optional(),
+    path: NonEmptyStringSchema.optional(),
+    widgetId: WidgetIdSchema.optional(),
+    indicatorId: IndicatorIdSchema.optional(),
+    quadrantId: QuadrantIdSchema.optional(),
+  })
+  .strict();
+
+export const WidgetLocationSchema = z
+  .object({
+    quadrantId: QuadrantIdSchema,
+    index: z.number().int().nonnegative(),
+  })
+  .strict();
+
+export const WidgetSnapshotSchema = z
+  .object({
+    quadrantId: QuadrantIdSchema,
+    index: z.number().int().nonnegative(),
+    widget: WidgetConfigSchema,
+  })
+  .strict();
+
+export const ActionProposalDiffEntrySchema = z
+  .object({
+    actionIndex: z.number().int().nonnegative(),
+    actionType: z.enum(ACTION_TYPES),
+    widgetId: WidgetIdSchema,
+    title: NonEmptyStringSchema,
+    before: WidgetSnapshotSchema.nullable(),
+    after: WidgetSnapshotSchema.nullable(),
+    summary: NonEmptyStringSchema,
+  })
+  .strict();
+
+export const ActionProposalValidationResultSchema = z.discriminatedUnion("valid", [
+  z
+    .object({
+      valid: z.literal(true),
+      proposalId: IdSchema,
+      dashboardId: DashboardIdSchema,
+      summary: NonEmptyStringSchema,
+      affectedWidgetIds: z.array(WidgetIdSchema).min(1),
+      diff: z.array(ActionProposalDiffEntrySchema).min(1),
+      previewLayout: DashboardLayoutSchema,
+      reasons: z.array(NonEmptyStringSchema).length(0),
+      issues: z.array(ProposalValidationIssueSchema).length(0),
+    })
+    .strict(),
+  z
+    .object({
+      valid: z.literal(false),
+      proposalId: IdSchema.optional(),
+      dashboardId: DashboardIdSchema.optional(),
+      summary: NonEmptyStringSchema,
+      affectedWidgetIds: z.array(WidgetIdSchema),
+      diff: z.array(ActionProposalDiffEntrySchema),
+      reasons: z.array(NonEmptyStringSchema).min(1),
+      issues: z.array(ProposalValidationIssueSchema).min(1),
+    })
+    .strict(),
+]);
+
 export const CountrySchema = z
   .object({
     code: z
@@ -434,6 +518,12 @@ export type DashboardLayout = z.infer<typeof DashboardLayoutSchema>;
 export type LayoutAction = z.infer<typeof LayoutActionSchema>;
 export type UIActionProposal = z.infer<typeof UIActionProposalSchema>;
 export type ActionLogEntry = z.infer<typeof ActionLogEntrySchema>;
+export type ProposalValidationIssueCode = z.infer<typeof ProposalValidationIssueCodeSchema>;
+export type ProposalValidationIssue = z.infer<typeof ProposalValidationIssueSchema>;
+export type WidgetLocation = z.infer<typeof WidgetLocationSchema>;
+export type WidgetSnapshot = z.infer<typeof WidgetSnapshotSchema>;
+export type ActionProposalDiffEntry = z.infer<typeof ActionProposalDiffEntrySchema>;
+export type ActionProposalValidationResult = z.infer<typeof ActionProposalValidationResultSchema>;
 export type Country = z.infer<typeof CountrySchema>;
 export type IndicatorSummary = z.infer<typeof IndicatorSummarySchema>;
 export type IndicatorSearchResponse = z.infer<typeof IndicatorSearchResponseSchema>;
