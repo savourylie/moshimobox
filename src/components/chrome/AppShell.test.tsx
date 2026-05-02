@@ -1,12 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { DEFAULT_DASHBOARD_LAYOUT } from "@/domain/seeds";
 import { AppShell } from "./AppShell";
 import { QUADRANTS } from "./QUADRANTS";
 
 describe("AppShell", () => {
   it("renders the top bar, sidebar nav, and main landmarks", () => {
     render(
-      <AppShell>
+      <AppShell initialLayout={DEFAULT_DASHBOARD_LAYOUT}>
         <div data-testid="content">hello</div>
       </AppShell>,
     );
@@ -17,7 +18,7 @@ describe("AppShell", () => {
 
   it("renders children inside <main>", () => {
     render(
-      <AppShell>
+      <AppShell initialLayout={DEFAULT_DASHBOARD_LAYOUT}>
         <div data-testid="content">hello</div>
       </AppShell>,
     );
@@ -27,7 +28,7 @@ describe("AppShell", () => {
 
   it("renders a link for each quadrant with the correct anchor", () => {
     render(
-      <AppShell>
+      <AppShell initialLayout={DEFAULT_DASHBOARD_LAYOUT}>
         <div />
       </AppShell>,
     );
@@ -39,7 +40,7 @@ describe("AppShell", () => {
 
   it("includes the Policy / Liquidity sidebar entry by name", () => {
     render(
-      <AppShell>
+      <AppShell initialLayout={DEFAULT_DASHBOARD_LAYOUT}>
         <div />
       </AppShell>,
     );
@@ -48,7 +49,7 @@ describe("AppShell", () => {
 
   it("exposes the logo, search, and settings affordances", () => {
     render(
-      <AppShell>
+      <AppShell initialLayout={DEFAULT_DASHBOARD_LAYOUT}>
         <div />
       </AppShell>,
     );
@@ -63,7 +64,7 @@ describe("AppShell", () => {
 
   it("toggles the copilot button and chat panel slot", () => {
     render(
-      <AppShell>
+      <AppShell initialLayout={DEFAULT_DASHBOARD_LAYOUT}>
         <div />
       </AppShell>,
     );

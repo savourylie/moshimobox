@@ -9,7 +9,15 @@ import type {
   Source,
   WidgetDataResponse,
 } from "@/domain/schemas";
+import { LayoutProvider } from "@/components/layout/LayoutProvider";
 import { DashboardDataView } from "./DashboardDataView";
+
+const renderWithLayout = (layout: DashboardLayout) =>
+  render(
+    <LayoutProvider initialLayout={layout}>
+      <DashboardDataView />
+    </LayoutProvider>,
+  );
 
 const fredSource: Source = {
   provider: "fred",
@@ -207,7 +215,7 @@ describe("DashboardDataView", () => {
       vi.fn(() => new Promise<Response>(() => {})),
     );
 
-    render(<DashboardDataView layout={testLayout} />);
+    renderWithLayout(testLayout);
 
     expect(screen.getByText("Fetching CPI widget data")).toBeInTheDocument();
     expect(screen.getByText("Fetching Core CPI series")).toBeInTheDocument();
@@ -241,7 +249,7 @@ describe("DashboardDataView", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
 
-    render(<DashboardDataView layout={testLayout} />);
+    renderWithLayout(testLayout);
 
     expect(await screen.findByText("311.40")).toBeInTheDocument();
     expect(screen.getAllByText("index points").length).toBeGreaterThanOrEqual(2);
@@ -273,7 +281,7 @@ describe("DashboardDataView", () => {
       ),
     );
 
-    render(<DashboardDataView layout={testLayout} />);
+    renderWithLayout(testLayout);
 
     expect(await screen.findByText("Could not fetch CPI")).toBeInTheDocument();
     expect(screen.getAllByText("FRED is not responding.").length).toBeGreaterThanOrEqual(1);
@@ -317,7 +325,11 @@ describe("DashboardDataView", () => {
       },
     };
 
-    const { container } = render(<DashboardDataView layout={reorderedLayout} />);
+    const { container } = render(
+      <LayoutProvider initialLayout={reorderedLayout}>
+        <DashboardDataView />
+      </LayoutProvider>,
+    );
 
     const growthSection = container.querySelector('section[data-quadrant="growth"]');
     expect(growthSection).not.toBeNull();
@@ -375,7 +387,11 @@ describe("DashboardDataView", () => {
       },
     };
 
-    const { container } = render(<DashboardDataView layout={variedLayout} />);
+    const { container } = render(
+      <LayoutProvider initialLayout={variedLayout}>
+        <DashboardDataView />
+      </LayoutProvider>,
+    );
 
     const articlesIn = (quadrant: string) =>
       container.querySelectorAll(`section[data-quadrant="${quadrant}"] article`);
@@ -402,7 +418,7 @@ describe("DashboardDataView", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
 
-    render(<DashboardDataView layout={testLayout} />);
+    renderWithLayout(testLayout);
 
     const openButton = await screen.findByRole("button", { name: "Open details for CPI" });
     fireEvent.click(openButton);
@@ -452,7 +468,7 @@ describe("DashboardDataView", () => {
       },
     };
 
-    render(<DashboardDataView layout={mismatchLayout} />);
+    renderWithLayout(mismatchLayout);
 
     expect(await screen.findByText("Could not fetch CPI")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();

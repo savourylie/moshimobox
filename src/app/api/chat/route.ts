@@ -48,6 +48,7 @@ export async function POST(request: Request): Promise<Response> {
     return ok({
       text: result.text,
       toolInvocations: result.toolInvocations,
+      ...(result.proposal ? { proposal: result.proposal } : {}),
       requestId,
     });
   } catch (err) {

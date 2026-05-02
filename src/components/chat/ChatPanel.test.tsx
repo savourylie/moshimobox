@@ -1,10 +1,17 @@
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { DashboardLayout } from "@/domain/schemas";
+import { DEFAULT_DASHBOARD_LAYOUT } from "@/domain/seeds";
+import { LayoutProvider } from "@/components/layout/LayoutProvider";
 import { ChatPanel } from "./ChatPanel";
 
 const renderPanel = () => {
   const onClose = vi.fn();
-  const utils = render(<ChatPanel onClose={onClose} />);
+  const utils = render(
+    <LayoutProvider initialLayout={DEFAULT_DASHBOARD_LAYOUT}>
+      <ChatPanel onClose={onClose} />
+    </LayoutProvider>,
+  );
   const textarea = screen.getByRole("textbox", { name: "Message" }) as HTMLTextAreaElement;
   const sendButton = screen.getByRole("button", { name: "Send message" });
   const list = screen.getByTestId("chat-message-list");
@@ -20,11 +27,81 @@ const jsonResponse = (body: unknown, init: { status?: number } = {}): Response =
     headers: { "Content-Type": "application/json" },
   });
 
+const baseProposal = () => ({
+  id: "proposal-1",
+  summary: "Add Breakeven extra to Inflation",
+  proposedBy: "agent" as const,
+  proposedAt: "2026-05-02T10:00:00.000Z",
+  dashboardId: "main" as const,
+  actions: [
+    {
+      type: "add_widget" as const,
+      target: { quadrantId: "inflation" as const },
+      widget: {
+        id: "widget.line.us_5y_breakeven_extra",
+        type: "line_chart" as const,
+        title: "Breakeven extra",
+        description: "Additional view of 5-year breakeven inflation.",
+        indicatorId: "us_5y_breakeven_inflation",
+        transform: "level" as const,
+      },
+    },
+  ],
+});
+
+const baseDiffEntry = () => ({
+  actionIndex: 0,
+  actionType: "add_widget" as const,
+  widgetId: "widget.line.us_5y_breakeven_extra",
+  title: "Breakeven extra",
+  before: null,
+  after: {
+    quadrantId: "inflation" as const,
+    index: 3,
+    widget: {
+      id: "widget.line.us_5y_breakeven_extra",
+      type: "line_chart" as const,
+      title: "Breakeven extra",
+      description: "Additional view.",
+      indicatorId: "us_5y_breakeven_inflation",
+      transform: "level" as const,
+    },
+  },
+  summary: "Add Breakeven extra to Inflation.",
+});
+
+const validValidation = () => ({
+  valid: true as const,
+  proposalId: "proposal-1",
+  dashboardId: "main" as const,
+  summary: "Add Breakeven extra to Inflation.",
+  affectedWidgetIds: ["widget.line.us_5y_breakeven_extra"],
+  diff: [baseDiffEntry()],
+  previewLayout: DEFAULT_DASHBOARD_LAYOUT,
+  reasons: [] as string[],
+  issues: [] as never[],
+});
+
+const chatResponseWithProposal = () => ({
+  text: "I propose adding a second breakeven view.",
+  toolInvocations: [],
+  proposal: {
+    proposal: baseProposal(),
+    validation: validValidation(),
+    basedOnVersion: 1,
+  },
+  requestId: "rid",
+});
+
+const chatResponseNoProposal = (text = "Sample reply.") => ({
+  text,
+  toolInvocations: [],
+  requestId: "rid",
+});
+
 describe("ChatPanel", () => {
   beforeEach(() => {
-    mockFetch(async () =>
-      jsonResponse({ text: "Sample reply.", toolInvocations: [], requestId: "rid" }),
-    );
+    mockFetch(async () => jsonResponse(chatResponseNoProposal()));
   });
 
   afterEach(() => {
@@ -141,7 +218,7 @@ describe("ChatPanel", () => {
     expect(within(list).getByText(/Looking that up/i)).toBeInTheDocument();
     expect(sendButton).toBeDisabled();
 
-    resolve?.(jsonResponse({ text: "M2 is the broad money supply.", toolInvocations: [] }));
+    resolve?.(jsonResponse(chatResponseNoProposal("M2 is the broad money supply.")));
 
     await waitFor(() => {
       expect(within(list).getByText("M2 is the broad money supply.")).toBeInTheDocument();
@@ -171,13 +248,11 @@ describe("ChatPanel", () => {
       expect(within(list).getByText(/Upstream is down/i)).toBeInTheDocument();
     });
     expect(within(list).queryByText(/Looking that up/i)).toBeNull();
-    expect(sendButton).toBeDisabled(); // because draft is empty after clearing
+    expect(sendButton).toBeDisabled();
   });
 
   it("forwards prior user and assistant messages as history", async () => {
-    const fetchMock = mockFetch(async () =>
-      jsonResponse({ text: "Reply.", toolInvocations: [] }),
-    );
+    const fetchMock = mockFetch(async () => jsonResponse(chatResponseNoProposal("Reply.")));
 
     const { textarea } = renderPanel();
     fireEvent.change(textarea, { target: { value: "first" } });
@@ -205,5 +280,273 @@ describe("ChatPanel", () => {
       { role: "user", text: "first" },
       { role: "assistant", text: "Reply." },
     ]);
+  });
+
+  it("renders a proposal card when the chat response includes a proposal", async () => {
+    mockFetch(async () => jsonResponse(chatResponseWithProposal()));
+    const { textarea, list } = renderPanel();
+    fireEvent.change(textarea, { target: { value: "Add a breakeven chart." } });
+    fireEvent.keyDown(textarea, { key: "Enter" });
+
+    await waitFor(() => {
+      expect(within(list).getByText(/Proposed action · Inflation/i)).toBeInTheDocument();
+    });
+    expect(within(list).getByText("Add Breakeven extra to Inflation")).toBeInTheDocument();
+    expect(within(list).getByRole("button", { name: /Apply: /i })).toBeInTheDocument();
+    expect(within(list).getByRole("button", { name: /Dismiss: /i })).toBeInTheDocument();
+  });
+
+  it("applies a proposal and updates the layout context on success", async () => {
+    const nextLayout: DashboardLayout = {
+      ...DEFAULT_DASHBOARD_LAYOUT,
+      version: 2,
+    };
+    const fetchMock = mockFetch(async (input) => {
+      const url = input.toString();
+      if (url === "/api/chat") return jsonResponse(chatResponseWithProposal());
+      if (url === "/api/layout/proposals/apply") {
+        return jsonResponse({
+          valid: true,
+          layout: nextLayout,
+          version: 2,
+          diff: [baseDiffEntry()],
+          affectedWidgetIds: ["widget.line.us_5y_breakeven_extra"],
+          summary: "Add Breakeven extra to Inflation.",
+          logEntries: [],
+          requestId: "rid-apply",
+        });
+      }
+      throw new Error(`Unexpected fetch ${url}`);
+    });
+
+    const { textarea, list } = renderPanel();
+    fireEvent.change(textarea, { target: { value: "Add a breakeven chart." } });
+    fireEvent.keyDown(textarea, { key: "Enter" });
+
+    const apply = await within(list).findByRole("button", { name: /Apply: /i });
+    fireEvent.click(apply);
+
+    await waitFor(() => {
+      expect(within(list).getByText(/Applied · Inflation/i)).toBeInTheDocument();
+    });
+    expect(within(list).queryByRole("button", { name: /Apply: /i })).toBeNull();
+
+    const applyCall = fetchMock.mock.calls.find(
+      (call) => call[0]?.toString() === "/api/layout/proposals/apply",
+    );
+    expect(applyCall).toBeDefined();
+    const init = applyCall![1] as RequestInit;
+    const body = JSON.parse(init.body as string) as {
+      basedOnVersion: number;
+      actor: string;
+      chatTurnId: string;
+    };
+    expect(body.basedOnVersion).toBe(1);
+    expect(body.actor).toBe("user");
+    expect(body.chatTurnId).toMatch(/^turn-/);
+  });
+
+  it("shows a stale state when the apply endpoint returns proposal_stale", async () => {
+    mockFetch(async (input) => {
+      const url = input.toString();
+      if (url === "/api/chat") return jsonResponse(chatResponseWithProposal());
+      if (url === "/api/layout/proposals/apply") {
+        return jsonResponse(
+          {
+            error: {
+              code: "proposal_stale",
+              message: "Layout version mismatch.",
+              fields: [{ path: "basedOnVersion", message: "Current is 2." }],
+            },
+            requestId: "rid-stale",
+          },
+          { status: 400 },
+        );
+      }
+      throw new Error(`Unexpected fetch ${url}`);
+    });
+
+    const { textarea, list } = renderPanel();
+    fireEvent.change(textarea, { target: { value: "Add a breakeven chart." } });
+    fireEvent.keyDown(textarea, { key: "Enter" });
+
+    const apply = await within(list).findByRole("button", { name: /Apply: /i });
+    fireEvent.click(apply);
+
+    await waitFor(() => {
+      expect(within(list).getByText("Layout has changed")).toBeInTheDocument();
+    });
+    expect(within(list).getByText(/Layout version mismatch/i)).toBeInTheDocument();
+    expect(within(list).queryByRole("button", { name: /Apply: /i })).toBeNull();
+  });
+
+  it("shows rejected reasons when the apply endpoint returns valid: false", async () => {
+    mockFetch(async (input) => {
+      const url = input.toString();
+      if (url === "/api/chat") return jsonResponse(chatResponseWithProposal());
+      if (url === "/api/layout/proposals/apply") {
+        return jsonResponse({
+          valid: false,
+          proposalId: "proposal-1",
+          summary: "Action proposal was rejected.",
+          reasons: ["Inflation would have 5 widgets; allowed range is 2 to 4."],
+          issues: [
+            {
+              code: "quadrant_limit_exceeded",
+              message: "Inflation would have 5 widgets; allowed range is 2 to 4.",
+              actionIndex: 0,
+              quadrantId: "inflation",
+            },
+          ],
+          requestId: "rid-reject",
+        });
+      }
+      throw new Error(`Unexpected fetch ${url}`);
+    });
+
+    const { textarea, list } = renderPanel();
+    fireEvent.change(textarea, { target: { value: "Add a breakeven chart." } });
+    fireEvent.keyDown(textarea, { key: "Enter" });
+
+    const apply = await within(list).findByRole("button", { name: /Apply: /i });
+    fireEvent.click(apply);
+
+    await waitFor(() => {
+      expect(within(list).getByText("Cannot apply")).toBeInTheDocument();
+    });
+    expect(
+      within(list).getByText("That quadrant is full (max 4 widgets)."),
+    ).toBeInTheDocument();
+    expect(within(list).queryByRole("button", { name: /Apply: /i })).toBeNull();
+  });
+
+  it("removes the proposal card when Dismiss is clicked and does not call apply", async () => {
+    const fetchMock = mockFetch(async () => jsonResponse(chatResponseWithProposal()));
+    const { textarea, list } = renderPanel();
+    fireEvent.change(textarea, { target: { value: "Add a breakeven chart." } });
+    fireEvent.keyDown(textarea, { key: "Enter" });
+
+    const dismiss = await within(list).findByRole("button", { name: /Dismiss: /i });
+    fireEvent.click(dismiss);
+
+    await waitFor(() => {
+      expect(
+        within(list).queryByText("Add Breakeven extra to Inflation"),
+      ).not.toBeInTheDocument();
+    });
+    const applyCalls = fetchMock.mock.calls.filter(
+      (call) => call[0]?.toString() === "/api/layout/proposals/apply",
+    );
+    expect(applyCalls).toHaveLength(0);
+  });
+
+  it("retries apply from the error state when the user clicks Retry", async () => {
+    const nextLayout: DashboardLayout = {
+      ...DEFAULT_DASHBOARD_LAYOUT,
+      version: 2,
+    };
+    let applyCallCount = 0;
+    mockFetch(async (input) => {
+      const url = input.toString();
+      if (url === "/api/chat") return jsonResponse(chatResponseWithProposal());
+      if (url === "/api/layout/proposals/apply") {
+        applyCallCount += 1;
+        if (applyCallCount === 1) {
+          return jsonResponse(
+            {
+              error: { code: "unexpected_error", message: "Network glitch." },
+              requestId: "rid-error",
+            },
+            { status: 500 },
+          );
+        }
+        return jsonResponse({
+          valid: true,
+          layout: nextLayout,
+          version: 2,
+          diff: [baseDiffEntry()],
+          affectedWidgetIds: ["widget.line.us_5y_breakeven_extra"],
+          summary: "Add Breakeven extra to Inflation.",
+          logEntries: [],
+          requestId: "rid-apply",
+        });
+      }
+      throw new Error(`Unexpected fetch ${url}`);
+    });
+
+    const { textarea, list } = renderPanel();
+    fireEvent.change(textarea, { target: { value: "Add a breakeven chart." } });
+    fireEvent.keyDown(textarea, { key: "Enter" });
+
+    const apply = await within(list).findByRole("button", { name: /Apply: /i });
+    fireEvent.click(apply);
+
+    const retry = await within(list).findByRole("button", { name: /Apply: /i });
+    expect(retry).toHaveTextContent(/Retry/i);
+    fireEvent.click(retry);
+
+    await waitFor(() => {
+      expect(within(list).getByText(/Applied · Inflation/i)).toBeInTheDocument();
+    });
+    expect(applyCallCount).toBe(2);
+  });
+
+  it("marks other idle proposals stale after a successful apply", async () => {
+    const nextLayout: DashboardLayout = {
+      ...DEFAULT_DASHBOARD_LAYOUT,
+      version: 2,
+    };
+    let chatCallCount = 0;
+    mockFetch(async (input) => {
+      const url = input.toString();
+      if (url === "/api/chat") {
+        chatCallCount += 1;
+        const payload = chatResponseWithProposal();
+        // Distinguish proposal-2 by id so React keys differ.
+        if (chatCallCount === 2) {
+          payload.proposal.proposal = {
+            ...payload.proposal.proposal,
+            id: "proposal-2",
+            summary: "Add Yield curve extra to Market",
+          };
+        }
+        return jsonResponse(payload);
+      }
+      if (url === "/api/layout/proposals/apply") {
+        return jsonResponse({
+          valid: true,
+          layout: nextLayout,
+          version: 2,
+          diff: [baseDiffEntry()],
+          affectedWidgetIds: ["widget.line.us_5y_breakeven_extra"],
+          summary: "Add Breakeven extra to Inflation.",
+          logEntries: [],
+          requestId: "rid-apply",
+        });
+      }
+      throw new Error(`Unexpected fetch ${url}`);
+    });
+
+    const { textarea, list } = renderPanel();
+
+    fireEvent.change(textarea, { target: { value: "Add breakeven chart." } });
+    fireEvent.keyDown(textarea, { key: "Enter" });
+    await within(list).findByText("Add Breakeven extra to Inflation");
+
+    fireEvent.change(textarea, { target: { value: "Add yield-curve extra." } });
+    fireEvent.keyDown(textarea, { key: "Enter" });
+    await within(list).findByText("Add Yield curve extra to Market");
+
+    const applyButtons = within(list).getAllByRole("button", { name: /Apply: /i });
+    expect(applyButtons).toHaveLength(2);
+    fireEvent.click(applyButtons[0]);
+
+    await waitFor(() => {
+      expect(within(list).getByText(/Applied · Inflation/i)).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      expect(within(list).getByText("Layout has changed")).toBeInTheDocument();
+    });
+    expect(within(list).queryByRole("button", { name: /Apply: /i })).toBeNull();
   });
 });

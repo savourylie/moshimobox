@@ -8,6 +8,12 @@ import {
 import type { Agent, Model } from "@openai/agents";
 import { ApiError } from "@/server/api/errors";
 import { getOpenaiApiKey } from "@/server/config/env";
+import {
+  ActionProposalValidationResultSchema,
+  UIActionProposalSchema,
+  type ActionProposalValidationResult,
+  type UIActionProposal,
+} from "@/domain/schemas";
 import { buildAgent } from "./buildAgent";
 
 export interface ChatHistoryItem {
@@ -21,6 +27,12 @@ export interface ToolInvocation {
   output: unknown;
 }
 
+export interface ProposalSurfacePayload {
+  proposal: UIActionProposal;
+  validation: ActionProposalValidationResult;
+  basedOnVersion: number;
+}
+
 export interface RunAgentInput {
   message: string;
   history?: readonly ChatHistoryItem[];
@@ -29,6 +41,7 @@ export interface RunAgentInput {
 export interface RunAgentResult {
   text: string;
   toolInvocations: ToolInvocation[];
+  proposal?: ProposalSurfacePayload;
 }
 
 export interface RunAgentOptions {
@@ -90,6 +103,34 @@ const extractToolInvocations = (newItems: RunItem[]): ToolInvocation[] => {
   return invocations;
 };
 
+const extractProposal = (
+  toolInvocations: readonly ToolInvocation[],
+): ProposalSurfacePayload | undefined => {
+  for (let i = toolInvocations.length - 1; i >= 0; i--) {
+    const invocation = toolInvocations[i];
+    if (invocation.name !== "propose_layout_change") continue;
+    const output = invocation.output;
+    if (typeof output !== "object" || output === null) continue;
+    const candidate = output as {
+      proposal?: unknown;
+      validation?: unknown;
+      basedOnVersion?: unknown;
+    };
+    if (typeof candidate.basedOnVersion !== "number") continue;
+
+    const proposal = UIActionProposalSchema.safeParse(candidate.proposal);
+    const validation = ActionProposalValidationResultSchema.safeParse(candidate.validation);
+    if (!proposal.success || !validation.success) continue;
+
+    return {
+      proposal: proposal.data,
+      validation: validation.data,
+      basedOnVersion: candidate.basedOnVersion,
+    };
+  }
+  return undefined;
+};
+
 const extractText = (newItems: RunItem[], finalOutput: unknown): string => {
   if (typeof finalOutput === "string" && finalOutput.length > 0) {
     return finalOutput;
@@ -138,8 +179,12 @@ export const runResearchAgent = async (
     );
   }
 
+  const toolInvocations = extractToolInvocations(result.newItems);
+  const proposal = extractProposal(toolInvocations);
+
   return {
     text,
-    toolInvocations: extractToolInvocations(result.newItems),
+    toolInvocations,
+    ...(proposal ? { proposal } : {}),
   };
 };

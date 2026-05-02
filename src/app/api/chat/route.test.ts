@@ -126,4 +126,76 @@ describe("POST /api/chat", () => {
       ],
     });
   });
+
+  it("surfaces a proposal envelope from the agent in the response body", async () => {
+    const proposalEnvelope = {
+      proposal: {
+        id: "proposal-test-1",
+        summary: "Add 5Y breakeven extra to Inflation",
+        proposedBy: "agent",
+        proposedAt: "2026-05-02T10:00:00.000Z",
+        dashboardId: "main",
+        actions: [
+          {
+            type: "add_widget",
+            target: { quadrantId: "inflation" },
+            widget: {
+              id: "widget.line.us_5y_breakeven_extra",
+              type: "line_chart",
+              title: "Breakeven extra",
+              description: "Additional view.",
+              indicatorId: "us_5y_breakeven_inflation",
+              transform: "level",
+            },
+          },
+        ],
+      },
+      validation: {
+        valid: true,
+        proposalId: "proposal-test-1",
+        dashboardId: "main",
+        summary: "Add Breakeven extra to Inflation.",
+        affectedWidgetIds: ["widget.line.us_5y_breakeven_extra"],
+        diff: [
+          {
+            actionIndex: 0,
+            actionType: "add_widget",
+            widgetId: "widget.line.us_5y_breakeven_extra",
+            title: "Breakeven extra",
+            before: null,
+            after: {
+              quadrantId: "inflation",
+              index: 3,
+              widget: {
+                id: "widget.line.us_5y_breakeven_extra",
+                type: "line_chart",
+                title: "Breakeven extra",
+                description: "Additional view.",
+                indicatorId: "us_5y_breakeven_inflation",
+                transform: "level",
+              },
+            },
+            summary: "Add Breakeven extra to Inflation.",
+          },
+        ],
+        previewLayout: { id: "main" },
+        reasons: [],
+        issues: [],
+      },
+      basedOnVersion: 1,
+    };
+    runResearchAgentMock.mockResolvedValueOnce({
+      text: "I propose adding a second breakeven view.",
+      toolInvocations: [],
+      proposal: proposalEnvelope,
+    });
+
+    const response = await callRoute({ message: "Add another breakeven chart." });
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.proposal).toBeDefined();
+    expect(body.proposal.proposal.id).toBe("proposal-test-1");
+    expect(body.proposal.validation.valid).toBe(true);
+    expect(body.proposal.basedOnVersion).toBe(1);
+  });
 });

@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import type { DashboardLayout, QuadrantId, WidgetConfig } from "@/domain/schemas";
+import type { QuadrantId, WidgetConfig } from "@/domain/schemas";
+import { useLayout } from "@/components/layout/LayoutProvider";
 import {
   metadataFromDashboardWidgetData,
   type DashboardFetchMetadata,
@@ -19,10 +20,6 @@ import { MetricWidget } from "./MetricWidget";
 import { useDashboardData, type DashboardWidgetLoadState } from "./useDashboardData";
 import styles from "./DashboardDataView.module.css";
 
-interface DashboardDataViewProps {
-  layout: DashboardLayout;
-}
-
 interface SelectedDetail {
   widget: WidgetConfig;
   loaded: DetailPanelLoaded;
@@ -30,7 +27,8 @@ interface SelectedDetail {
   originId: string;
 }
 
-export function DashboardDataView({ layout }: DashboardDataViewProps) {
+export function DashboardDataView() {
+  const { layout } = useLayout();
   const { reloadWidget, sections } = useDashboardData(layout);
   const [selected, setSelected] = useState<SelectedDetail | null>(null);
 

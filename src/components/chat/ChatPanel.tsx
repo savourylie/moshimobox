@@ -1,9 +1,10 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { Fragment, useLayoutEffect, useRef } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
 import { Send, Sparkles, X } from "lucide-react";
 import { IconButton } from "../chrome/IconButton";
+import { ProposalCard } from "./ProposalCard";
 import { useChatState } from "./useChatState";
 import type { ChatMessage } from "./useChatState";
 import styles from "./ChatPanel.module.css";
@@ -13,7 +14,15 @@ interface ChatPanelProps {
 }
 
 export function ChatPanel({ onClose }: ChatPanelProps) {
-  const { messages, draft, setDraft, send, canSend } = useChatState();
+  const {
+    messages,
+    draft,
+    setDraft,
+    send,
+    applyProposal,
+    dismissProposal,
+    canSend,
+  } = useChatState();
   const formRef = useRef<HTMLFormElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
@@ -22,7 +31,7 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
     const node = listRef.current;
     if (!node) return;
     node.scrollTop = node.scrollHeight;
-  }, [messages.length]);
+  }, [messages]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -62,7 +71,16 @@ export function ChatPanel({ onClose }: ChatPanelProps) {
         role="log"
       >
         {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
+          <Fragment key={message.id}>
+            <MessageBubble message={message} />
+            {message.proposal ? (
+              <ProposalCard
+                onApply={() => applyProposal(message.id)}
+                onDismiss={() => dismissProposal(message.id)}
+                state={message.proposal}
+              />
+            ) : null}
+          </Fragment>
         ))}
       </div>
 

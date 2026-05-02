@@ -7,6 +7,7 @@ import {
   type ModelResponse,
   type StreamEvent,
 } from "@openai/agents";
+import { layoutStore } from "@/server/layout";
 import { buildAgent } from "./buildAgent";
 import { runResearchAgent } from "./runAgent";
 
@@ -171,5 +172,104 @@ describe("runResearchAgent (FakeModel)", () => {
     await expect(runResearchAgent({ message: "hi" })).rejects.toMatchObject({
       code: "provider_error",
     });
+  });
+
+  it("surfaces a propose_layout_change envelope on the result", async () => {
+    layoutStore.reset();
+    const fake = new FakeModel([
+      functionCallTurn("call-prop-1", "propose_layout_change", {
+        summary: "Add 5Y breakeven extra to Inflation",
+        actions: [
+          {
+            type: "add_widget",
+            target: { quadrantId: "inflation" },
+            widget: {
+              id: "widget.line.us_5y_breakeven_extra",
+              type: "line_chart",
+              title: "Breakeven extra",
+              description: "Additional view of 5-year breakeven inflation.",
+              indicatorId: "us_5y_breakeven_inflation",
+              transform: "level",
+            },
+          },
+        ],
+      }),
+      assistantTextTurn("I propose adding a second view of 5-year breakeven inflation to Inflation."),
+    ]);
+    const agent = buildAgent({ model: fake });
+
+    const result = await runResearchAgent(
+      { message: "Add another breakeven inflation chart to Inflation." },
+      { agent, requireApiKey: false },
+    );
+
+    expect(result.proposal).toBeDefined();
+    expect(result.proposal?.proposal.proposedBy).toBe("agent");
+    expect(result.proposal?.validation.valid).toBe(true);
+    expect(result.proposal?.basedOnVersion).toBe(layoutStore.getCurrent().version);
+  });
+
+  it("surfaces only the last propose_layout_change when the agent calls the tool twice", async () => {
+    layoutStore.reset();
+    const fake = new FakeModel([
+      functionCallTurn("call-prop-1", "propose_layout_change", {
+        summary: "Misplace CPI in Growth",
+        actions: [
+          {
+            type: "add_widget",
+            target: { quadrantId: "growth" },
+            widget: {
+              id: "widget.metric.cpi_misplaced",
+              type: "metric_card",
+              title: "CPI misplaced",
+              description: "Wrong quadrant.",
+              indicatorId: "us_headline_cpi",
+            },
+          },
+        ],
+      }),
+      functionCallTurn("call-prop-2", "propose_layout_change", {
+        summary: "Add another breakeven view to Inflation",
+        actions: [
+          {
+            type: "add_widget",
+            target: { quadrantId: "inflation" },
+            widget: {
+              id: "widget.line.us_5y_breakeven_extra",
+              type: "line_chart",
+              title: "Breakeven extra",
+              description: "Additional view of 5-year breakeven inflation.",
+              indicatorId: "us_5y_breakeven_inflation",
+              transform: "level",
+            },
+          },
+        ],
+      }),
+      assistantTextTurn("Final proposal updated."),
+    ]);
+    const agent = buildAgent({ model: fake });
+
+    const result = await runResearchAgent(
+      { message: "Try again with a valid quadrant." },
+      { agent, requireApiKey: false },
+    );
+
+    expect(result.proposal).toBeDefined();
+    expect(result.proposal?.validation.valid).toBe(true);
+    expect(result.toolInvocations).toHaveLength(2);
+  });
+
+  it("omits proposal when no propose_layout_change tool was called", async () => {
+    const fake = new FakeModel([
+      assistantTextTurn("M2 is the broad money supply, published weekly by the Fed."),
+    ]);
+    const agent = buildAgent({ model: fake });
+
+    const result = await runResearchAgent(
+      { message: "What is M2?" },
+      { agent, requireApiKey: false },
+    );
+
+    expect(result.proposal).toBeUndefined();
   });
 });
