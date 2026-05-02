@@ -1,7 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { QUADRANT_IDS, WidgetDataResponseSchema } from "@/domain/schemas";
 import { DEFAULT_DASHBOARD_LAYOUT } from "@/domain/seeds";
 import { ApiError } from "@/server/api/errors";
+import { layoutStore } from "@/server/layout";
 import { getWidgetData, pickLatestPair } from "./widgetData";
 
 const ALL_WIDGETS = QUADRANT_IDS.flatMap(
@@ -9,6 +10,10 @@ const ALL_WIDGETS = QUADRANT_IDS.flatMap(
 );
 
 describe("getWidgetData", () => {
+  beforeEach(() => {
+    layoutStore.reset();
+  });
+
   it("returns a valid WidgetDataResponse for every metric_card and line_chart widget", async () => {
     const supportedWidgets = ALL_WIDGETS.filter((widget) => widget.type !== "comparison_chart");
 

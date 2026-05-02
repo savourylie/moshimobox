@@ -7,9 +7,10 @@ import type {
   WidgetDataResponse,
 } from "@/domain/schemas";
 import { QUADRANT_IDS } from "@/domain/schemas";
-import { DEFAULT_DASHBOARD_LAYOUT, getSeedIndicator } from "@/domain/seeds";
+import { getSeedIndicator } from "@/domain/seeds";
 import { ApiError } from "@/server/api/errors";
 import { computeReleaseDate, periodLabel } from "@/server/fixtures/dateAxis";
+import { layoutStore } from "@/server/layout";
 import { seriesRepository } from "@/server/series/seriesRepository";
 
 interface ObservedPoint {
@@ -35,8 +36,9 @@ export const pickLatestPair = (
 const findWidget = (
   widgetId: string,
 ): { widget: WidgetConfig; quadrantId: QuadrantId } | undefined => {
+  const layout = layoutStore.getCurrent();
   for (const quadrantId of QUADRANT_IDS) {
-    const widget = DEFAULT_DASHBOARD_LAYOUT.quadrants[quadrantId].widgets.find(
+    const widget = layout.quadrants[quadrantId].widgets.find(
       (candidate) => candidate.id === widgetId,
     );
     if (widget) {

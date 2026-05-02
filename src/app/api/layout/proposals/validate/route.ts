@@ -3,6 +3,7 @@ import { DashboardLayoutSchema } from "@/domain/schemas";
 import { failure, failureFromUnknown, ok } from "@/server/api/response";
 import { newRequestId } from "@/server/api/requestId";
 import { validateActionProposal } from "@/server/actions";
+import { layoutStore } from "@/server/layout";
 
 export const runtime = "nodejs";
 
@@ -36,7 +37,7 @@ export async function POST(request: Request): Promise<Response> {
 
     return ok({
       ...validateActionProposal(parsed.data.proposal, {
-        ...(parsed.data.layout ? { layout: parsed.data.layout } : {}),
+        layout: parsed.data.layout ?? layoutStore.getCurrent(),
       }),
       requestId,
     });

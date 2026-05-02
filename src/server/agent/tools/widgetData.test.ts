@@ -1,9 +1,14 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { ApiError } from "@/server/api/errors";
 import { DEFAULT_DASHBOARD_LAYOUT } from "@/domain/seeds";
+import { layoutStore } from "@/server/layout";
 import { widgetDataHandler, widgetDataTool } from "./widgetData";
 
 describe("widgetDataHandler", () => {
+  beforeEach(() => {
+    layoutStore.reset();
+  });
+
   it("returns trimmed widget data with citation fields", async () => {
     const widget = DEFAULT_DASHBOARD_LAYOUT.quadrants.inflation.widgets.find(
       (entry) => entry.type === "metric_card",

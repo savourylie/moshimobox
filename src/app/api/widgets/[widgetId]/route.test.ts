@@ -1,5 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiErrorSchema, WidgetDataResponseSchema } from "@/domain/schemas";
+import { layoutStore } from "@/server/layout";
 import { GET } from "./route";
 
 const callRoute = (widgetId: string) =>
@@ -8,6 +9,10 @@ const callRoute = (widgetId: string) =>
   });
 
 describe("GET /api/widgets/[widgetId]", () => {
+  beforeEach(() => {
+    layoutStore.reset();
+  });
+
   it("returns a parseable WidgetDataResponse for a metric_card widget", async () => {
     const response = await callRoute("widget_us_headline_cpi");
 

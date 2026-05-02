@@ -20,6 +20,8 @@ const STATUS_FOR_CODE: Record<ApiErrorCode, number> = {
   invalid_query: 400,
   widget_type_unsupported: 400,
   provider_error: 502,
+  proposal_stale: 409,
+  history_empty: 409,
   unexpected_error: 500,
 };
 

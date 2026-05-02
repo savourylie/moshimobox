@@ -470,6 +470,8 @@ export const API_ERROR_CODES = [
   "invalid_query",
   "widget_type_unsupported",
   "provider_error",
+  "proposal_stale",
+  "history_empty",
   "unexpected_error",
 ] as const;
 
