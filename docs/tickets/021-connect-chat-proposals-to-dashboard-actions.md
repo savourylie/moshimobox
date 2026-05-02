@@ -1,10 +1,10 @@
 # [TICKET-021] Connect chat proposals to dashboard actions
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #018 ✅, #020
+- Requires: #018 ✅, #020 ✅
 
 ## Description
 Connect the chat panel, agent responses, action proposals, and dashboard renderer into a single controlled interaction. Users should be able to ask research questions and apply validated layout changes from the chat.
