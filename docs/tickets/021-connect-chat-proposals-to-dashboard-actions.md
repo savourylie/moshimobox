@@ -1,7 +1,7 @@
 # [TICKET-021] Connect chat proposals to dashboard actions
 
 ## Status
-`pending`
+`done`
 
 ## Dependencies
 - Requires: #018 ✅, #020 ✅
@@ -10,10 +10,10 @@
 Connect the chat panel, agent responses, action proposals, and dashboard renderer into a single controlled interaction. Users should be able to ask research questions and apply validated layout changes from the chat.
 
 ## Acceptance Criteria
-- [ ] Chat responses can include a structured action proposal card with recommendation text, affected widgets, and apply/dismiss controls.
-- [ ] Applying a proposal calls the backend mutation path, updates the dashboard schema, and records the action log.
-- [ ] Dismissing a proposal leaves the dashboard unchanged and records no mutation.
-- [ ] Rejected or stale proposals display a factual error and keep the previous layout visible.
+- [x] Chat responses can include a structured action proposal card with recommendation text, affected widgets, and apply/dismiss controls.
+- [x] Applying a proposal calls the backend mutation path, updates the dashboard schema, and records the action log.
+- [x] Dismissing a proposal leaves the dashboard unchanged and records no mutation.
+- [x] Rejected or stale proposals display a factual error and keep the previous layout visible.
 - [ ] The chat can answer at least one data lookup, one comparison, and one layout-change request in the browser flow.
 
 ## Design Reference

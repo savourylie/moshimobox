@@ -1,10 +1,10 @@
 # [TICKET-022] TEST: Checkpoint 3 — Chat and controlled actions
 
 ## Status
-`blocked`
+`pending`
 
 ## Dependencies
-- Requires: #021
+- Requires: #021 ✅
 
 ## Description
 This checkpoint verifies the core agentic product loop: ask a macro research question, receive a sourced response, review a proposed layout action, and apply it through a controlled backend path. It gates polish, analytics, and final QA work.

@@ -7,10 +7,10 @@
 
 | Status        | Count |
 | ------------- | ----- |
-| ✅ Done        | 20    |
+| ✅ Done        | 21    |
 | 🔧 In Progress | 0     |
 | 📋 Pending     | 1     |
-| 🚫 Blocked     | 5     |
+| 🚫 Blocked     | 4     |
 | ⏸️ Deferred    | 0     |
 
 ---
@@ -56,8 +56,8 @@
 | 018 | [Integrate Agents SDK research tools](./018-integrate-agents-sdk-research-tools.md) | `done` | #017 ✅ | Implemented and verified — server agent + research tools wired through /api/chat |
 | 019 | [Build action proposal validation](./019-build-action-proposal-validation.md) | `done` | #017 ✅ | Implemented and verified — safe proposal layer ready |
 | 020 | [Implement layout mutation history and action log](./020-implement-layout-mutation-history-and-action-log.md) | `done` | #019 ✅ | Implemented and verified — layout store, action log, apply + rollback routes with version-based stale rejection |
-| 021 | [Connect chat proposals to dashboard actions](./021-connect-chat-proposals-to-dashboard-actions.md) | `pending` | #018 ✅, #020 ✅ | Unblocked — #020 now done |
-| 022 | [**TEST: Checkpoint 3 — Chat and controlled actions**](./022-test-checkpoint-3-chat-and-controlled-actions.md) | `blocked` | #021 | Gate: Phase 4 |
+| 021 | [Connect chat proposals to dashboard actions](./021-connect-chat-proposals-to-dashboard-actions.md) | `done` | #018 ✅, #020 ✅ | Implemented and verified — agent tool, proposal card, controlled apply/dismiss flow |
+| 022 | [**TEST: Checkpoint 3 — Chat and controlled actions**](./022-test-checkpoint-3-chat-and-controlled-actions.md) | `pending` | #021 ✅ | Unblocked — #021 now done |
 
 ## Phase 5 — Polish and final QA
 
